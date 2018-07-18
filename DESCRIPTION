@@ -1,10 +1,8 @@
 Package: firebehavioR
 Title: Prediction of wildland fire behavior
 Version: 0.0.0.9000
-Authors@R: c(person("Justin", "Ziegler", role = c("aut", "cre"),
-                     email = "Justin.Ziegler@colostate.edu"),
-              person("Chad", "Hoffman", role = "ctb"))
-Description: Provides functions for estimating wildland fire behavior using the NEXUS fire modeling system and Crown Fire Initiation and Spread modeling system.
+Authors@R: person("Justin", "Ziegler", role = c("aut", "cre"), email = "Justin.Ziegler@colostate.edu")
+Description: Functions for estimating wildland fire behavior using common models in the US.
 Depends: R (>= 3.4.1)
 License: GPL-2
 Encoding: UTF-8

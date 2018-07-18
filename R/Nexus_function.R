@@ -5,9 +5,9 @@
 #' @param moisture a vector or data frame of fuel moistures on a dry-weight basis ["\%"] for litter, 1-hr
 #' 10-hr, 100-hr, herbaceous, and woody fuel classes, respectively (6 values or columns)
 #' @param crownFuel a vector or data frame consisting of canopy fuel attributes consisting of: canopy
-#' bulk density [kg/m3]; foliar moisture content ["\%"]; canopy base height [m]; and canopy fuel load [kg/m2], respectively
+#' bulk density [kg/m3]; foliar moisture content (\%); canopy base height [m]; and canopy fuel load [kg/m2], respectively
 #' (4 values or columns)
-#' @param enviro a vector or data.frame of environmental variables including: topographic slope ["\%"];
+#' @param enviro a vector or data.frame of environmental variables including: topographic slope (\%);
 #' open windspeed [m/min];  wind direction, from uphill [deg.]; and wind adjustment factor [0-1], respectively
 #' @param rosmult a numeric value for the rate of spread multiplier, defaults to 1
 #' @param cfbform a character string specifying how crown fraction burned is calculated. Options are "linear", "exponential", or "FARSITE" (default)
@@ -16,16 +16,16 @@
 #' Rothermel’s (1972) surface and (1991a) crown fire models, and Van Wagner’s (1977) models of transition to crown fire.
 #' \code{rosmult} multiples the rate of spread for active or passive crown fires and is recommended a value of 1.7 when a user desires a maximum crown fire rate of spread (Rothermel 1991).
 #' @return a list with 6 data frames
-#' \item{FireBehavior}{a data frame which summarizes fire behavior including: fire type, crown fraction burned ["\%"], rate of spread [m,/min],
+#' \item{FireBehavior}{a data frame which summarizes fire behavior including: fire type, crown fraction burned (\%), rate of spread [m,/min],
 #' heat per unit area [kW/m2], Fireline Intensity [kW/m], Flame Length [m], Direction of max spread [deg], Scorch height [m], Torching Index [m/min],
 #' Crowning Index [m/min], Surfacing Index [m/min], Effective Midflame Wind [m/min], Flame Residence Time [min]   }
 #' \item{Intermediates_Surface}{a data frame with some intermediate variables of surface fire behavior including: Potential ROS [m/min], No wind,
-#'  no slope ROS [m/min], Slope factor [0-1], Wind factor [0-1], Characteristic dead fuel moisture ["\%"], Characteristic live fuel moisture ["\%"],
+#'  no slope ROS [m/min], Slope factor [0-1], Wind factor [0-1], Characteristic dead fuel moisture (\%), Characteristic live fuel moisture (\%),
 #'  Characteristic SAV [m2/m3], Bulk density [kg/m3], Packing ratio [-], Relative packing ratio [-], Reaction intensity [kW/m2], Heat source [kW/m2],
 #'  Heat sink [kJ/m3]}
 #' \item{Intermediates_Crown}{a data frame with some intermediate variables of crown fire behavior including: Potential ROS [m/min],
-#' No wind, no slope ROS [m/min], Slope factor [0-1], Wind factor [0-1], Characteristic dead fuel moisture ["\%"],
-#' Characteristic live fuel moisture ["\%"], Characteristic SAV [m2/m3], Bulk density [kg/m3], Packing ratio [-], Relative packing ratio [-],
+#' No wind, no slope ROS [m/min], Slope factor [0-1], Wind factor [0-1], Characteristic dead fuel moisture (\%),
+#' Characteristic live fuel moisture (\%), Characteristic SAV [m2/m3], Bulk density [kg/m3], Packing ratio [-], Relative packing ratio [-],
 #' Reaction intensity [kW/m2], Heat source [kW/m2], Heat sink [kJ/m3]}
 #' \item{Crit_Initiation}{a data frame of critical values for crown fire initiation including: Fireline Intensity [kW/m], Flame length [m],
 #'Surface ROS [m/min], Canopy base height [m]}
@@ -36,7 +36,7 @@
 #' Scott, J.H., Reinhardt, E.D., 2001. Assessing crown fire potential by linking models of surface and crown fire behavior. USDA For. Serv. Rocky Mt. Res. Station. Res. Pap. RMRS-RP-29.
 #' @export
 
-Nexus = function(surfFuel, moisture, crownFuel, enviro, rosmult = 1, cfbform = 'FARSITE') {
+nexus = function(surfFuel, moisture, crownFuel, enviro, rosmult = 1, cfbform = 'FARSITE') {
     w = cbind(surfFuel[, 2], surfFuel[, 3], surfFuel[, 4], surfFuel[, 5], surfFuel[,
         6], surfFuel[, 7])/48.82744537
     delta = surfFuel[, 14] * 0.0328084

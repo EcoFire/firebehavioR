@@ -7,28 +7,31 @@
 cfis(fsg, u10, effm, sfc, cbd, id)
 }
 \arguments{
-\item{fsg}{a vector or data frame of fuel stratum gap [m]}
+\item{fsg}{a vector or data frame of fuel stratum gap (m)}
 
 \item{u10}{a vector or data frame with open (at a height 10 m above the canopy) wind speed [m/min]}
 
-\item{effm}{a vector or data frame with stand density [trees/ha]}
+\item{effm}{a vector or data frame with effective fine fuel moisture (\%)}
 
-\item{sfc}{a vector or data frame of surface fuel consumed [kg/m2]}
+\item{sfc}{a vector or data frame of surface fuel consumed (kg/m2)}
 
-\item{cbd}{a vector or data frame of canopy bulk density [kg/m3]}
+\item{cbd}{a vector or data frame of canopy bulk density (kg/m3)}
 
-\item{id}{a vector or data frame of spot ignition delay, the time between which a firebrand is generated and the time it ignites on receptive fuels [min]}
+\item{id}{a vector or data frame of spot ignition delay, the time during which a given firebrand generates, is transported aloft, and ignites a receptive fuelbed (min)}
 }
 \value{
-a data frame with probability of crown fire occurences ["%"], type of fire, crown fire rate of spread [m/min], and critical spotting distance [m]
+a data frame with probability of crown fire occurences (\%), type of fire, crown fire rate of spread (m/min), and critical spotting distance (m)
 }
 \description{
-Estimation of crown fire initiation likelihood and crown fire rate of spread using Cruz, Alexander & Wakimoto (2004a,b) and .
+Prediction of crown fire probability, crown fire rate of spread and seperation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, seperate of a main fire.
+}
+\examples{
+library(firebehavioR)
+
+
 }
 \references{
-Cruz M.G., Alexander M.E., Wakimoto R.H., 2004a. Modeling the likelihood of crown fire occurances in conifer forest stands. For. Sci. 50(4):640-658.
-Development and testing of models for predicting crown fire rate of spread in conifer forest stands. Can. J. For. Res. 35:1626-1639.
-Insert reference for spotting
+Alexander M.E. & Cruz M.G. 2006. Evaluating a model for predicting active crown fire rate of spread using wildfire observations. \emph{Canadian Journal of Forest Research}. \strong{36}:2015-3028.
 }
 \author{
 Justin P Ziegler, \email{justin.ziegler@colostate.edu}

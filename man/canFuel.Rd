@@ -7,23 +7,31 @@
 canFuel(ba, ht, tph, type)
 }
 \arguments{
-\item{ba}{a vector or data frame with basal area [m2/ha]}
+\item{ba}{a vector or data frame with stand basal area (m2/ha).}
 
-\item{ht}{a vector or data frame with average stand height [m]}
+\item{ht}{a vector or data frame with average stand height (m).}
 
-\item{tph}{a vector or data frame with stand density [trees/ha]}
+\item{tph}{a vector or data frame with stand density (trees/ha).}
 
-\item{type}{a vector or data frame with forest cover type, either: Douglas-fir, Pseudotsuga menziesii,[DF]; ponderosa pine, Pinus ponderosa, [PP]; lodgepole pine, Pinus contorta, [LP]; or mixed conifer [MC]}
+\item{type}{a vector or data frame with forest cover type, either: df for Douglas-fir (Pseudotsuga menziesii); pp for ponderosa pine (Pinus ponderosa); lp for lodgepole pine (Pinus contorta); mc for mixed conifer.}
 }
 \value{
-a data frame with: [1] canopy base height [m]; canopy fuel load [kg/m2]; and, canopy bulk density [kg/m3]
+a data frame with canopy base height (m), canopy fuel load (kg/m2), and canopy bulk density (kg/m3).
 }
 \description{
-Estimation of canopy parameters using Cruz, Alexander & Wakimoto (2003).
+Canopy parameters estimated by Cruz, Alexander & Wakimoto (2003).
+}
+\examples{
+library(firebehavioR)
+
+
 }
 \references{
-Cruz M.G., Alexander M.E., Wakimoto R.H., 2003. Assessing canopy fuel stratum characteristics in crown fire prone fuel types of western North America. International Journal of Wildland Fire. 12(1):39-50.
+Cruz M.G., Alexander M.E., Wakimoto R.H. 2003. Assessing canopy fuel stratum characteristics in crown fire prone fuel types of western North America. \emph{International Journal of Wildland Fire}. \strong{12}(1):39-50.
+}
+\seealso{
+This function ouputs values for \code{\link{nexus}} and \code{\link{cfis}} parameter inputs.
 }
 \author{
-Justin P Ziegler, \email{justin.ziegler@colostate.edu}
+Justin P Ziegler
 }

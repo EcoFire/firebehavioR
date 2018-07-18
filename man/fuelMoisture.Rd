@@ -6,22 +6,25 @@
 \title{Modified Scott & Burgan (2005) moisture scenarios.}
 \format{A data frame with 16 observations of 7 variables:
 \describe{
-  \item{FM_litter}{moisture of litter, ["\%"]}
-  \item{FM_1hr}{moisture of 1-hr fuel, ["\%"]}
-  \item{FM_10hr}{moisture of 10-hr fuel, ["\%"]}
-  \item{FM_100hr}{moisture of 100-hr fuel, ["\%"]}
-  \item{FM_Live_Herb}{moisture of herbaceous fuel, ["\%"]}
-  \item{FM_Live_Woody}{moisture of woody fuel, ["\%"]}
+  \item{FM_litter}{moisture of litter, (\%)}
+  \item{FM_1hr}{moisture of 1-hr fuel, (\%)}
+  \item{FM_10hr}{moisture of 10-hr fuel, (\%)}
+  \item{FM_100hr}{moisture of 100-hr fuel, (\%)}
+  \item{FM_Live_Herb}{moisture of herbaceous fuel, (\%)}
+  \item{FM_Live_Woody}{moisture of woody fuel, (\%)}
   \item{Description}{Scenario description}
   ...
 }}
 \source{
-Scott, J., & Burgan, R. E. (2005). A new set of standard fire behavior fuel models for use with Rothermel’s surface fire spread model. Gen. Tech. Rep. RMRS-GTR-153. Fort Collins, CO: US Department of Agriculture, Forest Service, Rocky Mountain Research Station
+Scott, J., & Burgan, R. E. 2005. A new set of standard fire behavior fuel models for use with Rothermel’s surface fire spread model. \emph{Gen. Tech. Rep. RMRS-GTR-153}. Fort Collins, CO: US Department of Agriculture, Forest Service, Rocky Mountain Research Station.
 }
 \usage{
 data(fuelMoisture)
 }
 \description{
 Moisture scenarios are a set of fuel moistures of surface fuels, on a dry-weight basis, for each of the surfacefuel classes. Originally developed by Scott & Burgan (2005), this dataset includes fuel moistures of litter.
+}
+\seealso{
+\code{\link{nexus}}
 }
 \keyword{datasets}
