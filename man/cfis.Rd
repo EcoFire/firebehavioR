@@ -9,7 +9,7 @@ cfis(fsg, u10, effm, sfc, cbd, id)
 \arguments{
 \item{fsg}{a vector or data frame of fuel stratum gap (m)}
 
-\item{u10}{a vector or data frame with open (at a height 10 m above the canopy) wind speed [m/min]}
+\item{u10}{a vector or data frame with open (at a height 10 m above the canopy) wind speed (km/hr)}
 
 \item{effm}{a vector or data frame with effective fine fuel moisture (\%)}
 
@@ -20,7 +20,7 @@ cfis(fsg, u10, effm, sfc, cbd, id)
 \item{id}{a vector or data frame of spot ignition delay, the time during which a given firebrand generates, is transported aloft, and ignites a receptive fuelbed (min)}
 }
 \value{
-a data frame with probability of crown fire occurences (\%), type of fire, crown fire rate of spread (m/min), and critical spotting distance (m)
+a data frame with type of fire, probability of crown fire occurences (\%), crown fire rate of spread (m/min), and critical spotting distance (m)
 }
 \description{
 Prediction of crown fire probability, crown fire rate of spread and seperation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, seperate of a main fire.
@@ -31,7 +31,7 @@ library(firebehavioR)
 
 }
 \references{
-Alexander M.E. & Cruz M.G. 2006. Evaluating a model for predicting active crown fire rate of spread using wildfire observations. \emph{Canadian Journal of Forest Research}. \strong{36}:2015-3028.
+Alexander M.E., Cruz M.G. 2006. Evaluating a model for predicting active crown fire rate of spread using wildfire observations. \emph{Canadian Journal of Forest Research}. \strong{36}:2015-3028.
 }
 \author{
 Justin P Ziegler, \email{justin.ziegler@colostate.edu}

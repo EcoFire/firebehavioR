@@ -3,3 +3,4 @@
 export(canFuel)
 export(cfis)
 export(nexus)
+export(waf)

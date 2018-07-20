@@ -1,42 +1,84 @@
 #' Nexus Fire Behavior Modeling System
 #'
-#' Potential fire behavior predicted with the approach used in Nexus (Scott & Reinhardt 2001).
-#' @param surfFuel a vector or data frame of surface fuel attributes consisting of: the fuel model type with either 'S'tatic or D'ynamic fuel load transferring; fuel loads [Mg/ha] for litter, 1-hr, 10-hr, 100-hr, herbaceous, and woody fuels; surface area-to-volumes [m2/m3] for litter, 1-hr, 10-hr, 100-hr, herbaceous, and woody fuels; fuel bed depth [cm]; moisture of extinction ["\%"]; and heat content [kJ/kg], respectively (16 values or columns)
-#' @param moisture a vector or data frame of fuel moistures on a dry-weight basis ["\%"] for litter, 1-hr
-#' 10-hr, 100-hr, herbaceous, and woody fuel classes, respectively (6 values or columns)
-#' @param crownFuel a vector or data frame consisting of canopy fuel attributes consisting of: canopy
-#' bulk density [kg/m3]; foliar moisture content (\%); canopy base height [m]; and canopy fuel load [kg/m2], respectively
+#' Potential surface and crown fire behavior predicted by Scott and Reinhardt (2001).
+#' @param surfFuel a vector or data frame of surface fuel attributes. Variable names are not important but the order is important.
+#' \enumerate{
+#'   \item the fuel model type, either 'S'tatic or D'ynamic herb load transfer
+#'   \item litter load (Mg/ha)
+#'   \item 1-hr load (Mg/ha)
+#'   \item 10-hr load (Mg/ha)
+#'   \item 100-hr load (Mg/ha)
+#'   \item herb load (Mg/ha)
+#'   \item woody load (Mg/ha)
+#'   \item litter SAV (m2/m3)
+#'   \item 1-hr SAV (m2/m3)
+#'   \item 10-hr SAV (m2/m3)
+#'   \item 100-hr SAV (m2/m3)
+#'   \item herb SAV (m2/m3)
+#'   \item woody SAV (m2/m3)
+#'   \item fuel bed depth (cm)
+#'   \item moisture of extinction (\%)
+#'   \item heat content (J/g)
+#'   }
+#' @param moisture a vector or data frame of fuel moistures on a dry-weight basis (\%) for litter, 1-hr
+#' 10-hr, 100-hr, herbaceous, and woody fuel classes, in order (6 values or columns)
+#' @param crownFuel a vector or data frame with canopy fuel attributes consisting of: canopy
+#' bulk density (kg/m3); foliar moisture content (\%); canopy base height (m); and canopy fuel load (kg/m2), in order
 #' (4 values or columns)
-#' @param enviro a vector or data.frame of environmental variables including: topographic slope (\%);
-#' open windspeed [m/min];  wind direction, from uphill [deg.]; and wind adjustment factor [0-1], respectively
-#' @param rosmult a numeric value for the rate of spread multiplier, defaults to 1
-#' @param cfbform a character string specifying how crown fraction burned is calculated. Options are "linear", "exponential", or "FARSITE" (default)
-#' @details This in an R build of the Nexus fire behavior modeling system (Scott & Reinhardt 2001) which links sub-models of surface fire rate of spread (Rothermel 1972),
-#' criteria for crown fire initiation (Van Wagner 1977), and Rothermel's (1991) crown fire rate of spread for potential rate of spread
-#' Rothermel’s (1972) surface and (1991a) crown fire models, and Van Wagner’s (1977) models of transition to crown fire.
-#' \code{rosmult} multiples the rate of spread for active or passive crown fires and is recommended a value of 1.7 when a user desires a maximum crown fire rate of spread (Rothermel 1991).
+#' @param enviro a vector or data frame of environmental variables including: topographic slope (\%);
+#' open windspeed (km/hr);  wind direction, from uphill (deg.); and wind adjustment factor (0-1), in order (4 values or columns)
+#' @param rosMult a numeric value for multiplying crown fire rate of spread, defaults to 1 (see details)
+#' @param cfbForm a character string specifying how crown fraction burned is calculated. Options are "sr", "w", or "f" (default); see details.
+#' @details This in an R build of the Nexus fire behavior modeling system (Scott & Reinhardt 2001) which links sub-models of surface fire rate of
+#' spread (Rothermel 1972), crown fire initiation (Van Wagner 1977), and Rothermel's (1991) crown fire rate of spread. \cr
+#' \code{rosMult} multiples the rate of spread for active or passive crown fires and is recommended a value of 1.7 when a user desires a maximum
+#' crown fire rate of spread (Rothermel 1991). \cr
+#' \code{cfbForm} selects the method to estimate crown fraction burned. This selection impacts estimates of passive
+#' crown fraction burned, fireline intensity, and heat per unit area. Use "sr" for Scott and Reinhardt (2001), "w" for van Wagner (1993),
+#' and "f" for Finney (1998).
 #' @return a list with 6 data frames
-#' \item{FireBehavior}{a data frame which summarizes fire behavior including: fire type, crown fraction burned (\%), rate of spread [m,/min],
-#' heat per unit area [kW/m2], Fireline Intensity [kW/m], Flame Length [m], Direction of max spread [deg], Scorch height [m], Torching Index [m/min],
-#' Crowning Index [m/min], Surfacing Index [m/min], Effective Midflame Wind [m/min], Flame Residence Time [min]   }
-#' \item{Intermediates_Surface}{a data frame with some intermediate variables of surface fire behavior including: Potential ROS [m/min], No wind,
-#'  no slope ROS [m/min], Slope factor [0-1], Wind factor [0-1], Characteristic dead fuel moisture (\%), Characteristic live fuel moisture (\%),
-#'  Characteristic SAV [m2/m3], Bulk density [kg/m3], Packing ratio [-], Relative packing ratio [-], Reaction intensity [kW/m2], Heat source [kW/m2],
-#'  Heat sink [kJ/m3]}
-#' \item{Intermediates_Crown}{a data frame with some intermediate variables of crown fire behavior including: Potential ROS [m/min],
-#' No wind, no slope ROS [m/min], Slope factor [0-1], Wind factor [0-1], Characteristic dead fuel moisture (\%),
-#' Characteristic live fuel moisture (\%), Characteristic SAV [m2/m3], Bulk density [kg/m3], Packing ratio [-], Relative packing ratio [-],
-#' Reaction intensity [kW/m2], Heat source [kW/m2], Heat sink [kJ/m3]}
-#' \item{Crit_Initiation}{a data frame of critical values for crown fire initiation including: Fireline Intensity [kW/m], Flame length [m],
-#'Surface ROS [m/min], Canopy base height [m]}
-#' \item{Crit_Active}{a data frame of critical values for active crown fire  including: Canopy bulk density [kg/m3]", "ROS, crown (R'active) [m/min]}
-#' \item{Crit_Cessation}{a data frame of critical values for cessation of crown fire including: Canopy base height [m], O'cessation [m/min]}
+#' \item{fireBehavior}{a data frame with fire behavior estimates including fire type, crown fraction burned (\%), rate of spread (m/min),
+#' heat per unit area (kW/m2), fireline intensity (kW/m), flame length (m), direction of max spread (deg), scorch height (m),
+#' torching index (m/min), crowning index (m/min), surfacing index (m/min), effective midflame wind (m/min), flame residence time (min) }
+#' \item{detailSurface}{a data frame with some intermediate variables of surface fire behavior including: potential ROS (m/min); no wind,
+#'  no slope ROS (m/min); slope factor (-); wind factor (-); characteristic dead fuel moisture (\%); characteristic live fuel moisture (\%);
+#'  characteristic SAV (m2/m3); bulk density (kg/m3); packing ratio (-); relative packing ratio (-); reaction intensity (kW/m2); heat source (kW/m2);
+#'  heat sink (kJ/m3)}
+#' \item{detailCrown}{a data frame with some intermediate variables of crown fire behavior including: potential ROS (m/min);
+#' no wind, no slope ROS (m/min); slope factor (-); wind factor (-); characteristic dead fuel moisture (\%);
+#' characteristic live fuel moisture (\%); characteristic SAV (m2/m3); bulk density (kg/m3); packing ratio (-); relative packing ratio (-);
+#' reaction intensity (kW/m2); heat source (kW/m2); heat sink (kJ/m3)}
+#' \item{critInit}{a data frame of critical values for crown fire initiation including: fireline intensity (kW/m), flame length (m), surface ROS (m/min), Canopy base height (m)}
+#' \item{critActive}{a data frame of critical values for active crown fire  including: canopy bulk density (kg/m3)", "ROS, crown (R'active) (m/min)}
+#' \item{critCess}{a data frame of critical values for cessation of crown fire including: canopy base height (m), O'cessation (m/min)}
 #' @author Justin P Ziegler, \email{justin.ziegler@@colostate.edu}
 #' @references
-#' Scott, J.H., Reinhardt, E.D., 2001. Assessing crown fire potential by linking models of surface and crown fire behavior. USDA For. Serv. Rocky Mt. Res. Station. Res. Pap. RMRS-RP-29.
+#' Rothermel, R.C. 1972. A mathematical model for predicting fire spread in wildland fuels. \emph{INT-RP-115}. USDA Forest Service Intermountain Forest & Range Experimental Station.\cr
+#' Van Wagner, C.E. 1977. Conditions for the start and spread of crown fire. \emph{Canadian Journal of Forest Research} \strong{7}:23–34.\cr
+#' Rothermel, R.C., 1991. Predicting behavior and size of crown fires in the northern Rocky Mountains. \emph{INT-RP-438}. USDA Forest Service Intermountain Research Station.\cr
+#' Van Wagner, C.E. 1993. Prediction of crown fire behavior in two stands of jack pine. \emph{Canadian Journal of Forest Research} \strong{23}:442–449.\cr
+#' Finney, M.A. 1998. FARSITE: Fire area simulator — model development and evaluation. \emph{RMRS-RP-47}. USDA Forest Service Rocky Mountain Research Station. \cr
+#' Scott, J.H., Reinhardt, E.D. 2001. Assessing crown fire potential by linking models of surface and crown fire behavior. \emph{RMRS-RP-29}. USDA Forest Service Rocky Mountain Research Station.\cr
+#' @examples
+#' library(firebehavioR)
+#'
+#'
 #' @export
 
-nexus = function(surfFuel, moisture, crownFuel, enviro, rosmult = 1, cfbform = 'FARSITE') {
+nexus = function(surfFuel, moisture, crownFuel, enviro, rosMult = 1, cfbForm = "f") {
+  if (is.vector(surfFuel))  {surfFuel=data.frame(t(surfFuel)) }
+  if (is.vector(moisture))  {moisture=data.frame(t(moisture))}
+  if (is.vector(crownFuel)) {crownFuel=data.frame(t(crownFuel))}
+  if (is.vector(enviro))    {enviro=data.frame(t(enviro))}
+  if (nrow(surfFuel)==1)
+  { surfFuel = rbind(surfFuel,surfFuel)
+  moisture = rbind(moisture,moisture)
+  crownFuel = rbind(crownFuel,crownFuel)
+  enviro = rbind(enviro,enviro)
+  flag=1
+  }
+enviro=enviro[,2]*16.66
+
     w = cbind(surfFuel[, 2], surfFuel[, 3], surfFuel[, 4], surfFuel[, 5], surfFuel[,
         6], surfFuel[, 7])/48.82744537
     delta = surfFuel[, 14] * 0.0328084
@@ -60,10 +102,10 @@ nexus = function(surfFuel, moisture, crownFuel, enviro, rosmult = 1, cfbform = '
         w.1hr = 0.138, w.10hr = 0.092, w.100hr = 0.23, w.live = 0.092, exp.w1.live = 0.716531310573789,
         exp.w2.live = 0.91210514954509, f.live = 0.320239111870196, bbopt = 2.34762249904803,
         pp = 32, se = 0.01, ns.mineral = 0.174 * 0.01^-0.19, st = 0.0555)
-    rosmult = rep(rosmult, nrow(surfFuel))
-    cfbform = ifelse(cfbform == "linear", 1, ifelse(cfbform == "exponential", 2,
+    rosMult = rep(rosMult, nrow(surfFuel))
+    cfbForm = ifelse(cfbForm == "sr", 1, ifelse(cfbForm == "w", 2,
         3))
-    cfbform = rep(cfbform, nrow(surfFuel))
+    cfbForm = rep(cfbForm, nrow(surfFuel))
     mf.dead.FM10 = (givens$exp.w.1hr * moisture[, 2] * givens$wn.1hr + givens$exp.w.10hr *
         moisture[, 3] * givens$wn.10hr + givens$exp.w.100hr * moisture[, 4] * givens$wn.100hr)/as.vector(100 *
         crossprod(c(givens$exp.w.1hr, givens$exp.w.10hr, givens$exp.w.100hr), c(givens$wn.1hr,
@@ -95,7 +137,7 @@ nexus = function(surfFuel, moisture, crownFuel, enviro, rosmult = 1, cfbform = '
     sf.fm10 = 5.275 * givens$beta.pr^-0.3 * (enviro[, 1]/100)^2
     sin.f = sin(enviro[, 3]/givens$deg2pi)
     nwns.CI = ((r.active * 3.281 * givens$rho * e.qig.fm10)/(ir.fm10 * xi.FM10 *
-        3.34 * fme * rosmult)) - 1
+        3.34 * fme * rosMult)) - 1
     cos.CI = (-2 * cos.f * sf.fm10 + sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 +
         cos.f^2) * (sf.fm10^2 - nwns.CI^2))))/(2 * (sin.f^2 + cos.f^2))
     sin.CI = (-2 * cos.f * sf.fm10 - sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 +
@@ -170,18 +212,18 @@ nexus = function(surfFuel, moisture, crownFuel, enviro, rosmult = 1, cfbform = '
         ros.init)), 0)
     cfb.farsite = ifelse(enviro[, 2] > TI, 1 - exp(-(-log(0.1)/((r.active - ros.init) *
         0.9) * (ros.surf - ros.init))), 0)
-    cfb.final = ifelse(cfbform == 1, cfb.lin, ifelse(cfbform == 2, cfb.exp, cfb.farsite))
+    cfb.final = ifelse(cfbForm == "sr", cfb.lin, ifelse(cfbForm == "w", cfb.exp, cfb.farsite))
     wf.crown = givens$C * (3.2808 * enviro[, 2] * 0.4)^givens$B * givens$bbopt^-givens$E
-    nwns.ROS.crown = (ir.fm10 * xi.FM10 * rosmult)/(givens$rho * e.qig.fm10 * 3.281) *
+    nwns.ROS.crown = (ir.fm10 * xi.FM10 * rosMult)/(givens$rho * e.qig.fm10 * 3.281) *
         3.34 * fme
     wsf.crown = ((wf.crown * sin(enviro[, 3]/givens$deg2pi))^2 + ((wf.crown * cos.f +
         sf.fm10))^2)^0.5
     ros.crown = nwns.ROS.crown * (1 + wsf.crown)
     type = ifelse(cfb.final < 0.9, ifelse(cfb.final < 0.1, ifelse(ros.surf <= ros.init &
         ros.crown > r.active, "conditional", "surface"), "passive"), "active")
-    ROS.final = ifelse(cfbform == 1 | cfbform == 2, ifelse(type == "active" | type ==
-        "passive", ros.surf + cfb.final * (ros.crown - ros.surf) * rosmult, ros.surf),
-        ifelse(type == "active", ros.crown * rosmult, ros.surf))
+    ROS.final = ifelse(cfbForm == "sr" | cfbForm == "w", ifelse(type == "active" | type ==
+        "passive", ros.surf + cfb.final * (ros.crown - ros.surf) * rosMult, ros.surf),
+        ifelse(type == "active", ros.crown * rosMult, ros.surf))
     hpua.tot = crownFuel[, 4] * 0.20482 * 18000 * 0.430265
     hpua.final = hpua + hpua.tot * cfb.final
     FI = hpua.final * 11.349 * ROS.final/60
@@ -195,7 +237,7 @@ nexus = function(surfFuel, moisture, crownFuel, enviro, rosmult = 1, cfbform = '
             givens$deg2pi))
     ScorchHt = (63/(60)) * ((FI/3.459143)^(7/6)/((FI/3.459143) + u.canopy^3)^0.5)
     nwnsOI = ((ros.init * 3.281 * givens$rho * e.qig.fm10)/(ir.fm10 * xi.FM10 * 3.34 *
-        fme * rosmult)) - 1
+        fme * rosMult)) - 1
     nwnsOI = cbind(nwnsOI, (-2 * cos.f * sf.fm10 + sqrt((4 * cos.f^2 * sf.fm10^2) -
         (4 * (sin.f^2 + cos.f^2) * (sf.fm10^2 - nwnsOI^2))))/(2 * (sin.f^2 + cos.f^2)),
         (-2 * cos.f * sf.fm10 - sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 +
@@ -213,41 +255,50 @@ nexus = function(surfFuel, moisture, crownFuel, enviro, rosmult = 1, cfbform = '
     theta = ifelse(ROS.final <= 0, 0, theta)
     ScorchHt = ifelse(ROS.final <= 0, 0, ScorchHt)
     res.time = ifelse(ROS.final <= 0, 0, res.time)
-    FireBehavior = data.frame(type, cfb.final * 100, ROS.final, hpua.final * 11.35653,
+    fireBehavior = data.frame(type, cfb.final * 100, ROS.final, hpua.final * 11.35653,
         FI, FL, theta, ScorchHt/3.28084, TI, CI, SI, u.eff * 26.8224, res.time)
-    names(FireBehavior) = c("Type of Fire", "Crown Fraction Burned [%]", "Rate of Spread [m/min]",
+    names(fireBehavior) = c("Type of Fire", "Crown Fraction Burned [%]", "Rate of Spread [m/min]",
         "Heat per Unit Area [kW/m2]", "Fireline Intensity [kW/m]", "Flame Length [m]",
         "Direction of max spread [deg]", "Scorch height [m]", "Torching Index [m/min]",
         "Crowning Index [m/min]", "Surfacing Index [m/min]", "Effective Midflame Wind [m/min]",
         "Flame Residence Time [min]")
-    Intermediates_Surface = data.frame(ros.surf, nwns.ROS, sf, wf, mf.dead, mf.live,
+    detailSurface = data.frame(ros.surf, nwns.ROS, sf, wf, mf.dead, mf.live,
         s.tot * 3.28084, rhob * 16.0184634, beta.pr, bbopt, ir * 0.189146667, ir *
             xi * wsf * 0.189146667, rhob * eqig * 37.2589)
-    names(Intermediates_Surface) = c("Potential ROS [m/min]", "No wind, no slope ROS [m/min]",
+    names(detailSurface) = c("Potential ROS [m/min]", "No wind, no slope ROS [m/min]",
         "Slope factor [0-1]", "Wind factor [0-1]", "Characteristic dead fuel moisture [%]",
         "Characteristic live fuel moisture [%]", "Characteristic SAV [m2/m3]", "Bulk density [kg/m3]",
         "Packing ratio [-]", "Relative packing ratio [-]", "Reaction intensity [kW/m2]",
         "Heat source [kW/m2]", "Heat sink [kJ/m3]")
-    Intermediates_Crown = data.frame(ros.crown, nwns.ROS.crown, sf.fm10, wf.crown,
+    detailCrown = data.frame(ros.crown, nwns.ROS.crown, sf.fm10, wf.crown,
         fm.dead.FM10, fm.live.FM10, 5788.491, givens$rho * 16.0184634, givens$beta.pr,
         givens$bbopt, ir.fm10 * 0.189146667, ir.fm10 * xi.FM10 * wsf.crown * 0.189146667,
         givens$rho * e.qig.fm10 * 37.2589)
-    names(Intermediates_Crown) = c("Potential ROS [m/min]", "No wind, no slope ROS [m/min]",
+    names(detailCrown) = c("Potential ROS [m/min]", "No wind, no slope ROS [m/min]",
         "Slope factor [0-1]", "Wind factor [0-1]", "Characteristic dead fuel moisture [%]",
         "Characteristic live fuel moisture [%]", "Characteristic SAV [m2/m3]", "Bulk density [kg/m3]",
         "Packing ratio [-]", "Relative packing ratio [-]", "Reaction intensity [kW/m2]",
         "Heat source [kW/m2]", "Heat sink [kJ/m3]")
-    Crit_Initiation = data.frame(FI.init, 0.0775 * FI.init^0.46, ros.init, (100 *
+    critInit = data.frame(FI.init, 0.0775 * FI.init^0.46, ros.init, (100 *
         (11.349 * ros.surf * hpua/60)^(2/3))/(460 + 25.9 * crownFuel[, 2]))
-    names(Crit_Initiation) = c("Fireline Intensity [kW/m)", "Flame length (m)", "Surface ROS [m/min]",
+    names(critInit) = c("Fireline Intensity [kW/m)", "Flame length (m)", "Surface ROS [m/min]",
         "Canopy base height [m]")
-    Crit_Active = data.frame(3/ros.crown, r.active)
-    names(Crit_Active) = c("Canopy bulk density [kg/m3]", "ROS, crown (R'active) [m/min]")
-    Crit_Cessation = data.frame((100 * (11.349 * ros.crown * hpua/60)^(2/3))/(460 +
+    critActive = data.frame(3/ros.crown, r.active)
+    names(critActive) = c("Canopy bulk density [kg/m3]", "ROS, crown (R'active) [m/min]")
+    critCess = data.frame((100 * (11.349 * ros.crown * hpua/60)^(2/3))/(460 +
         25.9 * crownFuel[, 2]), oi)
-    names(Crit_Cessation) = c("Canopy base height [m]", "O'cessation [m/min]")
-    output = list(FireBehavior = FireBehavior, Intermediates_Surface = Intermediates_Surface,
-        Intermediates_Crown = Intermediates_Crown, Crit_Initiation = Crit_Initiation,
-        Crit_Active = Crit_Active, Crit_Cessation = Crit_Cessation)
+    names(critCess) = c("Canopy base height [m]", "O'cessation [m/min]")
+    if (flag==1) {
+      fireBehavior=fireBehavior[1,]
+      detailSurface=detailSurface[1,]
+      detailCrown=detailCrown[1,]
+      critInit=critInit[1,]
+      critActive=critActive[1,]
+      critCess=critCess[1,]
+      }
+    output = list(fireBehavior = fireBehavior, detailSurface = detailSurface,
+        detailCrown = detailCrown, critInit = critInit,
+        critActive = critActive, critCess = critCess)
+
     return(output)
 }

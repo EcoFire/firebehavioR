@@ -2,14 +2,14 @@
 #'
 #' Prediction of crown fire probability, crown fire rate of spread and seperation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, seperate of a main fire.
 #' @param fsg a vector or data frame of fuel stratum gap (m)
-#' @param u10 a vector or data frame with open (at a height 10 m above the canopy) wind speed [m/min]
+#' @param u10 a vector or data frame with open (at a height 10 m above the canopy) wind speed (km/hr)
 #' @param effm a vector or data frame with effective fine fuel moisture (\%)
 #' @param sfc a vector or data frame of surface fuel consumed (kg/m2)
 #' @param cbd a vector or data frame of canopy bulk density (kg/m3)
 #' @param id a vector or data frame of spot ignition delay, the time during which a given firebrand generates, is transported aloft, and ignites a receptive fuelbed (min)
-#' @return a data frame with probability of crown fire occurences (\%), type of fire, crown fire rate of spread (m/min), and critical spotting distance (m)
+#' @return a data frame with type of fire, probability of crown fire occurences (\%), crown fire rate of spread (m/min), and critical spotting distance (m)
 #' @author Justin P Ziegler, \email{justin.ziegler@@colostate.edu}
-#' @references  Alexander M.E. & Cruz M.G. 2006. Evaluating a model for predicting active crown fire rate of spread using wildfire observations. \emph{Canadian Journal of Forest Research}. \strong{36}:2015-3028.
+#' @references  Alexander M.E., Cruz M.G. 2006. Evaluating a model for predicting active crown fire rate of spread using wildfire observations. \emph{Canadian Journal of Forest Research}. \strong{36}:2015-3028.
 #' @examples
 #' library(firebehavioR)
 #'
@@ -18,10 +18,10 @@
 
 cfis = function(fsg, u10, effm, sfc, cbd, id) {
 
-  g_x = 4.236 + 0.02142*u10 - 0.71*fsg - 0.331*effm + ifelse( sfc<1, -4.613, ifelse (sfc>2,0,-1.856) )
+  g_x = 4.236 + .357*u10 - 0.71*fsg - 0.331*effm + ifelse( sfc<1, -4.613, ifelse (sfc>2,0,-1.856) )
     p_x = exp(g_x)/(1+ exp(g_x))
 
-    crosa = (11.02*(.06*u10)^0.9)*(cbd^0.19)*exp(-0.17*effm)
+    crosa = (11.02*u10^0.9)*(cbd^0.19)*exp(-0.17*effm)
 crosp = crosa*exp(-0.3333*crosa*cbd)
     cac = crosa*cbd/3
 
