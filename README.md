@@ -25,7 +25,7 @@ You can install firebehavioR from GitHub for the development version.
 
     devtools::install_github("zieg9479/firebehavioR")
 
-There are no package dependencies, but you should have r R (&gt;= 3.4.1) installed.
+There are no package dependencies, but you should have R (&gt;= 3.4.1) installed.
 
 Usage
 -----
