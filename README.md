@@ -7,7 +7,7 @@ Features
 --------
 
 Fire behavior predictions using:
-\* the Rothermel modelling system, similar to BehavePlus, NEXUS, and FuelCalc.
+* the Rothermel modelling system, similar to BehavePlus, NEXUS, and FuelCalc.
 \* the Crown Fire Initiation & Spread modelling system.
 
 Helper functions which can:
