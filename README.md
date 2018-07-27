@@ -7,8 +7,8 @@ Features
 --------
 
 Fire behavior predictions using:
-* the Rothermel modelling system, similar to BehavePlus, NEXUS, and FuelCalc.
-* the Crown Fire Initiation & Spread modelling system.
+* the Rothermel modelling system, similar to BehavePlus, NEXUS, and FuelCalc
+* the Crown Fire Initiation & Spread modelling system
 
 Helper functions which can:
 * Calculate the wind adjustment factor, using a little or alot of site-specific forest canopy information
@@ -31,6 +31,14 @@ Usage
 -----
 
 The vignette in the above references GitHub repo will help you get up and going.
+
+Future Development
+-----
+
+This package is a continual work in progress. Suggestions for improvements are welcomed. Currently, additional helper functions are planned: 
+* Incorporation of models to estimate dead and live fuel moistures using RAWS weather observations 
+* Additional methods to estimate canopy fuels characteristics
+* Visual interpretation of fire behavior results via the Fire Characteristics Chart
 
 Authors
 -------
