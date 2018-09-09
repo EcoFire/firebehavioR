@@ -10,8 +10,12 @@ Fire behavior predictions using:
 * the Rothermel modelling system, similar to BehavePlus, NEXUS, and FuelCalc
 * the Crown Fire Initiation & Spread modelling system
 
+Fire weather indices of two types:
+* Static (uses instantaneous weather data)
+* Dynamic (evolving index value based on continuous daily weather data)
+
 Helper functions which can:
-* Calculate the wind adjustment factor, using a little or alot of site-specific forest canopy information
+* Calculate the wind adjustment factor, using a little or a lot of site-specific forest canopy information
 * Predict canopy fuels characteristics such as canopy bulk density and canopy fuel load
 
 Helper data:
@@ -23,7 +27,7 @@ Installation
 
 You can install firebehavioR from GitHub for the development version.
 
-    devtools::install_github("zieg9479/firebehavioR")
+    devtools::install_github("EcoFire/firebehavioR")
 
 There are no package dependencies, but you should have R (&gt;= 3.4.1) installed.
 
