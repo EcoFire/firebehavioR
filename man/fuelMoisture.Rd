@@ -18,12 +18,12 @@
 Scott, J., & Burgan, R. E. 2005. A new set of standard fire behavior fuel models for use with Rothermel’s surface fire spread model. \emph{RMRS-GTR-153}. Fort Collins, CO: US Department of Agriculture, Forest Service, Rocky Mountain Research Station.
 }
 \usage{
-data(fuelMoisture)
+data("fuelMoisture")
 }
 \description{
-Moisture scenarios are a set of fuel moistures of surface fuels, on a dry-weight basis, for each of the surface fuel classes. Originally developed by Scott & Burgan (2005), this dataset includes fuel moistures of litter.
+Moisture scenarios are a set of fuel moistures of surface fuels, on a dry-weight basis, for each of the surface fuel classes. Adapted from Scott & Burgan (2005), this dataset includes fuel moistures of litter.
 }
 \seealso{
-\code{\link{nexus}}
+\code{\link{rothermel}}
 }
 \keyword{datasets}

@@ -26,7 +26,7 @@
   \item{source}{scientific source}
 }}
 \usage{
-data(fuelModels)
+data("fuelModels")
 }
 \description{
 Fuel models developed by Anderson (1982), Scott (1999), and Scott & Burgan (2005) for prediction of surface fire behavior.
@@ -37,6 +37,6 @@ Scott, J.H. 1999. NEXUS: A system for assessing crown fire hazard. \emph{Fire Ma
 Scott, J.H., & Burgan, R. E. 2005. A new set of standard fire behavior fuel models for use with Rothermel’s surface fire spread model. \emph{RMRS-GTR-153}. US Department of Agriculture, Forest Service, Rocky Mountain Research Station.
 }
 \seealso{
-\code{\link{nexus}}
+\code{\link{rothermel}}
 }
 \keyword{datasets}

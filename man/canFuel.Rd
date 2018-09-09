@@ -7,13 +7,13 @@
 canFuel(ba, ht, tph, type)
 }
 \arguments{
-\item{ba}{a vector or data frame with stand basal area (m2/ha)}
+\item{ba}{a numeric vector of stand basal areas (m2/ha)}
 
-\item{ht}{a vector or data frame with average stand height (m)}
+\item{ht}{a numeric vector of average stand tree heights (m)}
 
-\item{tph}{a vector or data frame with stand density (trees/ha)}
+\item{tph}{a numeric vector of stand densities (trees/ha)}
 
-\item{type}{a vector or data frame with forest cover type, either: "df" for Douglas-fir (\emph{Pseudotsuga menziesii});
+\item{type}{a character vector of forest cover types, either: "df" for Douglas-fir (\emph{Pseudotsuga menziesii});
 "pp" for ponderosa pine (\emph{Pinus ponderosa}); "lp" for lodgepole pine (\emph{Pinus contorta}); "mc" for mixed conifer}
 }
 \value{
@@ -23,15 +23,18 @@ a data frame with canopy base height (m), canopy fuel load (kg/m2), and canopy b
 Canopy parameters estimated by Cruz, Alexander & Wakimoto (2003)
 }
 \examples{
-library(firebehavioR)
-
-
+#Two hypothetical forest stands
+ba = c(10, 15)
+ht = c(12, 20)
+tph = c(100, 300)
+type = c('df', 'lp')
+canFuel(ba, ht, tph, type)
 }
 \references{
 Cruz M.G., Alexander M.E., Wakimoto R.H. 2003. Assessing canopy fuel stratum characteristics in crown fire prone fuel types of western North America. \emph{International Journal of Wildland Fire}. \strong{12}(1):39-50.
 }
 \seealso{
-This function provides values for \link{nexus} and \link{cfis} inputs.
+This function provides values for \link{rothermel} and \link{cfis} inputs.
 }
 \author{
 Justin P Ziegler, \email{justin.ziegler@colostate.edu}

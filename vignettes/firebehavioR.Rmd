@@ -1,0 +1,434 @@
+---
+title: "An introduction to firebehavioR"
+author: 
+  - name: Justin Ziegler
+  - name: Justin.Ziegler@Colostate.edu; Forest & Rangeland Stewardship, Colorado State University, Fort Collins, CO, USA
+date: "`r Sys.Date()`"
+fig_caption: yes
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An introduction to firebehavioR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## 1.0 About firebehavioR
+This vignette is a brief tutorial to **firebehavioR**. This package is a compilation of different mathematical models of fire behavior or fire hazard indices. The former make explicit, measurable predictions of fire behavior while the later describe the relative hazard posed by current weather and/or fuel conditions. In both cases, these models express the potential for fire behavior posed by fuels, weather and/or topography (the three sides of the wildland fire behavior triangle). This is not a package for statistical methods in fire research. Most of these models have been incorporated, in some form, within other software and often in a more user-friendly graphical interface. My rationale for developing this package was twofold: 1) to take advantage of the workflow efficiency in R; for example, users can wrangle data, directly perform complex statistical analyses on outputs, and produce visualizations in one environment; and 2) users can view the source code; the transparency of fire modelling benefits researchers and educators. However, this tutorial will not focus on either of these as needs can vary greatly across potential users. Each model has its own sets of limitations and assumptions for which the user is responsible for understanding.  
+
+To provide benefit to the most users this tutorial assumes that the user has only a novice level understanding of the R programming language as well as a recent version of R installed (>=3.4). Users are encouraged to play around with the code and **firebehavioR**'s functions on their own to find how this package can benefit their needs. This tutorial also assumes a basic understanding of variables used in fire modelling. Appendix A contains a listing of all the variables used in this package; it is critical that users understand the measurement units used in this package.
+
+### 1.1 Citing firebehavioR
+Maintenance of **firebehavioR** is done on my own time and I do it to benefit the fire research community. That said, please cite **firebehavioR** appropriately if you use it. Not only does it give me credit for developing this package, but it also signals to me that this package is useful and deserves regular maintenance and revision.
+
+To cite this package, there is an upcoming technical note that I am preparing for a scientific journal. When this is published, that will be the preferred reference. In the interim you can cite the development version:
+
+Ziegler, J. P. 2018. firebehavioR. <https://github.com/EcoFire/firebehavioR>.
+
+### 1.2 Installing firebehavioR
+
+The **firebehavioR** package is not yet on the CRAN repository. 
+
+The development version is available at https://github.com/EcoFire/firebehavioR. You can download this from with R with the following:
+```{r, eval=FALSE}
+devtools::install_github("EcoFire/firebehavioR")
+```
+
+Once **firebehavioR** is installed, you can load it just as any other package:
+```{r, eval=FALSE}
+library("firebehavioR")
+```
+
+## 2.0 Fire models
+
+```{r, echo=FALSE}
+library("firebehavioR")
+```
+
+### 2.1 Crown Fire Initiation & Spread model
+Crown Fire Initiation & Spread (CFIS) predits crown fire behavior. The arguments include the fuel stratum gap, 10-m open wind speed, fine fuel moisture, the load of surface fuel consumed, the canopy bulk density and spot ignition delay. To demonstrate this function, we will use `data(coForest)`. This data frame contains summary information on canopy and surface fuels taken from different forest stands in the Southern Rocky Mountains, USA. As with all objects, more information can found by entering in `?coForest`.
+
+```{r}
+data("coForest")
+print(coForest)
+```
+In this example, we will enter in the measured fuel stratum gap and canopy bulk density while assuming that the surface fuel consumption is 100% of the measured surface fuel load. We also assume the 10-m open wind speed is 20 km/hr and the effective fine fuel moisture is 6%. Note that `sfl_kgm2` are surface fuel loads in units of kg/m^2^ and must be converted to units of Mg/ha.
+```{r}
+ex1 = cfis(fsg = coForest$cbh_m, u10 = 20, effm = 6, sfc = coForest$sfl_kgm2 * 10, 
+    cbd = coForest$cbd_kgm3, id = 1)
+print(ex1)
+```
+The output returns the type of fire (surface, passive crown or active crown), probability of crown fire, crown fire rate of spread, and seperation distance (described later).
+
+`coForest` contains information on seven forest stands sampled before and after silvicultural treatment. Let"s explore how treatments affect average crown fire rate of spread *ceteris paribus*.
+
+```{r}
+ex2 = aggregate(x = ex1$cROS, by = list(treatmentStatus = coForest$status), FUN = mean)
+print(ex2)
+```
+The results state that mean crown fire rate of spread is lower post-treatment than pre-treatment. 
+
+In this next example, we will explore the interaction between effect of treatment and open wind speed on fire type. To do this we need to replicate our 7 forest stands, each with an increasing level of open wind speed.
+```{r}
+ex3 = coForest[rep(seq_len(nrow(coForest)), 11), ]
+ex3$u10 = sort(rep(10:20, 14))
+head(ex3)
+
+ex3$type = cfis(ex3$cbh_m, ex3$u10, 6, ex3$sfl_kgm2 * 10, ex3$cbd_kgm3, 1)$type
+table(u10 = ex3$u10, ex3$type, ex3$status)
+```
+The results show that as wind speeds increase, pre-treatment stands move from a mix of active and surface fire types to a mainly active fire type. In contrast, post-treatment stands move from a mostly surface fire type to a mostly passive fire as wind speeds increase. A simple interpretation on treatment effectiveness would state that treatments reduce the propensity for the most severe class of crown fires (active), regardless of wind speed, but do not preclude passive crown fire.  
+
+#### 2.1. Spot fire calculation
+The `id` argument for `cfis()` does not effect fire type, probability of crown fire occurence or crown fire rate of spread. This argument is used to predict the critical seperation distance for a spot fire.  
+Spot fires result from the generation of embers from a source fire, transportation aloft, and ignition at a target location ahead of the fire. During this time, the source fire is advancing according to its rate of spread. Therefore, the time delay between generation and ignition determines how far an ember must travel in order to avoid landing in the advancing source fire. In this example, we will look at the relationship between ignition delay and critical travel distance.
+```{r}
+ex4 = cfis(coForest[1, ]$cbh_m, u10 = 14, effm = 6, sfc = coForest[1, ]$sfl_kgm2, 
+    cbd = coForest[1, ]$cbd_kgm3, id = 0:10)
+ex4$id = 0:10
+```
+
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Requisite conditions for successful spot fire ignition given the projected crown fire rate of spread."}
+library("ggplot2")
+
+ggplot(ex4, aes(sepDist, id)) + geom_ribbon(aes(ymin = pmin(sepDist, id), ymax = 0), 
+    fill = "red", col = "red", alpha = 0.5) + geom_line(size = 1.5) + labs(x = "Critical seperation distance (m)", 
+    y = "Ignition delay (min)") + annotate("text", x = 450, y = 3, label = "Spot fire ignition zone") + 
+    theme_classic()
+```
+Given the predicted crown fire rate of spread, the above figure demonstrates the set of ignition delays and seperation distances under which an ember could ignite a spot fire in advance of a source fire.
+
+###  2.2 Rothermel
+
+The Rothermel modelling system, invoked with `rothermel()`, predicts fire behavior using linked models of surface fire spread, crown fire initiation, and crown fire spread. `rothermel()` takes four arguments input as data frames. In each of these data frames, the column order is important.
+
+1. Surface fuel characteristics
+    + Fuel model type, static or dynamic
+    + Litter load
+    + 1-hr load
+    + 10-hr load
+    + 100-hr load
+    + Herbaceous load
+    + Shrub load
+    + 1-hr SAV
+    + 10-hr SAV
+    + 100-hr SAV
+    + Herbaceous SAV
+    + Shrub SAV
+    + Fuel bed depth
+    + Moisture of extinction
+    + Heat content
+2. Surface fuel moistures, for:
+    + Litter
+    + 1-hr
+    + 10-hr
+    + 100-hr
+    + Herbaceous
+    + Shrub
+3. Crown fuel characteristics
+    + Canopy bulk density
+    + Foliar moisture content
+    + Canopy base height
+    + Canopy fuel load
+4. Environmental characteristics
+    + Topographic slope
+    + 10-m Open windspeed
+    + Wind direction, from uphill
+    + Wind adjustment factor  
+    
+Additional arguments include a crown fire rate of spread multiplication factor, the method for determining crown fraction burned, and whether or not a folia rmoisture effect is calculated.
+
+This example will use a set of data objects to populate the input arguments. `data(fuelModels)` is a data frame with rows of stylized surface fuel models. We will use Fuel Model 10, represented timber litter. The next argument is a data frame of fuel moisture scenarios,  `data(fuelMoisture)`, of which we will choose D1L1. Again, we will use `data(coForest)` for some canopy characteristics. Next, we will assign hypothetical values to environmental variables and leave `rosMult`, `cfbForm` and `folMoist` as defaults. Note that input data frames are repeates since `rothermel` predicts fire behavior for each entered row of input argument data frames and `coForest` contains 14 different forest stands.
+
+```{r}
+data(fuelModels, fuelMoisture)
+
+fuelModels['A10',]
+exampSurfFuel = fuelModels['A10',]
+
+fuelMoisture['D1L1',]
+exampFuelMoisture = fuelMoisture['D1L1',]
+
+exampCrownFuel = data.frame(
+  CBD = coForest$cbd_kgm3,
+  FMC = 100,
+  CBH = coForest$cbh_m,
+  CFL = coForest$cfl_kgm2
+)
+
+exampEnviro = data.frame(
+  slope = 10,
+  windspeed = 40,
+  direction = 0,
+  waf = 0.2
+)
+
+ex5 = rothermel(sapply(exampSurfFuel, rep, 14), sapply(exampFuelMoisture, rep, 14), exampCrownFuel, sapply(exampEnviro,rep,14))
+```
+  
+`rothermel()` outputs a list of data frames. The first describes the finalized outputs.
+```{r}
+head(ex5$fireBehavior)
+```
+  
+Intermediate outputs used for calculating surface and crown fire behavior are also in the output.
+```{r}
+head(ex5$detailSurface)
+head(ex5$detailCrown)
+```
+  
+Some users may also find critical values useful. This includes critical values for the initiation of crown fire, the transition from passive to active crown fires, and the cessation of active crown fire.
+
+```{r}
+head(ex5$critInit)
+head(ex5$critActive)
+head(ex5$critCess)
+```
+
+Users can extend the functionality of the Rothermel fire modelling system. Since crown fuels measurements come from sampling, we could ask what the consequences of uncertainty are on potential fire rate of spread.
+```{r}
+exampEnviro = data.frame(
+  slope = 30,
+  windspeed = 60,
+  direction = 0,
+  waf = 0.2
+)
+
+exampCrownFuel = data.frame(
+  CBD = truncnorm::rtruncnorm(1000, a=0, coForest$cbd_kgm3[1], sd = coForest$cbd_kgm3[1]*.2),
+  FMC = rep(100,1000),
+  CBH = truncnorm::rtruncnorm(1000, a=0, coForest$cbh_m[1], sd = coForest$cbh_m[1]*.2),
+  CFL = truncnorm::rtruncnorm(1000, a=0, coForest$cfl_kgm2[1], sd = coForest$cfl_kgm2[1]*.2)
+)
+
+ex6 = rep(NA,200)
+for (i in 1:200){
+  ex6[i] = rothermel(exampSurfFuel, exampFuelMoisture, exampCrownFuel[i,], exampEnviro, cfbForm = "sr")$fireBehavior[,3]  
+}
+```
+
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Distribution of hourly fuel moistures predicted by three methods using the ffm() function."}
+ggplot(data.frame(ex6), aes(ex6)) + geom_density(fill='blue',alpha = 0.5,adjust = 1/5) + 
+    xlab("Rate of spread (m/s)") + theme_classic() + coord_cartesian(expand=FALSE)
+```
+  
+In another example, we explore how rate of spread for a grass fire varies with wind direction and topographic slope.  
+```{r}
+fuelModels['A5',]
+exampSurfFuel = fuelModels['A5',]
+
+fuelMoisture['D1L1',]
+exampFuelMoisture = fuelMoisture['D1L1',]
+
+exampCrownFuel = data.frame(
+  CBD = Inf,  FMC = 100,
+  CBH = Inf,  CFL = Inf
+)
+
+exampEnviro = data.frame(
+  slope = 40,  windspeed = 60,
+  direction = 0, waf = 0.3
+)
+
+ex7 = expand.grid(winddir=seq(-180,180,10),slope = seq(0,30,5))
+ex7$ros = NA
+for (i in 1:259){
+  exampEnviro$direction = ex7$winddir[i]
+  exampEnviro$slope     = ex7$slope[i]
+  ex7$ros[i] = rothermel(exampSurfFuel, exampFuelMoisture, exampCrownFuel, exampEnviro)$fireBehavior[,3]  
+}
+```
+  
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Distribution of hourly fuel moistures predicted by three methods using the ffm() function."}
+ggplot(ex7,aes(winddir,ros,color=slope,group=slope)) +geom_path() + theme_classic() + labs(x='Wind direction (deg)',y='Rate of spread (m/s)')
+```
+We see here that the influence of wind direction increases with slope. Clocking from 0 to 90 degrees from the upslope direction, wind direction countervails the effect of slope.
+
+##  3.0 Helper Functions
+The fire models require an array of inputs describing the fire behavior triangle. Some of these inputs are not  observable using direct measurement techniques and these must be indirectly estimated. While the user ultimately decides the estimatation method, **firebehavioR** contains some useful functions.
+
+### 3.1 Estimating canopy characteristics
+`canFuel()`estimates base height, fuel load, and bulk density of the canopy using often measured forest inventory variables. This example will estimate the canopy characteristics for stands of different forest cover types and otherwise identical canopy structures. The required inputs are basal area, canopy height, trees per hectare and forest cover type. These outputs can be used as inputs for either `cfis()` or `rothermel()`.
+```{r}
+ba = c(10, 15)
+ht = c(12, 20)
+tph = c(100, 300)
+type = c("df", "pp", "mc","lp")
+cbind(type,canFuel(ba, ht, tph, type))
+
+```
+### 3.2 Estimating fine fuel moisture
+There are many ways to use meteorological observations to indirectly estimate surface fuel moistures. These all estimate 1-hr timelag class woody surface fuels (0-0.635 mm particle diameter; i.e. fallen twigs). This functions assumes that larger diameter surface fuel components can be simply estimated by adding additional moisture content.
+
+In the first example, we will estimate 1-hr fuel moisture content using three methods, "simard", "wagner", and "anderson", in the ffm() function. The input data we will use contains hourly weather observations from a Remote Automated Weather Station during one calendar year"s fire season.
+```{r}
+data(rrRAWS)
+print(head(rrRAWS))
+
+ff = rbind(
+data.frame(ffm = ffm("simard",rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method="simard"),
+data.frame(ffm = ffm("wagner",rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method="wagner"),
+data.frame(ffm = ffm("anderson",rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method="anderson")
+)
+ff$dateTime = rep(rrRAWS$dateTime,3)
+```
+
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Distribution of hourly fuel moistures predicted by three methods using the ffm() function."}
+ggplot(ff, aes(ffm, color = method, fill = method)) + geom_density(alpha = 0.5) + 
+    xlab("Fine fuel moisture (%)") + theme_classic()
+```
+The resulting plot shows the distribution of hourly, 1-hr fine fuel moisture content by method. Methods yield slightly differing distributions, particularly with regard to centrality and right-tail skewness.  
+
+Now we will add on a fourth method and view the results as a smoothed time series. When "mcarthur" is the selected method, it is advisable to estimate moisture content only under a set of weather conditions:
+\[
+\begin{eqnarray}
+& rh \leqq70\\
+& temp \geqq10\\
+& 42.5-1.25temp < rh < 94.5 - 1.35temp
+\end{eqnarray}
+\]
+
+```{r}
+rrRAWS_ma = subset(rrRAWS, rh <= 70 & temp_c >= 10 & rh > 42.5 - 1.25 * temp_c & 
+    rh < 94.5 - 1.35 * temp_c)
+ff.ma = data.frame(ffm = ffm("mcarthur", rrRAWS_ma$rh, rrRAWS_ma$temp_c)$fm1hr, method = "mcarthur", 
+    dateTime = rrRAWS_ma$dateTime)
+ff = rbind(data.frame(ffm = ffm("simard", rrRAWS$rh, rrRAWS$temp_c)$fm1hr, method = "simard"), 
+    data.frame(ffm = ffm("wagner", rrRAWS$rh, rrRAWS$temp_c)$fm1hr, method = "wagner"), 
+    data.frame(ffm = ffm("anderson", rrRAWS$rh, rrRAWS$temp_c)$fm1hr, method = "anderson"))
+ff$dateTime = rep(rrRAWS$dateTime, 3)
+ff = rbind(ff, ff.ma)
+ff$dateTime <- strptime(ff$dateTime, "%m/%d/%Y %H:%M")
+```
+
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Hourly fuel moistures predicted by four methods using the ffm() function."}
+ffm.plot = ggplot(ff, aes(x = dateTime, y = ffm, color = method)) + geom_smooth(span = 0.1, 
+    method = "loess", se = F) + theme_classic() + labs(x = "Time", y = "Fuel moisture (%)")
+print(ffm.plot)
+```
+
+While the prior methods require just temperature and relative humidity, the Fire Behavior Officer"s Table (fbo) method requires also month, hour, topographic aspect, percent slope, and shading (whether the fine fuels of interest are shaded by cloud cover or forest canopy). Further, there is a modification to state whether weather observations were taken higher than, lower than, or within 305 m +/- of the fuel"s elevation. Here we will assume that the aspect is north, the slope is 10%, the fuel is near the same elevation as the RAWS station and the fuels are unshaded.
+```{r}
+rh = rrRAWS$rh
+temp = rrRAWS$temp_c
+month = as.numeric(format(strptime(rrRAWS$dateTime, "%m/%d/%Y %H:%M"), "%m"))
+hour = as.numeric(format(strptime(rrRAWS$dateTime, "%m/%d/%Y %H:%M"), "%H"))
+ff.fbo = data.frame(ffm = ffm(method = "fbo", rh, temp, month, hour, asp = "N", slp = 10, 
+    bla = "l", shade = "n")$fm1hr, method = "FBO", dateTime = strptime(rrRAWS$dateTime, 
+    "%m/%d/%Y %H:%M"))
+ff = rbind(ff, ff.fbo)
+```
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Hourly fuel moistures predicted by method = 'fbo', in blue, relative to other methods, in grayscale."}
+ffm.plot + scale_colour_grey() + geom_smooth(data = ff.fbo, aes(x = dateTime, y = ffm), 
+    span = 0.1, method = "loess", se = F, color = "blue") + guides(color = FALSE) + 
+    labs(x = "Time", y = "Fuel moisture (%)")
+```
+The figure here illustrates that the fbo method, in blue, follows similar trends as the simard method, except that peaks and troughs are relatively dampened.
+
+### 3.3 Estimating wind adjustment factor
+The rothermel() function requires the user to enter in a wind adjustment factor (WAF; ratio of mid-flame wind speed to 20-ft open wind speed). The waf() function contains seperate equations for unsheletered (i.e. no forest canopy) fuelbeds and sheltered fuelbeds.
+If the fuelbed is sheltered, the forest canopy height, crown ratio (average tree crown length [tree height minus crown base height] divided by tree height), and canopy cover are needed:
+```{r}
+waf(forestHt = 10, cr = 40, cc = 40)
+```
+
+The crown ratio and canopy cover are used internally to derive a quantity known as crown fill, $CrownFill = CrownRatio * CanopyCover/300$. If crown ratio and canopy cover are not known, but the sheltered WAF equation is desired, the waf() function assumes $CrownFill = 0.1$.  
+
+```{r}
+waf(forestHt = 10, sheltered = "y")
+```
+
+If the fuelbed is unsheltered, the only required argument is the surface fuel depth:
+```{r}
+waf(fuelDepth = 1)
+``` 
+It is worth noting that if crown fill is less than 0.05, the unsheltered equation will be used selected For example:
+```{r}
+waf(fuelDepth = 1, forestHt = 10, cr = 10, cc = 10)
+``` 
+
+### 3.4 Visualizing fire behavior ourputs
+To make quick assessments of fire behavior, some fire behavior analysts refer to a fire characteristics chart. These charts plot heat per unit area against rate of spread. To aid interpretation, these charts also contain predicted flame lengths and images that refer to the recommended method of direct fire suppression. To expedite fire behavior assessments with fire characteristics charts, `fireChart()` instructs ggplot with a pre-populated set of arguments and uses the folloring arguments from the user: the name of each observation, observations" heat per unit area and observations" rate of spread.
+
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Fire characteristics chart.",warning = FALSE}
+fireChart("",100,10) +xlim(0,12000)
+
+```
+
+## 4.0 Fire weather indices
+As opposed to the fire behavior models described Section 2.0, fire weather indices describe the *relative* fire hazard posed by environmental conditions; most indices ignore the topography leg of the fire behavior triangle and, at most, minimally account for the fuels. This package divides indices into two categories, "static indices" whch can use arguments with a minimum length of 1, and "cumulative indices"" that require continuous data with multiple observations. To elaborate, if one used two days of weather observations to derive a fire hazard index, a static index"s calculation would not require the prior day"s index value whereas a cumulative index would.
+
+###Static indices
+In this package, instantaneous indices are found in `fireIndex()`. This function uses vectors of air temperature, wind speed, relative humidity, grass fuel load (optional) and grass curing level (optional) to produce the Angstrom Index, Hot, Dry, Windy Index, the Fuel Moisture Index, the Fosberge Fire Weather Index, the MacArthur Grasslad Mark 4 Index, the MacArthur Grassland Mark 5 Index, and the Chandler Burning Index. We will use the `data(rrRAWS)`  to illustrate the function, calculating the daily indices at 14:30 MDT. Then we will normalize the scales to compare trends across indices.
+
+```{r}
+rrRAWS.daily =   rrRAWS[format(strptime(rrRAWS$dateTime, "%m/%d/%Y %H:%M"), "%H:%M")=="14:35",]
+indices = fireIndex(temp=rrRAWS.daily$temp_c, u= rrRAWS.daily$windSpeed_kmh, rh = rrRAWS.daily$rh)
+normalize=function(x,low=0,high=1){low+(x-min(x,na.rm=T))*(high-low)/(max(x,na.rm=T)-min(x,na.rm=T))}
+indices = data.frame(sapply(indices,normalize),  Date = strptime(rrRAWS.daily$dateTime, "%m/%d/%Y %H:%M"))
+indices = setNames(reshape2::melt(indices,id="Date"),c("Date","Index","Value"))
+
+```
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Continuous fire index values applied to the rrRAWS dataset.",warning = FALSE}
+ggplot(indices,aes(Date,Value,group=Index,color=Index))+geom_smooth(span = .1,  method = "loess", se = F) +theme_classic()+coord_cartesian(expand=F)
+```
+
+###Cumulative indices
+Cumulative fire weather indices explictly use the prior day"s hazard in order to account for seasonal trends. The indices covered by the `fireIndexKBDI()` include the Keetch-Byran Drought Index (KBDI), the Drought Factor, MacArthur Forest Mark 5 Index, KBDI-modified Fosberg Fire Index, KBDI-modified Fuel Moisture Index, the original and modified Nesterov Indices, and the Zdenko Index. This example will also use `data(rrRAWS)`, which has a mean annual precipitation of 610 mm. Again, we will normalize indices for comparison.
+```{r}
+data(rrRAWS)
+daily.precip = rrRAWS
+daily.precip$Date = strptime(daily.precip$dateTime, "%m/%d/%Y")
+daily.precip = setNames(aggregate(daily.precip$precip_mm, by = list(as.character(daily.precip$Date)), 
+    FUN = sum), c("Date", "DailyPrecip"))
+rrRAWS.daily = rrRAWS[format(strptime(rrRAWS$dateTime, "%m/%d/%Y %H:%M"), "%H:%M") == 
+    "14:35", ]
+rrRAWS.daily$DailyPrecip = daily.precip$DailyPrecip
+indices = fireIndexKBDI(temp = rrRAWS.daily$temp_c, precip = rrRAWS.daily$DailyPrecip, 
+    map = 610, rh = rrRAWS.daily$rh, u = rrRAWS.daily$windSpeed_kmh)
+indices = data.frame(sapply(indices,normalize), Date = strptime(rrRAWS.daily$dateTime, 
+    "%m/%d/%Y %H:%M"))
+indices = setNames(reshape2::melt(indices, id = "Date"), c("Date", "Index", "Value"))
+```
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Static fire index values applied to the rrRAWS dataset.",warning = FALSE}
+ggplot(indices, aes(Date, Value, group = Index, color = Index)) + geom_smooth(span = 0.1, 
+    method = "loess", se = F) + theme_classic() + coord_cartesian(expand = F)
+```
+There are three time periods during which most indices agree on high fire hazard, later April, late June, and early-to-mid September.Because the cumulative indices track accumulating droughtiness and incorporate precipitation events, these indices account for the late Spring showers and Summer monsoon rains typical of this region. 
+
+The estimation methods in `fireIndexKBDI()` function vary by ther requisite arguments. Below is a chart that maps needed arguments to each Index method. The function will output results only for those methods that have been supplied arguments.
+```{r, echo=FALSE, results="asis"}
+table = xtable::xtable(data.frame(Method = c("KBDI", "Drought factor", "Forest Mark 5", 
+    "Fosberg-KBDI", "Fuel moisture-KBDI", "Nesterov", "Nesterov-Modified", "Zdenko"), 
+    Inputs = c("temp, precip, map", "temp, precip, map", "temp, precip, map, u, rh", 
+        "temp, precip, map, u, rh", "temp, precip, map, u, rh", "temp, precip, rh", 
+        "temp, precip, rh", "temp, precip, rh")))
+print(table, type = "html", sanitize.text.function = identity)
+```
+
+##Conclusion
+This vignette covers the current state of **firebehavioR**. This package is under active development and may change in subsequent years. Some changes may include incorporation of meteorological data to predict dynamic fuel moistures, such as adsorption, desorption and wetting events, prediction of live fuel moistures, incorporation of the National Fire Danger Rating System, and linkages with other packages to enhance analyses.
+
+## Appendix A: Input quantities
+The following quantities are used as input variables for this package"s functions. Use "?" to see documentation of individual functions.
+```{r, echo=FALSE, results="asis"}
+table = xtable::xtable(data.frame(Variable = c("Fuel stratum gap", "10-m Open wind speed", 
+    "Fuel moisture content", "Canopy bulk density", "Seperation distance", "Basal area", 
+    "Average stand tree heights", "Trees per hectare", "Relative humidity", "Temperature", 
+    "Month", "Hour", "Topographic aspect", "Topographic slope", "Heat per unit area", 
+    "Fire rate of spread", "surface fuel load", "Surface area to volume", "Fuelbed depth", 
+    "Moisture of extinction", "Heat content", "Canopy fuel load", "Wind direction", 
+    "Wind adjustment factor", "Crown ratio", "Canopy cover"), Units = c("m", "km/hr", 
+    "%", "kg/m^3^", "m", "m^2^/ha", "m", "trees/ha", "%", "degrees C", "Month of the year (1-12)", 
+    "Hour of day (1-24)", "N,S,W, or E", "%", "kJ/m^2^", "m/min", "Mg/ha", "m^2/^m^3^", 
+    "cm", "%", "J/g", "kg/m^2^", "0-360", "Ratio of 20-ft open wind speed to midflame wind speed", 
+    "%", "%")))
+print(table, type = "html", sanitize.text.function = identity)
+```

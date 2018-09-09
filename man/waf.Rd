@@ -7,15 +7,15 @@
 waf(fuelDepth, forestHt, cr, cc, sheltered = "n")
 }
 \arguments{
-\item{fuelDepth}{a vector for depths of surface fuel bed (cm)}
+\item{fuelDepth}{a numeric vector of surface fuel bed depths (cm)}
 
-\item{forestHt}{a vector of average stand tree heights (m)}
+\item{forestHt}{a numeric vector of average stand tree heights (m)}
 
-\item{cr}{a vector of crown ratios (\%)}
+\item{cr}{a numeric vector of crown ratios (\%)}
 
-\item{cc}{a vector of canopy cover (\%)}
+\item{cc}{a numeric vector of canopy cover (\%)}
 
-\item{sheltered}{a vector of either "y"es or "n"o as flags for using sheltered or unsheltered equations}
+\item{sheltered}{a character vector of either \code{"y"} or \code{"n"} (default) to use sheltered or not (unsheltered) equations}
 }
 \value{
 a vector of wind adjustment factors
@@ -24,18 +24,23 @@ a vector of wind adjustment factors
 Prediction of wind adjustment factor for sheltered and unsheltered fuels.
 }
 \details{
-This calculates the wind adjustment factor (ratio of 10-m open wind speed to wind speed at the height of a surface fire).
-One of two equations are used, depending on user input. By default, this function assumes the surface fuel bed is unsheltered.
+This calculates the wind adjustment factor (ratio of 20-ft open wind speed to wind speed at mid-surface flame height).
+One of two equations are used, depending on user input: by default, this function assumes the surface fuel bed is unsheltered.
 \code{fuelDepth} must be a positive value if the unsheletered variant is invoked.
 \code{forestHt} must be a positive value if the sheletered variant is invoked.
-There are two conditions to enable calculation for a sheltered fuelbed. First, if  user could enter values for \code{cr} and
-\code{cc} that lead to a crown fill portion above 5\%, or the user could enter \code{"y"} for \code{sheltered}. In the latter
+There are two conditions to enable calculation for a sheltered fuelbed. First, if \code{cr} and
+\code{cc} are entered and lead lead to a crown fill portion (CF) above 5\%, where , or the user could enter \code{"y"} for sheltered fuels. In the latter
 case, this function assumes a crown fill portion of 10\%.
 }
 \examples{
-library(firebehavioR)
-
-
+#Sheltered fuelbed with a 10 m tall forest with unknown crown ratio and canopy cover
+waf(forestHt = 10, sheltered = 'y')
+#Sheltered fuelbed with known high crown ratio and canopy cover
+waf(forestHt = 10, cr = 40, cc = 40)
+#Sheltered fuelbed with known low crown ratio and canopy cover
+waf(fuelDepth = 1, forestHt = 10, cr = 10, cc = 10)
+#Because cr and cc are low, the previous solution is equivalent to an unsheletered fuelbed
+waf(fuelDepth = 1)
 }
 \references{
 Andrews, P.L. 2012. Modeling wind adjustment factor and midflame wind speed for Rothermel’s surface fire spread model. \emph{RMRS-GTR-266}. USDA Forest Service Rocky Mountain Research Station.

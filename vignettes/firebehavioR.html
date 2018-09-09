@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="date" content="2018-09-09" />
+
+<title>An introduction to firebehavioR</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">An introduction to firebehavioR</h1>
+<h4 class="author"><em>Justin Ziegler</em></h4>
+<h4 class="author"><em><a href="mailto:Justin.Ziegler@Colostate.edu">Justin.Ziegler@Colostate.edu</a>; Forest &amp; Rangeland Stewardship, Colorado State University, Fort Collins, CO, USA</em></h4>
+<h4 class="date"><em>2018-09-09</em></h4>
+
+
+
+<div id="about-firebehavior" class="section level2">
+<h2>1.0 About firebehavioR</h2>
+<p>This vignette is a brief tutorial to <strong>firebehavioR</strong>. This package is a compilation of different mathematical models of fire behavior or fire hazard indices. The former make explicit, measurable predictions of fire behavior while the later describe the relative hazard posed by current weather and/or fuel conditions. In both cases, these models express the potential for fire behavior posed by fuels, weather and/or topography (the three sides of the wildland fire behavior triangle). This is not a package for statistical methods in fire research. Most of these models have been incorporated, in some form, within other software and often in a more user-friendly graphical interface. My rationale for developing this package was twofold: 1) to take advantage of the workflow efficiency in R; for example, users can wrangle data, directly perform complex statistical analyses on outputs, and produce visualizations in one environment; and 2) users can view the source code; the transparency of fire modelling benefits researchers and educators. However, this tutorial will not focus on either of these as needs can vary greatly across potential users. Each model has its own sets of limitations and assumptions for which the user is responsible for understanding.</p>
+<p>To provide benefit to the most users this tutorial assumes that the user has only a novice level understanding of the R programming language as well as a recent version of R installed (&gt;=3.4). Users are encouraged to play around with the code and <strong>firebehavioR</strong>’s functions on their own to find how this package can benefit their needs. This tutorial also assumes a basic understanding of variables used in fire modelling. Appendix A contains a listing of all the variables used in this package; it is critical that users understand the measurement units used in this package.</p>
+<div id="citing-firebehavior" class="section level3">
+<h3>1.1 Citing firebehavioR</h3>
+<p>Maintenance of <strong>firebehavioR</strong> is done on my own time and I do it to benefit the fire research community. That said, please cite <strong>firebehavioR</strong> appropriately if you use it. Not only does it give me credit for developing this package, but it also signals to me that this package is useful and deserves regular maintenance and revision.</p>
+<p>To cite this package, there is an upcoming technical note that I am preparing for a scientific journal. When this is published, that will be the preferred reference. In the interim you can cite the development version:</p>
+<p>Ziegler, J. P. 2018. firebehavioR. <a href="https://github.com/EcoFire/firebehavioR" class="uri">https://github.com/EcoFire/firebehavioR</a>.</p>
+</div>
+<div id="installing-firebehavior" class="section level3">
+<h3>1.2 Installing firebehavioR</h3>
+<p>The <strong>firebehavioR</strong> package is not yet on the CRAN repository.</p>
+<p>The development version is available at <a href="https://github.com/EcoFire/firebehavioR" class="uri">https://github.com/EcoFire/firebehavioR</a>. You can download this from with R with the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;EcoFire/firebehavioR&quot;</span>)</code></pre></div>
+<p>Once <strong>firebehavioR</strong> is installed, you can load it just as any other package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;firebehavioR&quot;</span>)</code></pre></div>
+</div>
+</div>
+<div id="fire-models" class="section level2">
+<h2>2.0 Fire models</h2>
+<div id="crown-fire-initiation-spread-model" class="section level3">
+<h3>2.1 Crown Fire Initiation &amp; Spread model</h3>
+<p>Crown Fire Initiation &amp; Spread (CFIS) predits crown fire behavior. The arguments include the fuel stratum gap, 10-m open wind speed, fine fuel moisture, the load of surface fuel consumed, the canopy bulk density and spot ignition delay. To demonstrate this function, we will use <code>data(coForest)</code>. This data frame contains summary information on canopy and surface fuels taken from different forest stands in the Southern Rocky Mountains, USA. As with all objects, more information can found by entering in <code>?coForest</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;coForest&quot;</span>)
+<span class="kw">print</span>(coForest)
+<span class="co">#&gt;      site status trees_perha basalArea_m2ha qmd_cm height_m sfl_kgm2</span>
+<span class="co">#&gt; 1    Heil    pre         418           19.1   24.1      9.8     1.04</span>
+<span class="co">#&gt; 2    Heil   post         295           14.5   25.0     10.1     0.76</span>
+<span class="co">#&gt; 3     Unc    pre         504           30.0   27.5     22.1     1.20</span>
+<span class="co">#&gt; 4     Unc   post         314           17.6   16.7     25.5     1.06</span>
+<span class="co">#&gt; 5    Pike    pre         934           24.8   18.4     15.8     1.33</span>
+<span class="co">#&gt; 6    Pike   post         352            9.5   18.5     16.6     1.33</span>
+<span class="co">#&gt; 7    RedF    pre         516           14.1   18.7     14.2     1.16</span>
+<span class="co">#&gt; 8    RedF   post         181            9.0   19.0     15.0     0.61</span>
+<span class="co">#&gt; 9  Kaibab    pre         487           25.6   25.9     20.9     0.36</span>
+<span class="co">#&gt; 10 Kaibab   post         203           19.7   35.2     25.3     0.29</span>
+<span class="co">#&gt; 11  MessG    pre         685           22.7   20.5     14.9     0.41</span>
+<span class="co">#&gt; 12  MessG   post         269           10.6   22.4     16.6     0.62</span>
+<span class="co">#&gt; 13   Zuni    pre         327           19.3   27.4     14.3     0.24</span>
+<span class="co">#&gt; 14   Zuni   post          63            7.5   38.9     18.2     0.24</span>
+<span class="co">#&gt;    cbd_kgm3 cbh_m cfl_kgm2</span>
+<span class="co">#&gt; 1      0.14  3.63    0.837</span>
+<span class="co">#&gt; 2      0.10  3.69    0.628</span>
+<span class="co">#&gt; 3      0.15  4.35    2.653</span>
+<span class="co">#&gt; 4      0.08  4.14    1.674</span>
+<span class="co">#&gt; 5      0.15  2.90    2.096</span>
+<span class="co">#&gt; 6      0.06  3.60    0.830</span>
+<span class="co">#&gt; 7      0.08  2.60    0.918</span>
+<span class="co">#&gt; 8      0.05  3.40    0.610</span>
+<span class="co">#&gt; 9      0.13  4.90    2.235</span>
+<span class="co">#&gt; 10     0.10  6.70    1.811</span>
+<span class="co">#&gt; 11     0.14  3.50    1.619</span>
+<span class="co">#&gt; 12     0.06  3.60    0.810</span>
+<span class="co">#&gt; 13     0.09  3.83    0.914</span>
+<span class="co">#&gt; 14     0.03  4.60    0.396</span></code></pre></div>
+<p>In this example, we will enter in the measured fuel stratum gap and canopy bulk density while assuming that the surface fuel consumption is 100% of the measured surface fuel load. We also assume the 10-m open wind speed is 20 km/hr and the effective fine fuel moisture is 6%. Note that <code>sfl_kgm2</code> are surface fuel loads in units of kg/m<sup>2</sup> and must be converted to units of Mg/ha.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex1 =<span class="st"> </span><span class="kw">cfis</span>(<span class="dt">fsg =</span> coForest<span class="op">$</span>cbh_m, <span class="dt">u10 =</span> <span class="dv">20</span>, <span class="dt">effm =</span> <span class="dv">6</span>, <span class="dt">sfc =</span> coForest<span class="op">$</span>sfl_kgm2 <span class="op">*</span><span class="st"> </span><span class="dv">10</span>, 
+    <span class="dt">cbd =</span> coForest<span class="op">$</span>cbd_kgm3, <span class="dt">id =</span> <span class="dv">1</span>)
+<span class="kw">print</span>(ex1)
+<span class="co">#&gt;       type pCrown  cROS sepDist</span>
+<span class="co">#&gt; 1   active  99.30 40.54  381.88</span>
+<span class="co">#&gt; 2   active  89.63 38.03  358.23</span>
+<span class="co">#&gt; 3   active  98.84 41.08  386.92</span>
+<span class="co">#&gt; 4  passive  99.00 13.79  129.91</span>
+<span class="co">#&gt; 5   active  99.58 41.08  386.92</span>
+<span class="co">#&gt; 6  passive  99.32 17.31  163.03</span>
+<span class="co">#&gt; 7  passive  99.66 13.79  129.91</span>
+<span class="co">#&gt; 8  passive  91.40 19.13  180.17</span>
+<span class="co">#&gt; 9   active  78.55 39.97  376.54</span>
+<span class="co">#&gt; 10  active  50.50 38.03  358.23</span>
+<span class="co">#&gt; 11  active  90.82 40.54  381.88</span>
+<span class="co">#&gt; 12 passive  90.21 17.31  163.03</span>
+<span class="co">#&gt; 13  active  88.67 37.28  351.13</span>
+<span class="co">#&gt; 14 passive  81.92 22.36  210.59</span></code></pre></div>
+<p>The output returns the type of fire (surface, passive crown or active crown), probability of crown fire, crown fire rate of spread, and seperation distance (described later).</p>
+<p><code>coForest</code> contains information on seven forest stands sampled before and after silvicultural treatment. Let“s explore how treatments affect average crown fire rate of spread <em>ceteris paribus</em>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex2 =<span class="st"> </span><span class="kw">aggregate</span>(<span class="dt">x =</span> ex1<span class="op">$</span>cROS, <span class="dt">by =</span> <span class="kw">list</span>(<span class="dt">treatmentStatus =</span> coForest<span class="op">$</span>status), <span class="dt">FUN =</span> mean)
+<span class="kw">print</span>(ex2)
+<span class="co">#&gt;   treatmentStatus        x</span>
+<span class="co">#&gt; 1            post 23.70857</span>
+<span class="co">#&gt; 2             pre 36.32571</span></code></pre></div>
+<p>The results state that mean crown fire rate of spread is lower post-treatment than pre-treatment.</p>
+<p>In this next example, we will explore the interaction between effect of treatment and open wind speed on fire type. To do this we need to replicate our 7 forest stands, each with an increasing level of open wind speed.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex3 =<span class="st"> </span>coForest[<span class="kw">rep</span>(<span class="kw">seq_len</span>(<span class="kw">nrow</span>(coForest)), <span class="dv">11</span>), ]
+ex3<span class="op">$</span>u10 =<span class="st"> </span><span class="kw">sort</span>(<span class="kw">rep</span>(<span class="dv">10</span><span class="op">:</span><span class="dv">20</span>, <span class="dv">14</span>))
+<span class="kw">head</span>(ex3)
+<span class="co">#&gt;   site status trees_perha basalArea_m2ha qmd_cm height_m sfl_kgm2 cbd_kgm3</span>
+<span class="co">#&gt; 1 Heil    pre         418           19.1   24.1      9.8     1.04     0.14</span>
+<span class="co">#&gt; 2 Heil   post         295           14.5   25.0     10.1     0.76     0.10</span>
+<span class="co">#&gt; 3  Unc    pre         504           30.0   27.5     22.1     1.20     0.15</span>
+<span class="co">#&gt; 4  Unc   post         314           17.6   16.7     25.5     1.06     0.08</span>
+<span class="co">#&gt; 5 Pike    pre         934           24.8   18.4     15.8     1.33     0.15</span>
+<span class="co">#&gt; 6 Pike   post         352            9.5   18.5     16.6     1.33     0.06</span>
+<span class="co">#&gt;   cbh_m cfl_kgm2 u10</span>
+<span class="co">#&gt; 1  3.63    0.837  10</span>
+<span class="co">#&gt; 2  3.69    0.628  10</span>
+<span class="co">#&gt; 3  4.35    2.653  10</span>
+<span class="co">#&gt; 4  4.14    1.674  10</span>
+<span class="co">#&gt; 5  2.90    2.096  10</span>
+<span class="co">#&gt; 6  3.60    0.830  10</span>
+
+ex3<span class="op">$</span>type =<span class="st"> </span><span class="kw">cfis</span>(ex3<span class="op">$</span>cbh_m, ex3<span class="op">$</span>u10, <span class="dv">6</span>, ex3<span class="op">$</span>sfl_kgm2 <span class="op">*</span><span class="st"> </span><span class="dv">10</span>, ex3<span class="op">$</span>cbd_kgm3, <span class="dv">1</span>)<span class="op">$</span>type
+<span class="kw">table</span>(<span class="dt">u10 =</span> ex3<span class="op">$</span>u10, ex3<span class="op">$</span>type, ex3<span class="op">$</span>status)
+<span class="co">#&gt; , ,  = post</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     </span>
+<span class="co">#&gt; u10  active passive surface</span>
+<span class="co">#&gt;   10      0       2       5</span>
+<span class="co">#&gt;   11      0       2       5</span>
+<span class="co">#&gt;   12      0       2       5</span>
+<span class="co">#&gt;   13      0       2       5</span>
+<span class="co">#&gt;   14      0       5       2</span>
+<span class="co">#&gt;   15      0       5       2</span>
+<span class="co">#&gt;   16      1       5       1</span>
+<span class="co">#&gt;   17      1       5       1</span>
+<span class="co">#&gt;   18      1       5       1</span>
+<span class="co">#&gt;   19      1       5       1</span>
+<span class="co">#&gt;   20      2       5       0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; , ,  = pre</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     </span>
+<span class="co">#&gt; u10  active passive surface</span>
+<span class="co">#&gt;   10      3       1       3</span>
+<span class="co">#&gt;   11      3       1       3</span>
+<span class="co">#&gt;   12      3       1       3</span>
+<span class="co">#&gt;   13      3       1       3</span>
+<span class="co">#&gt;   14      4       1       2</span>
+<span class="co">#&gt;   15      4       2       1</span>
+<span class="co">#&gt;   16      4       2       1</span>
+<span class="co">#&gt;   17      5       2       0</span>
+<span class="co">#&gt;   18      6       1       0</span>
+<span class="co">#&gt;   19      6       1       0</span>
+<span class="co">#&gt;   20      6       1       0</span></code></pre></div>
+<p>The results show that as wind speeds increase, pre-treatment stands move from a mix of active and surface fire types to a mainly active fire type. In contrast, post-treatment stands move from a mostly surface fire type to a mostly passive fire as wind speeds increase. A simple interpretation on treatment effectiveness would state that treatments reduce the propensity for the most severe class of crown fires (active), regardless of wind speed, but do not preclude passive crown fire.</p>
+<div id="spot-fire-calculation" class="section level4">
+<h4>2.1. Spot fire calculation</h4>
+<p>The <code>id</code> argument for <code>cfis()</code> does not effect fire type, probability of crown fire occurence or crown fire rate of spread. This argument is used to predict the critical seperation distance for a spot fire.<br />
+Spot fires result from the generation of embers from a source fire, transportation aloft, and ignition at a target location ahead of the fire. During this time, the source fire is advancing according to its rate of spread. Therefore, the time delay between generation and ignition determines how far an ember must travel in order to avoid landing in the advancing source fire. In this example, we will look at the relationship between ignition delay and critical travel distance.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex4 =<span class="st"> </span><span class="kw">cfis</span>(coForest[<span class="dv">1</span>, ]<span class="op">$</span>cbh_m, <span class="dt">u10 =</span> <span class="dv">14</span>, <span class="dt">effm =</span> <span class="dv">6</span>, <span class="dt">sfc =</span> coForest[<span class="dv">1</span>, ]<span class="op">$</span>sfl_kgm2, 
+    <span class="dt">cbd =</span> coForest[<span class="dv">1</span>, ]<span class="op">$</span>cbd_kgm3, <span class="dt">id =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">10</span>)
+ex4<span class="op">$</span>id =<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">10</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)
+
+<span class="kw">ggplot</span>(ex4, <span class="kw">aes</span>(sepDist, id)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> <span class="kw">pmin</span>(sepDist, id), <span class="dt">ymax =</span> <span class="dv">0</span>), 
+    <span class="dt">fill =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Critical seperation distance (m)&quot;</span>, 
+    <span class="dt">y =</span> <span class="st">&quot;Ignition delay (min)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="dv">450</span>, <span class="dt">y =</span> <span class="dv">3</span>, <span class="dt">label =</span> <span class="st">&quot;Spot fire ignition zone&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">theme_classic</span>()</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Requisite conditions for successful spot fire ignition given the projected crown fire rate of spread." />
+<p class="caption">
+Requisite conditions for successful spot fire ignition given the projected crown fire rate of spread.
+</p>
+</div>
+<p>Given the predicted crown fire rate of spread, the above figure demonstrates the set of ignition delays and seperation distances under which an ember could ignite a spot fire in advance of a source fire.</p>
+</div>
+</div>
+<div id="rothermel" class="section level3">
+<h3>2.2 Rothermel</h3>
+<p>The Rothermel modelling system, invoked with <code>rothermel()</code>, predicts fire behavior using linked models of surface fire spread, crown fire initiation, and crown fire spread. <code>rothermel()</code> takes four arguments input as data frames. In each of these data frames, the column order is important.</p>
+<ol style="list-style-type: decimal">
+<li>Surface fuel characteristics
+<ul>
+<li>Fuel model type, static or dynamic</li>
+<li>Litter load</li>
+<li>1-hr load</li>
+<li>10-hr load</li>
+<li>100-hr load</li>
+<li>Herbaceous load</li>
+<li>Shrub load</li>
+<li>1-hr SAV</li>
+<li>10-hr SAV</li>
+<li>100-hr SAV</li>
+<li>Herbaceous SAV</li>
+<li>Shrub SAV</li>
+<li>Fuel bed depth</li>
+<li>Moisture of extinction</li>
+<li>Heat content</li>
+</ul></li>
+<li>Surface fuel moistures, for:
+<ul>
+<li>Litter</li>
+<li>1-hr</li>
+<li>10-hr</li>
+<li>100-hr</li>
+<li>Herbaceous</li>
+<li>Shrub</li>
+</ul></li>
+<li>Crown fuel characteristics
+<ul>
+<li>Canopy bulk density</li>
+<li>Foliar moisture content</li>
+<li>Canopy base height</li>
+<li>Canopy fuel load</li>
+</ul></li>
+<li>Environmental characteristics
+<ul>
+<li>Topographic slope</li>
+<li>10-m Open windspeed</li>
+<li>Wind direction, from uphill</li>
+<li>Wind adjustment factor</li>
+</ul></li>
+</ol>
+<p>Additional arguments include a crown fire rate of spread multiplication factor, the method for determining crown fraction burned, and whether or not a folia rmoisture effect is calculated.</p>
+<p>This example will use a set of data objects to populate the input arguments. <code>data(fuelModels)</code> is a data frame with rows of stylized surface fuel models. We will use Fuel Model 10, represented timber litter. The next argument is a data frame of fuel moisture scenarios, <code>data(fuelMoisture)</code>, of which we will choose D1L1. Again, we will use <code>data(coForest)</code> for some canopy characteristics. Next, we will assign hypothetical values to environmental variables and leave <code>rosMult</code>, <code>cfbForm</code> and <code>folMoist</code> as defaults. Note that input data frames are repeates since <code>rothermel</code> predicts fire behavior for each entered row of input argument data frames and <code>coForest</code> contains 14 different forest stands.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(fuelModels, fuelMoisture)
+
+fuelModels[<span class="st">'A10'</span>,]
+<span class="co">#&gt;     fuelModelType loadLitter load1hr load10hr load100hr loadLiveHerb</span>
+<span class="co">#&gt; A10             S          0    6.73     4.48     11.23            0</span>
+<span class="co">#&gt;     loadLiveWoody savLitter  sav1hr sav10hr sav100hr savLiveHerb</span>
+<span class="co">#&gt; A10          4.48         0 6561.68     358       98           0</span>
+<span class="co">#&gt;     savLiveWoody fuelBedDepth mxDead  heat                    description</span>
+<span class="co">#&gt; A10      4921.26        30.48     25 18622 Timber (litter and understory)</span>
+<span class="co">#&gt;              source</span>
+<span class="co">#&gt; A10 Anderson (1982)</span>
+exampSurfFuel =<span class="st"> </span>fuelModels[<span class="st">'A10'</span>,]
+
+fuelMoisture[<span class="st">'D1L1'</span>,]
+<span class="co">#&gt;      fmLitter fm1hr fm10hr fm100hr fmLiveHerb fmLiveWoody</span>
+<span class="co">#&gt; D1L1        3     3      4       5         30          60</span>
+<span class="co">#&gt;                             description</span>
+<span class="co">#&gt; D1L1 Very dry dead FM, fully cured herb</span>
+exampFuelMoisture =<span class="st"> </span>fuelMoisture[<span class="st">'D1L1'</span>,]
+
+exampCrownFuel =<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">CBD =</span> coForest<span class="op">$</span>cbd_kgm3,
+  <span class="dt">FMC =</span> <span class="dv">100</span>,
+  <span class="dt">CBH =</span> coForest<span class="op">$</span>cbh_m,
+  <span class="dt">CFL =</span> coForest<span class="op">$</span>cfl_kgm2
+)
+
+exampEnviro =<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">slope =</span> <span class="dv">10</span>,
+  <span class="dt">windspeed =</span> <span class="dv">40</span>,
+  <span class="dt">direction =</span> <span class="dv">0</span>,
+  <span class="dt">waf =</span> <span class="fl">0.2</span>
+)
+
+ex5 =<span class="st"> </span><span class="kw">rothermel</span>(<span class="kw">sapply</span>(exampSurfFuel, rep, <span class="dv">14</span>), <span class="kw">sapply</span>(exampFuelMoisture, rep, <span class="dv">14</span>), exampCrownFuel, <span class="kw">sapply</span>(exampEnviro,rep,<span class="dv">14</span>))</code></pre></div>
+<p><code>rothermel()</code> outputs a list of data frames. The first describes the finalized outputs.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(ex5<span class="op">$</span>fireBehavior)
+<span class="co">#&gt;   Type of Fire Crown Fraction Burned [%] Rate of Spread [m/min]</span>
+<span class="co">#&gt; 1      passive                     20.12                   5.55</span>
+<span class="co">#&gt; 2      passive                     13.17                   5.55</span>
+<span class="co">#&gt; 3      surface                      0.00                   5.55</span>
+<span class="co">#&gt; 4      surface                      0.00                   5.55</span>
+<span class="co">#&gt; 5      passive                     32.98                  21.09</span>
+<span class="co">#&gt; 6      surface                      8.40                   5.55</span>
+<span class="co">#&gt;   Heat per Unit Area [kJ/m2] Fireline Intensity [kW/m] Flame Length [m]</span>
+<span class="co">#&gt; 1                   20526.82                   1897.81             2.82</span>
+<span class="co">#&gt; 2                   18929.48                   1750.13             2.60</span>
+<span class="co">#&gt; 3                   17388.16                   1607.62             2.31</span>
+<span class="co">#&gt; 4                   17388.16                   1607.62             2.31</span>
+<span class="co">#&gt; 5                   30269.59                  10632.90             7.95</span>
+<span class="co">#&gt; 6                   18687.30                   1727.74             2.51</span>
+<span class="co">#&gt;   Direction of max spread [deg] Scorch height [m] Torching Index [m/min]</span>
+<span class="co">#&gt; 1                             0             18.45                  35.76</span>
+<span class="co">#&gt; 2                             0             17.29                  36.47</span>
+<span class="co">#&gt; 3                             0             16.14                  44.26</span>
+<span class="co">#&gt; 4                             0             16.14                  41.78</span>
+<span class="co">#&gt; 5                             0             65.63                  27.12</span>
+<span class="co">#&gt; 6                             0             17.11                  35.41</span>
+<span class="co">#&gt;   Crowning Index [km/hr] Surfacing Index [km/hr]</span>
+<span class="co">#&gt; 1                  20.35                   20.35</span>
+<span class="co">#&gt; 2                  26.35                   26.35</span>
+<span class="co">#&gt; 3                  19.28                   19.28</span>
+<span class="co">#&gt; 4                  31.15                   31.15</span>
+<span class="co">#&gt; 5                  19.28                   19.28</span>
+<span class="co">#&gt; 6                  38.52                   38.52</span>
+<span class="co">#&gt;   Effective Midflame Wind [km/hr] Flame Residence Time [min]</span>
+<span class="co">#&gt; 1                           10.67                       0.22</span>
+<span class="co">#&gt; 2                           10.19                       0.22</span>
+<span class="co">#&gt; 3                            9.30                       0.22</span>
+<span class="co">#&gt; 4                            9.30                       0.22</span>
+<span class="co">#&gt; 5                           11.54                       0.22</span>
+<span class="co">#&gt; 6                            9.87                       0.22</span></code></pre></div>
+<p>Intermediate outputs used for calculating surface and crown fire behavior are also in the output.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(ex5<span class="op">$</span>detailSurface)
+<span class="co">#&gt;   Potential ROS [m/min] No wind, no slope ROS [m/min] Slope factor [0-1]</span>
+<span class="co">#&gt; 1                  5.55                          0.43               0.18</span>
+<span class="co">#&gt; 2                  5.55                          0.43               0.18</span>
+<span class="co">#&gt; 3                  5.55                          0.43               0.18</span>
+<span class="co">#&gt; 4                  5.55                          0.43               0.18</span>
+<span class="co">#&gt; 5                  5.55                          0.43               0.18</span>
+<span class="co">#&gt; 6                  5.55                          0.43               0.18</span>
+<span class="co">#&gt;   Wind factor [0-1] Characteristic dead fuel moisture [%]</span>
+<span class="co">#&gt; 1             11.82                                  3.08</span>
+<span class="co">#&gt; 2             11.82                                  3.08</span>
+<span class="co">#&gt; 3             11.82                                  3.08</span>
+<span class="co">#&gt; 4             11.82                                  3.08</span>
+<span class="co">#&gt; 5             11.82                                  3.08</span>
+<span class="co">#&gt; 6             11.82                                  3.08</span>
+<span class="co">#&gt;   Characteristic live fuel moisture [%] Characteristic SAV [m2/m3]</span>
+<span class="co">#&gt; 1                                 10.33                    5789.31</span>
+<span class="co">#&gt; 2                                 10.33                    5789.31</span>
+<span class="co">#&gt; 3                                 10.33                    5789.31</span>
+<span class="co">#&gt; 4                                 10.33                    5789.31</span>
+<span class="co">#&gt; 5                                 10.33                    5789.31</span>
+<span class="co">#&gt; 6                                 10.33                    5789.31</span>
+<span class="co">#&gt;   Bulk density [kg/m3] Packing ratio [-] Relative packing ratio [-]</span>
+<span class="co">#&gt; 1                 8.83              0.02                       2.35</span>
+<span class="co">#&gt; 2                 8.83              0.02                       2.35</span>
+<span class="co">#&gt; 3                 8.83              0.02                       2.35</span>
+<span class="co">#&gt; 4                 8.83              0.02                       2.35</span>
+<span class="co">#&gt; 5                 8.83              0.02                       2.35</span>
+<span class="co">#&gt; 6                 8.83              0.02                       2.35</span>
+<span class="co">#&gt;   Reaction intensity [kW/m2] Heat source [kW/m2] Heat sink [kJ/m3]</span>
+<span class="co">#&gt; 1                    1330.81              835.46           9036.08</span>
+<span class="co">#&gt; 2                    1330.81              835.46           9036.08</span>
+<span class="co">#&gt; 3                    1330.81              835.46           9036.08</span>
+<span class="co">#&gt; 4                    1330.81              835.46           9036.08</span>
+<span class="co">#&gt; 5                    1330.81              835.46           9036.08</span>
+<span class="co">#&gt; 6                    1330.81              835.46           9036.08</span>
+<span class="kw">head</span>(ex5<span class="op">$</span>detailCrown)
+<span class="co">#&gt;   Potential ROS [m/min] No wind, no slope ROS [m/min] Slope factor [0-1]</span>
+<span class="co">#&gt; 1                 52.67                          1.93               0.18</span>
+<span class="co">#&gt; 2                 52.67                          1.93               0.18</span>
+<span class="co">#&gt; 3                 52.67                          1.93               0.18</span>
+<span class="co">#&gt; 4                 52.67                          1.93               0.18</span>
+<span class="co">#&gt; 5                 52.67                          1.93               0.18</span>
+<span class="co">#&gt; 6                 52.67                          1.93               0.18</span>
+<span class="co">#&gt;   Wind factor [0-1] Characteristic dead fuel moisture [%]</span>
+<span class="co">#&gt; 1             26.08                                  3.08</span>
+<span class="co">#&gt; 2             26.08                                  3.08</span>
+<span class="co">#&gt; 3             26.08                                  3.08</span>
+<span class="co">#&gt; 4             26.08                                  3.08</span>
+<span class="co">#&gt; 5             26.08                                  3.08</span>
+<span class="co">#&gt; 6             26.08                                  3.08</span>
+<span class="co">#&gt;   Characteristic live fuel moisture [%] Characteristic SAV [m2/m3]</span>
+<span class="co">#&gt; 1                                  5.17                    5788.49</span>
+<span class="co">#&gt; 2                                  5.17                    5788.49</span>
+<span class="co">#&gt; 3                                  5.17                    5788.49</span>
+<span class="co">#&gt; 4                                  5.17                    5788.49</span>
+<span class="co">#&gt; 5                                  5.17                    5788.49</span>
+<span class="co">#&gt; 6                                  5.17                    5788.49</span>
+<span class="co">#&gt;   Bulk density [kg/m3] Packing ratio [-] Relative packing ratio [-]</span>
+<span class="co">#&gt; 1                 8.84              0.02                       2.35</span>
+<span class="co">#&gt; 2                 8.84              0.02                       2.35</span>
+<span class="co">#&gt; 3                 8.84              0.02                       2.35</span>
+<span class="co">#&gt; 4                 8.84              0.02                       2.35</span>
+<span class="co">#&gt; 5                 8.84              0.02                       2.35</span>
+<span class="co">#&gt; 6                 8.84              0.02                       2.35</span>
+<span class="co">#&gt;   Reaction intensity [kW/m2] Heat source [kW/m2] Heat sink [kJ/m3]</span>
+<span class="co">#&gt; 1                    1399.37             1843.02           7039.13</span>
+<span class="co">#&gt; 2                    1399.37             1843.02           7039.13</span>
+<span class="co">#&gt; 3                    1399.37             1843.02           7039.13</span>
+<span class="co">#&gt; 4                    1399.37             1843.02           7039.13</span>
+<span class="co">#&gt; 5                    1399.37             1843.02           7039.13</span>
+<span class="co">#&gt; 6                    1399.37             1843.02           7039.13</span></code></pre></div>
+<p>Some users may also find critical values useful. This includes critical values for the initiation of crown fire, the transition from passive to active crown fires, and the cessation of active crown fire.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(ex5<span class="op">$</span>critInit)
+<span class="co">#&gt;   Fireline Intensity [kW/m] Flame length (m) Surface ROS [m/min]</span>
+<span class="co">#&gt; 1                   1164.96             1.99                4.02</span>
+<span class="co">#&gt; 2                   1193.96             2.02                4.12</span>
+<span class="co">#&gt; 3                   1528.21             2.26                5.28</span>
+<span class="co">#&gt; 4                   1418.90             2.18                4.90</span>
+<span class="co">#&gt; 5                    831.85             1.71                2.87</span>
+<span class="co">#&gt; 6                   1150.54             1.98                3.97</span>
+<span class="co">#&gt;   Canopy base height [m]</span>
+<span class="co">#&gt; 1                    4.5</span>
+<span class="co">#&gt; 2                    4.5</span>
+<span class="co">#&gt; 3                    4.5</span>
+<span class="co">#&gt; 4                    4.5</span>
+<span class="co">#&gt; 5                    4.5</span>
+<span class="co">#&gt; 6                    4.5</span>
+<span class="kw">head</span>(ex5<span class="op">$</span>critActive)
+<span class="co">#&gt;   Canopy bulk density [kg/m3] ROS, crown (R'active) [m/min]</span>
+<span class="co">#&gt; 1                        0.06                         21.43</span>
+<span class="co">#&gt; 2                        0.06                         30.00</span>
+<span class="co">#&gt; 3                        0.06                         20.00</span>
+<span class="co">#&gt; 4                        0.06                         37.50</span>
+<span class="co">#&gt; 5                        0.06                         20.00</span>
+<span class="co">#&gt; 6                        0.06                         50.00</span>
+<span class="kw">head</span>(ex5<span class="op">$</span>critCess)
+<span class="co">#&gt;   Canopy base height [m] O'cessation [km/hr]</span>
+<span class="co">#&gt; 1                  20.17                3.82</span>
+<span class="co">#&gt; 2                  20.17                3.97</span>
+<span class="co">#&gt; 3                  20.17                5.57</span>
+<span class="co">#&gt; 4                  20.17                5.07</span>
+<span class="co">#&gt; 5                  20.17                1.80</span>
+<span class="co">#&gt; 6                  20.17                3.74</span></code></pre></div>
+<p>Users can extend the functionality of the Rothermel fire modelling system. Since crown fuels measurements come from sampling, we could ask what the consequences of uncertainty are on potential fire rate of spread.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exampEnviro =<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">slope =</span> <span class="dv">30</span>,
+  <span class="dt">windspeed =</span> <span class="dv">60</span>,
+  <span class="dt">direction =</span> <span class="dv">0</span>,
+  <span class="dt">waf =</span> <span class="fl">0.2</span>
+)
+
+exampCrownFuel =<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">CBD =</span> truncnorm<span class="op">::</span><span class="kw">rtruncnorm</span>(<span class="dv">1000</span>, <span class="dt">a=</span><span class="dv">0</span>, coForest<span class="op">$</span>cbd_kgm3[<span class="dv">1</span>], <span class="dt">sd =</span> coForest<span class="op">$</span>cbd_kgm3[<span class="dv">1</span>]<span class="op">*</span>.<span class="dv">2</span>),
+  <span class="dt">FMC =</span> <span class="kw">rep</span>(<span class="dv">100</span>,<span class="dv">1000</span>),
+  <span class="dt">CBH =</span> truncnorm<span class="op">::</span><span class="kw">rtruncnorm</span>(<span class="dv">1000</span>, <span class="dt">a=</span><span class="dv">0</span>, coForest<span class="op">$</span>cbh_m[<span class="dv">1</span>], <span class="dt">sd =</span> coForest<span class="op">$</span>cbh_m[<span class="dv">1</span>]<span class="op">*</span>.<span class="dv">2</span>),
+  <span class="dt">CFL =</span> truncnorm<span class="op">::</span><span class="kw">rtruncnorm</span>(<span class="dv">1000</span>, <span class="dt">a=</span><span class="dv">0</span>, coForest<span class="op">$</span>cfl_kgm2[<span class="dv">1</span>], <span class="dt">sd =</span> coForest<span class="op">$</span>cfl_kgm2[<span class="dv">1</span>]<span class="op">*</span>.<span class="dv">2</span>)
+)
+
+ex6 =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>,<span class="dv">200</span>)
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">200</span>){
+  ex6[i] =<span class="st"> </span><span class="kw">rothermel</span>(exampSurfFuel, exampFuelMoisture, exampCrownFuel[i,], exampEnviro, <span class="dt">cfbForm =</span> <span class="st">&quot;sr&quot;</span>)<span class="op">$</span>fireBehavior[,<span class="dv">3</span>]  
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(ex6), <span class="kw">aes</span>(ex6)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="dt">fill=</span><span class="st">'blue'</span>,<span class="dt">alpha =</span> <span class="fl">0.5</span>,<span class="dt">adjust =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">5</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Rate of spread (m/s)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">expand=</span><span class="ot">FALSE</span>)</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAEgCAMAAABcujGyAAAA1VBMVEUAAAAAADoAAGYAOpAAZrYzMzM6AAA6ADo6AGY6OpA6kNtNTU1NTW5NTY5NbqtNjshmAABmADpmAGZmOpBmtv9uTU1uTW5uTY5ubo5ubqtuq8huq+R/f/+OTU2OTW6OTY6Obk2ObquOyP+QOgCQOjqQkDqQkGaQtpCQ27aQ29uQ2/+rbk2rbm6rbo6rjk2ryKur5OSr5P+2ZgC22/+2///Ijk3I///bkDrb/7bb///kq27k////tmb/yI7/25D/27b/29v/5Kv//7b//8j//9v//+T///8icAawAAAACXBIWXMAAA7DAAAOwwHHb6hkAAANVUlEQVR4nO2dCXvbSB2HldabLXG7BEgWlrYcCSyQlqOhrWnWDeTS9/9I6LRk65qRRtJP0vs+z25c2f/xjPRmLk00ng8gjDd2BgDqQFCQBkFBGgQFaRAUpEFQkKaToNi9VIa78ggK9nhvBrv0CAr2ICgo4715M5ihCArWIChIg6AgTSjoUIYiKNgS+YmgoAqCgjKxn0MZiqBgCYKCNAgK0iAoSIOgoEzq50CGIijYgaAgDYKCNAgK0iAoSIOgIA2CgjQICtJkgg5iKIKCFTk/ERT0QFCQBkFBGjFBH96uv/sp/+pmvV6/+mwWDDNES9Cndxf+zc/zrz5dGAfDHNES9OH3n/27X3/OXj29/2AcDHNES9C7H37yH373IXsVNPTrdVSJfhOAoMtDS9Cv36WCJq/uvv/gZ7Uogi4PLUELNWh0dNcPRdDlkRd0CEMt+6DRUQRdLnt+ji/o07vXu1F89Cps6Z/+zjTTYhETNJn9DKvObB705W4gj6CLQ03QHoNhiiAoSIOgIA2CgjQICtIgKEiDoCDNvqADGIqgYAOCgjIHfiIoaIGgIA2CgjQICtIgKEiDoCANgoI0CArSIChIg6AgzaGg/RuKoGABgoI0CArKFPxEUFACQUEaBAVpEBSkQVCQBkFBmqKgvRuKoGAOgoI0CArSICgoU+Ln2IIWNvKKd0wyC4aZoSdocSOv8BnLCLpQygTt21DrTRTufvMHBF0oeoIWt6F5ev+vd2zktVD0BC1s5OXfvKYPulj0BC3UoMEPBF0qpX6K9UHD3bjX69dGwTAzBAUtbOTlM820XAQFLW7khaDLRVHQHoNhaiAoSFMuaM+GIiiYgqAgDYKCNAgK0iAoKFPhJ4KCBggK0iAoSIOgIA2CgjQICtIgKEiDoCBNlaD9GoqgYAiCgjQICtKML+j96dFV62CYO+ML6vvXnvf8S9tgmDcKgoa1qOedtA2GGVPp59B90FDRZx9bBsNsERF043mroKk3a+gRdEEoCPp46Xln4YutWRWKoAtCQND7U8OmvSwYZo6EoDbVp4+gi6Ja0F4NRVAwY3RBg+FRwso+GGbP6ILuatB2wTBzBAQdNhimxdiCBtVnOEUfQh8Uiowt6ODBMC00BS1s5PV1vX712TAY5oSCoHEzn2vhCxt5hc9ajg8UgmHW1Pg5nKDXK3/z7OMmm2Yq2cjLT38cBsOsURA0qEAfL1f5ifriRl4BcQ3KRl7LQkTQ+9OTvKDFjbz8u/OXH8qCYd7UCdqnofmkHy9PtkdXYUOfUlqDJj98BF0SCoL6t8feam8taGkf1P90URYMs0ZC0AKFjbyyNr85GOaEpqDFjbxu1mv6oEtEQtCgiedWJ5SiIGg4x9Q6GOaNgqAst4NKFAR9vERQqKBW0B4N3UvZ/I89SoJh1igIynpQqKLez6Fq0EGDYUogKEgjIujG88425s+3Q9DF0CBof4burwd9/p94xV2bYJgzEoJGy+3OeHADFEFQkEZCUH8TNvHhmuU2wTBnNAT1t+E0qLGfCLocRAQdMhgmRJOfCAqj0ihob4bmHn2ze7odgyQ4QEDQkE2opsWiOwRdChqC8gBbqABBQRoNQdMmnnlQ2KfZz2EEjedBzZfVI+hCkBF0yGCYDggK0iAoSGMgaF+GIig0g6AgDYKCNAgK0iAoKGPiJ4LCaCAoSCMsaGEjr7vz9Tp9AjiCLgQjQXsytOkR4AcbeYWP/777nkeALwtdQQubKHwNbWUThYWhK2jNNjRs5LUcdAUt2cgr2u/DKBjmgq6gJTXow9udnwi6EHQFLW7kdXd+kb2NoMtAV9DCRl57fiLoMjDzsydDLTfyulmHMIpfFMqC9hgMUwFBQRoEBWkQFKRBUJDGVNBeDEVQaAJBQRoEBWWM/URQGANzQfswFEGhAQQFaSwE7cFQBIUGEBSkQVCQBkFBGhtB3RuKoFCPlZ8ICkODoCANgoI0doI6NxRBoR4EBWkQFKSxFNS1oQgK9SxP0GhP+i5fCwNi6+fkBfXiEqPoRLAW1LGhAwvqZeVF0UmwLEH3S4uiE8BeULeGDipoobAoWkTsnLQQ1KmhQwpaVlatqzE+YR9ISdE2fs5KUKmrMTppF13npLQS1KWhAwpaVVadq9EfRmXMjSBlWhZ1QQv7JPnJE5dNgg+/aojy6BFN+4a/hk2zv57gOWnn53CCFvZJ8v2v61ftBK0r64wrUc+0nIfnR+KUtBTUYeZtn1H/6eU/W9ag9WV1OzUhcXH9qPY0LWfx9CgUoq2g7jJfn1DZPklJE2+7T1JTUd1JlTSorpLrQOm0RUXOELQiB7Xvlu2T1K4PalBSJ2XK6qzxFa0cFRp+dvQCtPfTXeZb16DNwXtfM1CZPMfpOctLQ0HLPzu6oR0EdZV52z5on4J2L9PB14xaiVoMCgs9VbfXuD1dBHWU+6ZR/ME+SX47QY0fIt2tUEL9uCrnykqqO//WSVBHfbb6tw/3SfL7FbSbokP047wcdZ8yL2ntZztmv+PS225+ujn5g9xJGuTZFBUX2uGMnHcwa1SpqWF5vUKKbrPfeeltV0GdjCqGCB7iT6srv8NVZ938Tm3n6+om+/mlt47PqXnuuw8rBgi2/quWTguhC6lZJ2aXflwT5j7p1E9XDUqrZFyUxMu6Mo09o9I8tMm4ZXCLRdku1kntErMvmH0JdqffuqyNKbvJcYtkXJXl4MTYOTqAoO2WFDq8S9W1nenBOhva5L4kxy2aJYUiqQpqrpVJreVgqDEeruo+63R6LLjFDLptrq2D2xfTqC0wvAUw3ki2O67Msuz/9Vpy8xlK28LbBnec622YbjSv3loWVMBP67zX5Nnl8p5hytS3oA5KWTr6sx+QtJlrGb15T3DXI3d9d7pDmQyzYVHyNsEOi5m/idPyLxHy9xebhVXRM8SZWMZd+/6LZNZDNC54q2ChSxyxb3j9vJxW3t3dFDH7+6gBimRUpn4F1brGFZRLqlR9RhhWOI6SQlAt9h3tZcK9Owb3YVwtGxuo+CZ9xOaPtA6WvMqVdO3gDoSrXkn99Eh/+T/IRVfHmoMr159pX+dpU7GIyvKMVyo64JVrboTttcwHF9efjVDIReKkQijvfA966RqnUjoJWnbLdwLN5FzISdr2hO+1fKNcuKZ+YidBhy4MFHBRH4xbqdQriKAwNrUOIiiMTp2ECArjUzfjhaAwPtUaIigoUD0ni6AgQdVD1RAURCi9iYugoETxBhmCghj7d7cQFBTZ3cNFUFAEQUEaBAVpEBSkMRS0sJFXdgBBoUfMBC1s5JUdQFDoEzNBC5soZAcQFPrETNDCNjTZgWgjr+EZ4zu7Qp7bYCRoYSOv7MBIfDPeV7eGPHegdQ06EjInzgLy3IFOfdARkDlxFpDnDjSN4g828soOAAyB0TxobiOvvXlQgL5xsAUGQH8gKEiDoCDNdAT9ul6/+jyxTvDTu/XLDxPL89251HmejKDhQK2wGECdTxfhHY5J5fnhbZBZoTxPRtAQhYlYG8LM+vnZ5AmQ3IqRyfOkBA1+pUe/lWXD3Q//CJv4ieVZ45ZhyoQEvTsPLvboiwFsuDu/CC/4pPIcNfEvx190kTIhQX2p32wT1GojI4JB0m/f6+R5UoIGgw6ZvpEJD3/U6s+ZEmRYJs+TETRpc6a1GOBT1MRPKs9htam06GIygvo36+nNKQaZVZpTNOLrWmrRxXQEhUWCoCANgoI0CArSIChIg6AgDYKCNAgK0iCoEY+X8eMuTnLH/vvv8s9uvKMrq8S3zz6m33J28Nbtz74kr+5/YZfoXEBQIx4vIzVvjzODbr8tN+b+9NCyJnaCblaHb22y34jt8y+H7y4BBDUiEdS/zhSqErTqeDWpoCWV5HUme7F6XQQIakRe0NvjsK0P/38SNf1ZA+15q+jd2OLoc2eBsD96XlD73b74c/DRNCBOJKxvvaMfkxQ24ae+/ctxknrg4/0vP6bJLLUKRVAjEkG3gSlRE7559jGsKR8vV7FX0UdW0X9pDRr9DPoEt8ehlqG5K38XkCZyf3oSJBgLGn3H7XGQ2iYUOnjX3652ybSpmucAghqRDpICT/4X6hjIEvoSNc5JpzN6vY3FDbl9EdeLqVzRzzQgTST69yYWNEon/nTqY9AFTZNp07mdAwhqRFK7xe38NjD1KBJ0kxvbRy1wIm7EddzWR/8O5Ip+ZgFxIlHtmzgYCxpVmMn/Hv90tUsm62YsCwQ1IpZjG/ULT4+uUhE3uW5hQdCog5nUqDtBk4A0kXpB73/1ZZcMgkINiRzXYb8wdGob16Db3Ixn9DrXxEeEYkbt9Yv4eBqQJpL2C5LPHgi6XWXJ0MRDDbt50FXk2O3x0VXoy+NlIFoi3eEgKdIu6nsmg6TweBqQJbLaDZL865MDQa/PsmQYJEENafO6CbqPQafw6K+BndfeKho8pbVoPM2UeRT3MuNppt3xNCBNJD/NtI2mmTJB/xZ2QdNk/L3+xHJA0L4xr/jq72YyUQ+9YNEyF2915ljmPD2C9o6FoHWVJItFAARBUJAGQUEaBAVpEBSkQVCQBkFBmv8DSojUB1Z2Oq0AAAAASUVORK5CYII=" alt="Distribution of hourly fuel moistures predicted by three methods using the ffm() function." />
+<p class="caption">
+Distribution of hourly fuel moistures predicted by three methods using the ffm() function.
+</p>
+</div>
+<p>In another example, we explore how rate of spread for a grass fire varies with wind direction and topographic slope.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fuelModels[<span class="st">'A5'</span>,]
+<span class="co">#&gt;    fuelModelType loadLitter load1hr load10hr load100hr loadLiveHerb</span>
+<span class="co">#&gt; A5             S          0    2.25     1.12         0            0</span>
+<span class="co">#&gt;    loadLiveWoody savLitter  sav1hr sav10hr sav100hr savLiveHerb</span>
+<span class="co">#&gt; A5          4.48         0 6561.68     358       98           0</span>
+<span class="co">#&gt;    savLiveWoody fuelBedDepth mxDead  heat description          source</span>
+<span class="co">#&gt; A5      4921.26           61     20 18622       Brush Anderson (1982)</span>
+exampSurfFuel =<span class="st"> </span>fuelModels[<span class="st">'A5'</span>,]
+
+fuelMoisture[<span class="st">'D1L1'</span>,]
+<span class="co">#&gt;      fmLitter fm1hr fm10hr fm100hr fmLiveHerb fmLiveWoody</span>
+<span class="co">#&gt; D1L1        3     3      4       5         30          60</span>
+<span class="co">#&gt;                             description</span>
+<span class="co">#&gt; D1L1 Very dry dead FM, fully cured herb</span>
+exampFuelMoisture =<span class="st"> </span>fuelMoisture[<span class="st">'D1L1'</span>,]
+
+exampCrownFuel =<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">CBD =</span> <span class="ot">Inf</span>,  <span class="dt">FMC =</span> <span class="dv">100</span>,
+  <span class="dt">CBH =</span> <span class="ot">Inf</span>,  <span class="dt">CFL =</span> <span class="ot">Inf</span>
+)
+
+exampEnviro =<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">slope =</span> <span class="dv">40</span>,  <span class="dt">windspeed =</span> <span class="dv">60</span>,
+  <span class="dt">direction =</span> <span class="dv">0</span>, <span class="dt">waf =</span> <span class="fl">0.3</span>
+)
+
+ex7 =<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">winddir=</span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">180</span>,<span class="dv">180</span>,<span class="dv">10</span>),<span class="dt">slope =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>,<span class="dv">5</span>))
+ex7<span class="op">$</span>ros =<span class="st"> </span><span class="ot">NA</span>
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">259</span>){
+  exampEnviro<span class="op">$</span>direction =<span class="st"> </span>ex7<span class="op">$</span>winddir[i]
+  exampEnviro<span class="op">$</span>slope     =<span class="st"> </span>ex7<span class="op">$</span>slope[i]
+  ex7<span class="op">$</span>ros[i] =<span class="st"> </span><span class="kw">rothermel</span>(exampSurfFuel, exampFuelMoisture, exampCrownFuel, exampEnviro)<span class="op">$</span>fireBehavior[,<span class="dv">3</span>]  
+}
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span>
+
+<span class="co">#&gt; Warning in sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 + cos.f^2) *</span>
+<span class="co">#&gt; (sf.fm10^2 - : NaNs produced</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ex7,<span class="kw">aes</span>(winddir,ros,<span class="dt">color=</span>slope,<span class="dt">group=</span>slope)) <span class="op">+</span><span class="kw">geom_path</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">'Wind direction (deg)'</span>,<span class="dt">y=</span><span class="st">'Rate of spread (m/s)'</span>)</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAEgCAMAAABcujGyAAACJVBMVEUAAAAAADoAAGYAOpAAZrYTK0MTLEQULUYVLkcVL0kWMEoWMkwXM00XNE8YNVAYNlEZN1MaOFQaOVYbOlcbPFkcPVocPlwdP10dP14dQF8eQWEfQmMfQ2QgRGUgRmchR2khSGoiSWwjS24jTG8kTXAkTnIlT3MmUXUmUncnU3goVHkoVHopVXwpVn0qV38qWYArWoIrW4QsXIUsXoctX4guYIsvYowvY44wZI8wZZExZ5MyaJQyaZYzMzMzapczapg0bJo0bZs1bp01b542caA3cqI3c6M4dKU4daY5d6k6AAA6ADo6AGY6Ojo6OpA6eKo6kNs7eaw7eq08fLA8fbE9frM9f7U+gLY+gbc/grk/g7pAhLxBhr1Bh79CiMFDicJDi8REjMVFjshGj8pGkMtHks1Ik89IldFJltJJl9RKmdZKmddLmthLm9pMnNtMnd1NTU1NTW5NTY5NbqtNjshNn99OoOFOoeNPo+RQpedQpuhRp+pSqOxSqu1Tq/BUrfFUrvNVr/VWsfdmAABmADpmAGZmZmZmtv9uTU1uTW5uTY5ubo5ubqtuq8huq+SOTU2OTW6OTY6Obk2OyP+QOgCQkDqQkGaQtpCQ27aQ2/+rbk2rbm6rbo6ryKur5OSr5P+2ZgC2kDq22/+2///Ijk3I///bkDrbkJDb/7bb/9vb///kq27k////tmb/yI7/25D/27b/5Kv//7b//8j//9v//+T///9ou3djAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAWx0lEQVR4nO2dh3/cOHaAx7Y2ufRccuk9ubTb9N4cpxevk1P6pPemtLG96X10iXY3G3s30t2e7b1IiazJZWVZUePfFwIsQ4IPwCMJEA/k+34/eyRxHgk+fAOQGBKcJQxDmFnoAjCMCRaUIQ0LypCGBWVIw4IypGFBGdJ0EJSdZoaDBWVIw4IypGFBGdKwoAxpWFCGNBbbjheLxb2j5OyVxWIXGcIwDrHY9lRqefHGfnL26j4uhGEcYrbt6om08vnLSeGqNYRhXGK27eLhoujbRSuaJDdTWFBmOMy2iX49a0WvHj/AhUyKZUboYowZhG2ib794WPrJggpqZrKn/sAJevbK7vr3qQuqlZEt9YDZtuf3nyVXbx/V/Jy2oFYF2VG32MdB7+7L0dD1QOh0BUXKx4o6hL9JQtPCO25GncGC4mitHDvqBhYUQUfZWFEHsKBWenjGivaGBbXQ0zFWtCcsqBEHfrGivWBBDThyixXtAQuqxaFXrGhnWFANjp1iRTvCgsK494kN7QQLCuLDJja0CywohB+XuJvvAAvaxJ9IbGhrWNAGPi1iQ9vCgqr4dYgNbQkLquDbID4QbQcLWmcAfdjQNrCgVYZp3tjQFrCgFYYyh7t5PCzomgG1YUOxsKAlg0rDhiJhQQsGVoYNxcGC5gwuDBuKggXNCKALG4qBBZUEkYUNRcCCCgKpwobaYUFDDkuyoVZY0KCW8JC9DRa0syJbVYbf/ESYvKDtBQGd7G4qG2pk6oK21MOuYHtJ2VATExe0lRxo9Vo6yoYamLageDXaNoyt3s+G6pm0oFgxOp4E4cPYUC1TFhSnRZ9T9AQby4bqmLCgGCl62dlmDWyohpptq5lks0VIvCCU6G1nsRrEethQmLVt59uFmavZtUeokJixCtG/8aytzPYOFhSmtO38Xw7Xf639og2JGZsPLu3ErXAShp6+ZGr6ICZ6DGqxwbmemJVOwVAWFIfZBS96IlY8AUN7Cnq+vZMeiV43dO+NkPHhTU/7ykds6Ont9Ox7Rwp6uTebbQhXPzSb3Xgnkb/rnavZdrCRrK4frjbM24pfUIMIXvW0bmC0hsqW8/T2Tvp6ubeRiH+nt68fFj8nK2EqSNW2tAEV7z6xNKHRC6rXwLueto2M1dDTO5lTqaBSr/S/VNf176l6mkhF0PPtzdELqpVgED0tGxqroQeyW5dCisYyfZWNaqqcZfC9atvl3ubJtUeiozcSuaB6PwcshFbRsQoqx9nTZhMQVNu7S2q2pUeyG8mBOSB2QXUGDNZ8WrY3XkOFjUJQ8S1Q2cXfOTwxfis0uWEmrZ+DlsK0yVEaKg8bs2azeZKUtoh6S9ffJG3bWs5GSIRoan/o5tO41XEamh5mphKqw0ziaFL8rm9FK7aJoSr1UPV4sVjcO0p/OHvtCAiJDbjuw+gptwz+dZSGNkCO2Su2rRSZn+5mr88zTaGQiND4OXApatsGNz4JQ7sJmogWdz3MdPVkX74+vfuRMbSgUMWHaz4N25+CoZ0FrXLxMO3iZSOad/E3U6IVFPRz8FJQLAJh1GEmwboFPXt1P29FR3AMCvgZuvnMAEoxhSZ0zUnm3Pn2rHmiXh+oB4fo5XFo/IJCfg5fCpjRG7qEyRaK70FXYrxpJ2leB6J81QmtfByCNmu8b/M5r9JvVaM31CioIJVUXCVffGe/pt6CqoI+v/8suXp7DMNMgJ/tVzLXO2lYhKL5aRmXoYkqqbIwbTpPf/Kd5PwD6plTzbbmZSLHi8VdeSI/OkHb+Nnauy6mjtpQSwt6evvao0R8SW8RtHGSBBKjoGpl47v3fv13m+AxG2rt4lMz7S3o5Z7lhuNmSCQ0/ETG9T+4bGN441MzHkP/GabyjoMd+zGo/qpRbUgcKBWNaz4dnPpU14V6H5lhBdf8E0y2MO/bRftoPotvniSBRCeo6icixKGcrdaolG00Teg/wuRL8y/YreOgQAMLEbmgCD+d21ms1r5epXUfi6H/AIOIrHfxszGeJNUq2d69u288ayu3vmWUhv49DCJy/Bcs1/20vNmrncgtjNHQv4NBRI5e0DZ+erez2Ix5OyM09G9hEJFjn5sJ76f/xhO9sfEZ+jcwiMja7Hb5SfyYZrer1q7Bz0HttG+ydqQ8BkH/GgYRWZ9ZZHTzg6L8DGBnsWHtopEZ+lcwiMhxH4Ni/AxlZ75x3dbHZehfwiAiRy1opWI1w0vBGk97EUZl6F/AICInIiioJwE7M+ByVMocvaB/DoOIHLOgZj+p2CkBCzMiQ/8MBhE5YkGNfpLSUwAVqHJcErmhfwqDiByvoCY/yekpABUtf4rb0D+BQURWpr6ZFYziu3iDn470vFXFyRqBgo3E0D+GQUTWn5NknksUCiFLWZ+qnz30vKV30rCoDc3ClcWPWtA/gkFEAhcsj2ICW52fHfTs4F0PVxsFHIWhfwiDiBypoFo/26zESe/dfh1jNPQPYBCRUBcf/1edRVUqw/Po5tPhcWWHFarFLPciXkN/HwYRWbdNzOI4s933EY+gnfR0rGanVTcUzV7iFfT3YBCRoxxmgv1EBHqUs7oJxDYURWM39HdhEJFjFBTy09p8uu7Ue29sVIb+DgwicoQTN4B+mgIGdbO+WdPy+mcqbkN/GwYRqUzccLm3E/s4KOCnofkM42Zt8/rt18qd7VCkgv4WDCJSHWY62JT30WNDCCKrsHr6rtUzsJwlhnJUy57tU5yG/iYMIlIVdBX7oxAzP9e/a/SkImeBtjiNRjRKQ38DBhGpPkw2tdPy6C/agip+wnoSkzNH85mpNaLivxgN/XUYRGTNNjE7zoH5jjk1hBh1PyE9qTWddcDCVXZD7FqMgv4aDCJyZMNMovIKPwE9ScuZA5VxvSuRGvqrMIjIcQla8bOpZ387X8TScztAK1/uTpyG/gpMvlQMb+5gJg8T04zZnj5LWdC1n6qeXTv2jt450LVR4GKXtmIU9JdhsoVi1lr5EE/bQxSSgxsf3d7RPOtDE0KJ0k9Fz3ZyumwK+61R/VTluxWjob8Eky08EcIhJ7AVI02xDjOt/az+FWmnYycxG0JtqV78TNEYDU35xRrKQtQU4NELKoeyK80npmMfRss+m67thdy7+Az9BZhyuRg/QjxEYSW6+FivB10mdT1NcrruxHuBKUtlZ8QebsUm6M/DFIulc4jH0GTXg9qepEBTUOlnoSfcdFKyEsRYwPU+RWjoz8HkS09vi8s/7MegSEgKmvkpfwTkJK0lhMbTfNfSz2Fkhv4sTLYw8zMZ90MUlltZ86nYSbvFtAIUP1c0MkN/BiZbuJplN3JYx0EjfgzNckvoWbHTkZmf7YK+hVB2Ru7lfL4Vk6A/DYOIVE6SLGP0zRAapH4WbQvKzOHccrm19a4JR6My9KdgEJGjeMpH2r+nVZZV33DeuQencbafqaIRGfp+GESkw5OkF0IgKmy+FHamPwUpQQikprduLefB9rqlMz8O08M2tyH9sLQl83gaEtcs55Z+I3QBC34MBhHZuFjE633xuD7MnuXK0dh8wn4KQ+fGI+9uCXfv9Y/CICIdziwyxI43zmfnMR2JeWCZzN2PXSCqsuUKfwQGERnL3EyaEcGp+5mP/5If/f1hGESkRdDjxWJx7yi5eLi4/wwK8Y/pO5X55P2UhibKGHABIU9/CAYRWbPtJHsocqWLf7or/r96vJscvwyG+MP+rXSE30l7YLlVfMmruXiLgqc/CIOIhMZB10OhV0/2xcvFm0fJ2WtHQIgXjAldXzLBfmaol8lo3hZU0x+AQUSabUu79sViNzl7/Vly8YZw9WaKH0HXV/Lok1htIrLrItlPeWmovNCw+N14FSwiyz74fhhEpNm2s1f3RSv6/H4hqD0Ez4s1rG+vpX3Ofq4pDK3cSYC/UnsYXb8PBhFZs01eUt/4pvPp7roFbYS0o2tOlEYh6jsfPLCE7sVqd5+gZ12/FwYRqc4ssrp+qF6T93S3xzGogx1XEx3xvWO+WGruZu16p7VzW78HBhGpDDOJWzorw0yib796++jq8QPEWfyLEB13qAC6Qzx7YT8rVOcDUBb1n0nFRb1+NwwisnHT3KY6Dnp3Pwk0DmqaYyPO+Qu8YZyxgsCEKt8Fg4hU5gcVI6EHJO6LN89SxH4qWOb8Ce3od8IgItUZljeSg/Azi9jmedtiPxtIQ02KBp027TtgEJH0LrfTpbE+gRYLqpClYz2xH/yuUI5+Owwikpag+g+5MgUh+9lANZTUvNLfBoOIJCOocbb2xiSu7GcTxVBSM/N/KwwikoSglnyN51kCflENNT97Z9Bnm3wLDCIytKD2NI3paSx+afd8E8lQln4zDCKy8rx4+wNolJCeoJKj6Ml+migMbaNoMkiH/00wiMhAgiJzAj8QkP3UUT5Et/pH1DNKPTel3wiDiFzbtlIvBrWHdOFWi1TAj1RlP/WAhqKf8tymbtrxDTCIyAGnvmm7+5pH/rKgBsrU1A3FP4g88aPp18OUy+Wsdog56lG0Crm1pt1WGillPzHoDG2lqKBrvcF8HUyx+ET02og56rNuvuf8oLdq4PehRjOd7CcOraGtFS1wUaFfC5MvPbj2VtqCIuYH7XdfvLsPHJBK9hOL3tDOilbpXstfU6O+TIiJmqNevIS+Lx5KI/uJx2CoE0W78D6YcrkQ1D5HPQlBwRSuU82CWlmnCDA0kKJfDVMux7WgPbt4F8B6sp+tMBsaRNGvgimXn+KOQZ2cJPUATl0ly+wnioqhRBT9SphyuRDTPkc9El+CatLGfrankijQ0MEV/QqYcnm4cVAsc13KqglmQZFUEwUbqk+4F74cBhFJQ1B9stjPTiAMHbQZfS8MIpKCoIZEsZ8dQRk6nKJfBoOIDC6osathPzuDM3Sonv5LYRCRYQW1pIf97AHS0GEc/RIYRGRjmGnH+rAkV4JaE1NLKwvaklrCjIYO0NV/MQwisj43k3jasZj9Bh/SGWtOttjPftQNtSrq1dEvgkFEhnlePCId9YSynx2oJ81iqF9HvxAGERlAUFQi2E8HtDTUo6NfAIOIVJ7V+dFs/jB8SFtwKdhiP52gGIpQ1JOjnw+DiKzbduL1u/g5dueVRLKfnVFShzG0RT3h+TwYRORgw0wtdlpNIwvaGTV1OEMT5w3p58IgIoe4HnTe6iPZ6IjYzx40DEUr2rLazHwODCLSq6DzefudbCSQ/exFI314QwVdqhDgs2AQkdB98f3GQedrENtXYT9d09PQjF51mvKZMIhIh/fFO/iwNTsg9rM3TUO7KFrQrZY/AwYRGfxikSrNxLGfDmgmsY+hnXgPDCJSnQLc+9Q3eqAPNgvqACCJvRrRDnw6DCJSeYjC5Z59CjE/goIpYz+dAKVxWEM/DQYRqR6DHmzK+5OxIc4A88V+OgI0dEhF3w2DiFQFXW2EuC8eThb76QwwlQMq+qkwiEj1UYipnbYLQt0LCieK/XQInMzBDP0UGERkzTZxZ/LB7Jo6uYMpxAGaDzL76RSNoQMp+skwiMjww0y6FLGgTtGlcxhDPwkGEQnZ9j8DHoNqP8Lsp2O0hg6h6CfCICIrth1kX3Kebw93kqRPDvvpHG1KB1D0E2AQkZXv4q8fimPQk9lsqHFQQ2LYTw/ok+pd0Y+HQUSWtgk5k5Mb/wVMj6ML6YkhKeynFwxp9Wzox8EgIquPoZHfddqup3clqOlDy356wmSoV0XfBZMvBWcNy1EFtfvpRFBjOthPb5hS61PRj4XJFsJPT8hRBH2pMQZ69Xg3Sc5eWdw7aoR0xpwK9tMjxuT6U/RjYLKF8My1OVZBjxe7ycXD3eT4/jM1pCO2NLCgHrEk12cr+kKNygJ47u8cm6Bn//Yfu8nZ68+Sizf21ZBOWFPAfnrFll4/ir4Aky2En56QUxEUehTi1ZP/fFwV9GZKH0Htu89+esaaYB+KGgXFtaAwxw/EMajs4u/2b0ERu85+esee4oEvZ8Ydg4KkTWdxkvTvT/oKitlt9nMAEEkeVFH46Qk5ZtuOF4IH4seLN4vT+G6ConaZ/RwETJqHVBQ1DqpDdvHp8efxy+iQBltbuN1lPwcClWhsrfkFJWjyfLEoR5naCbrVYjfZz8HApjq8pD6vB225d+zngLRIdps2xj3uBd0qabda9nNQWqa7Y6X2x6Gg/faA/RyYjgkf2tPwt3xksJ+DE0fKiQgaR7JGRhRJpyFoFKkaHzGknYSgMSRqlESQeAqCRpCmsUI/9QQEpZ+kEUM++eEFJZ+icUM9/cEFpZ6g0UO8AgILuiSenilAuw7CCko6NdOBcjUEFZRyYiYF4YoIKCjtrmVa0K2KcILSzckUIdtaBBOUakImC9EKCSUo0XRMGZpVEkZQsh3KpCFZK0EEpZgIJiFZMSEEJZgGJoNe1QwvKMmOhMkhVztDC0ouAYwCsRoaWFBaO8+AkKqkQQUl9uFkNFCqpyEFJbTbjBk6VTWcoJQ+lowNMrU1lKBkdphBQqTGhhGUyM4yrSBRawMIuiSxo0wHCFSdb0EJ7CLTh9D151fQ0HvHOCBsG+NRUG48R0PAqvQj6HLJdo6MUFXqWNDlkt0cMQGq16GgbOZUGLKig88swjAmWFCGNCwoQxoWlCENC8qQhgVlSMOCMqRhQRnSsKAMaboISoKboQuQQ6UcRApCQVAa3AxdgBwq5aBTELewoD2hUg46BXELC9oTKuWgUxC3RCsoMw1YUIY0LChDGhaUIQ0LypAmQkHPXjtKkouHi/vPypdQBN68hFA6fBCfoM8X946Sq8e7yfHLxUsoAm9eQigdXohO0Kd3P5I2GRdvHommI38JVZbAmxdQSocXohM069POXn+WXLyxn78EK0nYzeeFIJMOL0Qq6PP7siryl1AlCbz5DDrp8EJMgj5dLMQBFp0mg0SLRScdXohJ0JwzMgddJI756KTDC5EKevX4QXba+iDsWXzQzWfQSYcXIhWUyMAfhXFHQunwQYSCMlOCBWVIw4IypGFBGdKwoAxpWFCGNCwoQxoWlCHNxAU9uPFO+v9qtpH+f7m3cfrSo9rik+uH1Z/VxSX/99+Jdtnl3k5jXTnnH9DEMCUTF1Rac7n3r8LT8+1NcDHws4JWTsFqQx9/Ij8fjIGJC3p6e0c0ZB8WTdnJtYZmDgQtW0kovmhdGS0TF/Ryb1O0Y/8rXlY33klNO33prduzmdB2e3btQ7lU+c9i8Z0Pzq4fXu7NZlnbO0uPDk7TgE0hafZrUq5CsMoa52xdRZz4/a07h9yE2pm4oNKfg03ZD6cvwsDb6V9W1w9Fh3++nQla/CwXb8ijVRkpXs+3d2QLmv4Tv4p/xSpEqPwEFPFF3HrdxoMDJmFBT4Q2qWJ3DnPTZKefvsoeObes+LlYfJK1gjuFXrmg8s/iXCpfhVgk1lrGF3HrdcvFjIGpC5oeIqZyStvSF9nFP5J2ya5Z/C3Ju+n052LxKpsLc7M4rCwElW9br0KuXxhYxBdx63XLBpYxMHVB045dnmZnL1hB8yPH1oLmcSwonskLuto42CxfKnYV/bV4T9l354uL8321ixd/LoZLG118+l8Rt143d/E2Ji/o6U9Ik7KXiqDn2xuVk6SN8iRJLL7cS5vA1LbirCg/fC1PkiqCilOvMr6I45MkPJMX9Hxb9rvSnVr/rBlmkkaJ4aJrj4phptTC2UZtmKki6Ik6zCTiynWveJjJwuQF9Y3260xhLg/UW2FBfVN81VlBHIvKMVEep7fCgvoGaiXFeNMGXyyCgQVlSMOCMqRhQRnSsKAMaVhQhjQsKEMaFpQhzf8D93BTJmyvFZEAAAAASUVORK5CYII=" alt="Distribution of hourly fuel moistures predicted by three methods using the ffm() function." />
+<p class="caption">
+Distribution of hourly fuel moistures predicted by three methods using the ffm() function.
+</p>
+</div>
+<p>We see here that the influence of wind direction increases with slope. Clocking from 0 to 90 degrees from the upslope direction, wind direction countervails the effect of slope.</p>
+</div>
+</div>
+<div id="helper-functions" class="section level2">
+<h2>3.0 Helper Functions</h2>
+<p>The fire models require an array of inputs describing the fire behavior triangle. Some of these inputs are not observable using direct measurement techniques and these must be indirectly estimated. While the user ultimately decides the estimatation method, <strong>firebehavioR</strong> contains some useful functions.</p>
+<div id="estimating-canopy-characteristics" class="section level3">
+<h3>3.1 Estimating canopy characteristics</h3>
+<p><code>canFuel()</code>estimates base height, fuel load, and bulk density of the canopy using often measured forest inventory variables. This example will estimate the canopy characteristics for stands of different forest cover types and otherwise identical canopy structures. The required inputs are basal area, canopy height, trees per hectare and forest cover type. These outputs can be used as inputs for either <code>cfis()</code> or <code>rothermel()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ba =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">15</span>)
+ht =<span class="st"> </span><span class="kw">c</span>(<span class="dv">12</span>, <span class="dv">20</span>)
+tph =<span class="st"> </span><span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">300</span>)
+type =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;df&quot;</span>, <span class="st">&quot;pp&quot;</span>, <span class="st">&quot;mc&quot;</span>,<span class="st">&quot;lp&quot;</span>)
+<span class="kw">cbind</span>(type,<span class="kw">canFuel</span>(ba, ht, tph, type))
+<span class="co">#&gt;   type    cfl    cbd    cbh</span>
+<span class="co">#&gt; 1   df 0.2862 0.0334  5.327</span>
+<span class="co">#&gt; 2   pp 0.5354 0.1143  8.729</span>
+<span class="co">#&gt; 3   mc 0.2371 0.0234  5.733</span>
+<span class="co">#&gt; 4   lp 0.4231 0.0578 11.430</span></code></pre></div>
+</div>
+<div id="estimating-fine-fuel-moisture" class="section level3">
+<h3>3.2 Estimating fine fuel moisture</h3>
+<p>There are many ways to use meteorological observations to indirectly estimate surface fuel moistures. These all estimate 1-hr timelag class woody surface fuels (0-0.635 mm particle diameter; i.e. fallen twigs). This functions assumes that larger diameter surface fuel components can be simply estimated by adding additional moisture content.</p>
+<p>In the first example, we will estimate 1-hr fuel moisture content using three methods, “simard”, “wagner”, and “anderson”, in the ffm() function. The input data we will use contains hourly weather observations from a Remote Automated Weather Station during one calendar year“s fire season.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(rrRAWS)
+<span class="kw">print</span>(<span class="kw">head</span>(rrRAWS))
+<span class="co">#&gt;               dateTime temp_c rh windSpeed_kmh precip_mm</span>
+<span class="co">#&gt; 1 04/01/2017 00:35 MDT   -5.0 98          0.00         0</span>
+<span class="co">#&gt; 2 04/01/2017 01:35 MDT   -4.4 98          1.63         0</span>
+<span class="co">#&gt; 3 04/01/2017 02:35 MDT   -5.6 96          3.23         0</span>
+<span class="co">#&gt; 4 04/01/2017 03:35 MDT   -5.6 96          6.44         0</span>
+<span class="co">#&gt; 5 04/01/2017 04:35 MDT   -6.1 97          4.83         0</span>
+<span class="co">#&gt; 6 04/01/2017 05:35 MDT   -6.1 96          8.03         0</span>
+
+ff =<span class="st"> </span><span class="kw">rbind</span>(
+<span class="kw">data.frame</span>(<span class="dt">ffm =</span> <span class="kw">ffm</span>(<span class="st">&quot;simard&quot;</span>,rrRAWS<span class="op">$</span>rh, rrRAWS<span class="op">$</span>temp_c)<span class="op">$</span>fm1hr,<span class="dt">method=</span><span class="st">&quot;simard&quot;</span>),
+<span class="kw">data.frame</span>(<span class="dt">ffm =</span> <span class="kw">ffm</span>(<span class="st">&quot;wagner&quot;</span>,rrRAWS<span class="op">$</span>rh, rrRAWS<span class="op">$</span>temp_c)<span class="op">$</span>fm1hr,<span class="dt">method=</span><span class="st">&quot;wagner&quot;</span>),
+<span class="kw">data.frame</span>(<span class="dt">ffm =</span> <span class="kw">ffm</span>(<span class="st">&quot;anderson&quot;</span>,rrRAWS<span class="op">$</span>rh, rrRAWS<span class="op">$</span>temp_c)<span class="op">$</span>fm1hr,<span class="dt">method=</span><span class="st">&quot;anderson&quot;</span>)
+)
+ff<span class="op">$</span>dateTime =<span class="st"> </span><span class="kw">rep</span>(rrRAWS<span class="op">$</span>dateTime,<span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ff, <span class="kw">aes</span>(ffm, <span class="dt">color =</span> method, <span class="dt">fill =</span> method)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Fine fuel moisture (%)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_classic</span>()</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Distribution of hourly fuel moistures predicted by three methods using the ffm() function." />
+<p class="caption">
+Distribution of hourly fuel moistures predicted by three methods using the ffm() function.
+</p>
+</div>
+<p>The resulting plot shows the distribution of hourly, 1-hr fine fuel moisture content by method. Methods yield slightly differing distributions, particularly with regard to centrality and right-tail skewness.</p>
+<p>Now we will add on a fourth method and view the results as a smoothed time series. When “mcarthur” is the selected method, it is advisable to estimate moisture content only under a set of weather conditions: <span class="math display">\[
+\begin{eqnarray}
+&amp; rh \leqq70\\
+&amp; temp \geqq10\\
+&amp; 42.5-1.25temp &lt; rh &lt; 94.5 - 1.35temp
+\end{eqnarray}
+\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rrRAWS_ma =<span class="st"> </span><span class="kw">subset</span>(rrRAWS, rh <span class="op">&lt;=</span><span class="st"> </span><span class="dv">70</span> <span class="op">&amp;</span><span class="st"> </span>temp_c <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span> <span class="op">&amp;</span><span class="st"> </span>rh <span class="op">&gt;</span><span class="st"> </span><span class="fl">42.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">1.25</span> <span class="op">*</span><span class="st"> </span>temp_c <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">    </span>rh <span class="op">&lt;</span><span class="st"> </span><span class="fl">94.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">1.35</span> <span class="op">*</span><span class="st"> </span>temp_c)
+ff.ma =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ffm =</span> <span class="kw">ffm</span>(<span class="st">&quot;mcarthur&quot;</span>, rrRAWS_ma<span class="op">$</span>rh, rrRAWS_ma<span class="op">$</span>temp_c)<span class="op">$</span>fm1hr, <span class="dt">method =</span> <span class="st">&quot;mcarthur&quot;</span>, 
+    <span class="dt">dateTime =</span> rrRAWS_ma<span class="op">$</span>dateTime)
+ff =<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(<span class="dt">ffm =</span> <span class="kw">ffm</span>(<span class="st">&quot;simard&quot;</span>, rrRAWS<span class="op">$</span>rh, rrRAWS<span class="op">$</span>temp_c)<span class="op">$</span>fm1hr, <span class="dt">method =</span> <span class="st">&quot;simard&quot;</span>), 
+    <span class="kw">data.frame</span>(<span class="dt">ffm =</span> <span class="kw">ffm</span>(<span class="st">&quot;wagner&quot;</span>, rrRAWS<span class="op">$</span>rh, rrRAWS<span class="op">$</span>temp_c)<span class="op">$</span>fm1hr, <span class="dt">method =</span> <span class="st">&quot;wagner&quot;</span>), 
+    <span class="kw">data.frame</span>(<span class="dt">ffm =</span> <span class="kw">ffm</span>(<span class="st">&quot;anderson&quot;</span>, rrRAWS<span class="op">$</span>rh, rrRAWS<span class="op">$</span>temp_c)<span class="op">$</span>fm1hr, <span class="dt">method =</span> <span class="st">&quot;anderson&quot;</span>))
+ff<span class="op">$</span>dateTime =<span class="st"> </span><span class="kw">rep</span>(rrRAWS<span class="op">$</span>dateTime, <span class="dv">3</span>)
+ff =<span class="st"> </span><span class="kw">rbind</span>(ff, ff.ma)
+ff<span class="op">$</span>dateTime &lt;-<span class="st"> </span><span class="kw">strptime</span>(ff<span class="op">$</span>dateTime, <span class="st">&quot;%m/%d/%Y %H:%M&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ffm.plot =<span class="st"> </span><span class="kw">ggplot</span>(ff, <span class="kw">aes</span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> ffm, <span class="dt">color =</span> method)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">span =</span> <span class="fl">0.1</span>, 
+    <span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">se =</span> F) <span class="op">+</span><span class="st"> </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Fuel moisture (%)&quot;</span>)
+<span class="kw">print</span>(ffm.plot)</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Hourly fuel moistures predicted by four methods using the ffm() function." />
+<p class="caption">
+Hourly fuel moistures predicted by four methods using the ffm() function.
+</p>
+</div>
+<p>While the prior methods require just temperature and relative humidity, the Fire Behavior Officer“s Table (fbo) method requires also month, hour, topographic aspect, percent slope, and shading (whether the fine fuels of interest are shaded by cloud cover or forest canopy). Further, there is a modification to state whether weather observations were taken higher than, lower than, or within 305 m +/- of the fuel”s elevation. Here we will assume that the aspect is north, the slope is 10%, the fuel is near the same elevation as the RAWS station and the fuels are unshaded.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rh =<span class="st"> </span>rrRAWS<span class="op">$</span>rh
+temp =<span class="st"> </span>rrRAWS<span class="op">$</span>temp_c
+month =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">format</span>(<span class="kw">strptime</span>(rrRAWS<span class="op">$</span>dateTime, <span class="st">&quot;%m/%d/%Y %H:%M&quot;</span>), <span class="st">&quot;%m&quot;</span>))
+hour =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">format</span>(<span class="kw">strptime</span>(rrRAWS<span class="op">$</span>dateTime, <span class="st">&quot;%m/%d/%Y %H:%M&quot;</span>), <span class="st">&quot;%H&quot;</span>))
+ff.fbo =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ffm =</span> <span class="kw">ffm</span>(<span class="dt">method =</span> <span class="st">&quot;fbo&quot;</span>, rh, temp, month, hour, <span class="dt">asp =</span> <span class="st">&quot;N&quot;</span>, <span class="dt">slp =</span> <span class="dv">10</span>, 
+    <span class="dt">bla =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">shade =</span> <span class="st">&quot;n&quot;</span>)<span class="op">$</span>fm1hr, <span class="dt">method =</span> <span class="st">&quot;FBO&quot;</span>, <span class="dt">dateTime =</span> <span class="kw">strptime</span>(rrRAWS<span class="op">$</span>dateTime, 
+    <span class="st">&quot;%m/%d/%Y %H:%M&quot;</span>))
+ff =<span class="st"> </span><span class="kw">rbind</span>(ff, ff.fbo)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ffm.plot <span class="op">+</span><span class="st"> </span><span class="kw">scale_colour_grey</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">data =</span> ff.fbo, <span class="kw">aes</span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> ffm), 
+    <span class="dt">span =</span> <span class="fl">0.1</span>, <span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">se =</span> F, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">guides</span>(<span class="dt">color =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Time&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Fuel moisture (%)&quot;</span>)</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Hourly fuel moistures predicted by method = 'fbo', in blue, relative to other methods, in grayscale." />
+<p class="caption">
+Hourly fuel moistures predicted by method = ‘fbo’, in blue, relative to other methods, in grayscale.
+</p>
+</div>
+<p>The figure here illustrates that the fbo method, in blue, follows similar trends as the simard method, except that peaks and troughs are relatively dampened.</p>
+</div>
+<div id="estimating-wind-adjustment-factor" class="section level3">
+<h3>3.3 Estimating wind adjustment factor</h3>
+<p>The rothermel() function requires the user to enter in a wind adjustment factor (WAF; ratio of mid-flame wind speed to 20-ft open wind speed). The waf() function contains seperate equations for unsheletered (i.e. no forest canopy) fuelbeds and sheltered fuelbeds. If the fuelbed is sheltered, the forest canopy height, crown ratio (average tree crown length [tree height minus crown base height] divided by tree height), and canopy cover are needed:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">waf</span>(<span class="dt">forestHt =</span> <span class="dv">10</span>, <span class="dt">cr =</span> <span class="dv">40</span>, <span class="dt">cc =</span> <span class="dv">40</span>)
+<span class="co">#&gt; [1] 0.209721</span></code></pre></div>
+<p>The crown ratio and canopy cover are used internally to derive a quantity known as crown fill, <span class="math inline">\(CrownFill = CrownRatio * CanopyCover/300\)</span>. If crown ratio and canopy cover are not known, but the sheltered WAF equation is desired, the waf() function assumes <span class="math inline">\(CrownFill = 0.1\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">waf</span>(<span class="dt">forestHt =</span> <span class="dv">10</span>, <span class="dt">sheltered =</span> <span class="st">&quot;y&quot;</span>)
+<span class="co">#&gt; [1] 0.1531586</span></code></pre></div>
+<p>If the fuelbed is unsheltered, the only required argument is the surface fuel depth:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">waf</span>(<span class="dt">fuelDepth =</span> <span class="dv">1</span>)
+<span class="co">#&gt; [1] 0.2166844</span></code></pre></div>
+<p>It is worth noting that if crown fill is less than 0.05, the unsheltered equation will be used selected For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">waf</span>(<span class="dt">fuelDepth =</span> <span class="dv">1</span>, <span class="dt">forestHt =</span> <span class="dv">10</span>, <span class="dt">cr =</span> <span class="dv">10</span>, <span class="dt">cc =</span> <span class="dv">10</span>)
+<span class="co">#&gt; [1] 0.2166844</span></code></pre></div>
+</div>
+<div id="visualizing-fire-behavior-ourputs" class="section level3">
+<h3>3.4 Visualizing fire behavior ourputs</h3>
+<p>To make quick assessments of fire behavior, some fire behavior analysts refer to a fire characteristics chart. These charts plot heat per unit area against rate of spread. To aid interpretation, these charts also contain predicted flame lengths and images that refer to the recommended method of direct fire suppression. To expedite fire behavior assessments with fire characteristics charts, <code>fireChart()</code> instructs ggplot with a pre-populated set of arguments and uses the folloring arguments from the user: the name of each observation, observations&quot; heat per unit area and observations&quot; rate of spread.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fireChart</span>(<span class="st">&quot;&quot;</span>,<span class="dv">100</span>,<span class="dv">10</span>) <span class="op">+</span><span class="kw">xlim</span>(<span class="dv">0</span>,<span class="dv">12000</span>)</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Fire characteristics chart." />
+<p class="caption">
+Fire characteristics chart.
+</p>
+</div>
+</div>
+</div>
+<div id="fire-weather-indices" class="section level2">
+<h2>4.0 Fire weather indices</h2>
+<p>As opposed to the fire behavior models described Section 2.0, fire weather indices describe the <em>relative</em> fire hazard posed by environmental conditions; most indices ignore the topography leg of the fire behavior triangle and, at most, minimally account for the fuels. This package divides indices into two categories, “static indices” whch can use arguments with a minimum length of 1, and “cumulative indices”&quot; that require continuous data with multiple observations. To elaborate, if one used two days of weather observations to derive a fire hazard index, a static index“s calculation would not require the prior day”s index value whereas a cumulative index would.</p>
+<div id="static-indices" class="section level3">
+<h3>Static indices</h3>
+<p>In this package, instantaneous indices are found in <code>fireIndex()</code>. This function uses vectors of air temperature, wind speed, relative humidity, grass fuel load (optional) and grass curing level (optional) to produce the Angstrom Index, Hot, Dry, Windy Index, the Fuel Moisture Index, the Fosberge Fire Weather Index, the MacArthur Grasslad Mark 4 Index, the MacArthur Grassland Mark 5 Index, and the Chandler Burning Index. We will use the <code>data(rrRAWS)</code> to illustrate the function, calculating the daily indices at 14:30 MDT. Then we will normalize the scales to compare trends across indices.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rrRAWS.daily =<span class="st">   </span>rrRAWS[<span class="kw">format</span>(<span class="kw">strptime</span>(rrRAWS<span class="op">$</span>dateTime, <span class="st">&quot;%m/%d/%Y %H:%M&quot;</span>), <span class="st">&quot;%H:%M&quot;</span>)<span class="op">==</span><span class="st">&quot;14:35&quot;</span>,]
+indices =<span class="st"> </span><span class="kw">fireIndex</span>(<span class="dt">temp=</span>rrRAWS.daily<span class="op">$</span>temp_c, <span class="dt">u=</span> rrRAWS.daily<span class="op">$</span>windSpeed_kmh, <span class="dt">rh =</span> rrRAWS.daily<span class="op">$</span>rh)
+normalize=<span class="cf">function</span>(x,<span class="dt">low=</span><span class="dv">0</span>,<span class="dt">high=</span><span class="dv">1</span>){low<span class="op">+</span>(x<span class="op">-</span><span class="kw">min</span>(x,<span class="dt">na.rm=</span>T))<span class="op">*</span>(high<span class="op">-</span>low)<span class="op">/</span>(<span class="kw">max</span>(x,<span class="dt">na.rm=</span>T)<span class="op">-</span><span class="kw">min</span>(x,<span class="dt">na.rm=</span>T))}
+indices =<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">sapply</span>(indices,normalize),  <span class="dt">Date =</span> <span class="kw">strptime</span>(rrRAWS.daily<span class="op">$</span>dateTime, <span class="st">&quot;%m/%d/%Y %H:%M&quot;</span>))
+indices =<span class="st"> </span><span class="kw">setNames</span>(reshape2<span class="op">::</span><span class="kw">melt</span>(indices,<span class="dt">id=</span><span class="st">&quot;Date&quot;</span>),<span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>,<span class="st">&quot;Index&quot;</span>,<span class="st">&quot;Value&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(indices,<span class="kw">aes</span>(Date,Value,<span class="dt">group=</span>Index,<span class="dt">color=</span>Index))<span class="op">+</span><span class="kw">geom_smooth</span>(<span class="dt">span =</span> .<span class="dv">1</span>,  <span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">se =</span> F) <span class="op">+</span><span class="kw">theme_classic</span>()<span class="op">+</span><span class="kw">coord_cartesian</span>(<span class="dt">expand=</span>F)</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Continuous fire index values applied to the rrRAWS dataset." />
+<p class="caption">
+Continuous fire index values applied to the rrRAWS dataset.
+</p>
+</div>
+</div>
+<div id="cumulative-indices" class="section level3">
+<h3>Cumulative indices</h3>
+<p>Cumulative fire weather indices explictly use the prior day“s hazard in order to account for seasonal trends. The indices covered by the <code>fireIndexKBDI()</code> include the Keetch-Byran Drought Index (KBDI), the Drought Factor, MacArthur Forest Mark 5 Index, KBDI-modified Fosberg Fire Index, KBDI-modified Fuel Moisture Index, the original and modified Nesterov Indices, and the Zdenko Index. This example will also use <code>data(rrRAWS)</code>, which has a mean annual precipitation of 610 mm. Again, we will normalize indices for comparison.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(rrRAWS)
+daily.precip =<span class="st"> </span>rrRAWS
+daily.precip<span class="op">$</span>Date =<span class="st"> </span><span class="kw">strptime</span>(daily.precip<span class="op">$</span>dateTime, <span class="st">&quot;%m/%d/%Y&quot;</span>)
+daily.precip =<span class="st"> </span><span class="kw">setNames</span>(<span class="kw">aggregate</span>(daily.precip<span class="op">$</span>precip_mm, <span class="dt">by =</span> <span class="kw">list</span>(<span class="kw">as.character</span>(daily.precip<span class="op">$</span>Date)), 
+    <span class="dt">FUN =</span> sum), <span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;DailyPrecip&quot;</span>))
+rrRAWS.daily =<span class="st"> </span>rrRAWS[<span class="kw">format</span>(<span class="kw">strptime</span>(rrRAWS<span class="op">$</span>dateTime, <span class="st">&quot;%m/%d/%Y %H:%M&quot;</span>), <span class="st">&quot;%H:%M&quot;</span>) <span class="op">==</span><span class="st"> </span>
+<span class="st">    &quot;14:35&quot;</span>, ]
+rrRAWS.daily<span class="op">$</span>DailyPrecip =<span class="st"> </span>daily.precip<span class="op">$</span>DailyPrecip
+indices =<span class="st"> </span><span class="kw">fireIndexKBDI</span>(<span class="dt">temp =</span> rrRAWS.daily<span class="op">$</span>temp_c, <span class="dt">precip =</span> rrRAWS.daily<span class="op">$</span>DailyPrecip, 
+    <span class="dt">map =</span> <span class="dv">610</span>, <span class="dt">rh =</span> rrRAWS.daily<span class="op">$</span>rh, <span class="dt">u =</span> rrRAWS.daily<span class="op">$</span>windSpeed_kmh)
+indices =<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">sapply</span>(indices,normalize), <span class="dt">Date =</span> <span class="kw">strptime</span>(rrRAWS.daily<span class="op">$</span>dateTime, 
+    <span class="st">&quot;%m/%d/%Y %H:%M&quot;</span>))
+indices =<span class="st"> </span><span class="kw">setNames</span>(reshape2<span class="op">::</span><span class="kw">melt</span>(indices, <span class="dt">id =</span> <span class="st">&quot;Date&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;Index&quot;</span>, <span class="st">&quot;Value&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(indices, <span class="kw">aes</span>(Date, Value, <span class="dt">group =</span> Index, <span class="dt">color =</span> Index)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">span =</span> <span class="fl">0.1</span>, 
+    <span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">se =</span> F) <span class="op">+</span><span class="st"> </span><span class="kw">theme_classic</span>() <span class="op">+</span><span class="st"> </span><span class="kw">coord_cartesian</span>(<span class="dt">expand =</span> F)</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Static fire index values applied to the rrRAWS dataset." />
+<p class="caption">
+Static fire index values applied to the rrRAWS dataset.
+</p>
+</div>
+<p>There are three time periods during which most indices agree on high fire hazard, later April, late June, and early-to-mid September.Because the cumulative indices track accumulating droughtiness and incorporate precipitation events, these indices account for the late Spring showers and Summer monsoon rains typical of this region.</p>
+The estimation methods in <code>fireIndexKBDI()</code> function vary by ther requisite arguments. Below is a chart that maps needed arguments to each Index method. The function will output results only for those methods that have been supplied arguments. <!-- html table generated in R 3.4.1 by xtable 1.8-2 package --> <!-- Sun Sep 09 01:12:02 2018 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Method
+</th>
+<th>
+Inputs
+</th>
+</tr>
+<tr>
+<td align="right">
+1
+</td>
+<td>
+KBDI
+</td>
+<td>
+temp, precip, map
+</td>
+</tr>
+<tr>
+<td align="right">
+2
+</td>
+<td>
+Drought factor
+</td>
+<td>
+temp, precip, map
+</td>
+</tr>
+<tr>
+<td align="right">
+3
+</td>
+<td>
+Forest Mark 5
+</td>
+<td>
+temp, precip, map, u, rh
+</td>
+</tr>
+<tr>
+<td align="right">
+4
+</td>
+<td>
+Fosberg-KBDI
+</td>
+<td>
+temp, precip, map, u, rh
+</td>
+</tr>
+<tr>
+<td align="right">
+5
+</td>
+<td>
+Fuel moisture-KBDI
+</td>
+<td>
+temp, precip, map, u, rh
+</td>
+</tr>
+<tr>
+<td align="right">
+6
+</td>
+<td>
+Nesterov
+</td>
+<td>
+temp, precip, rh
+</td>
+</tr>
+<tr>
+<td align="right">
+7
+</td>
+<td>
+Nesterov-Modified
+</td>
+<td>
+temp, precip, rh
+</td>
+</tr>
+<tr>
+<td align="right">
+8
+</td>
+<td>
+Zdenko
+</td>
+<td>
+temp, precip, rh
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>This vignette covers the current state of <strong>firebehavioR</strong>. This package is under active development and may change in subsequent years. Some changes may include incorporation of meteorological data to predict dynamic fuel moistures, such as adsorption, desorption and wetting events, prediction of live fuel moistures, incorporation of the National Fire Danger Rating System, and linkages with other packages to enhance analyses.</p>
+</div>
+<div id="appendix-a-input-quantities" class="section level2">
+<h2>Appendix A: Input quantities</h2>
+The following quantities are used as input variables for this package“s functions. Use”?&quot; to see documentation of individual functions. <!-- html table generated in R 3.4.1 by xtable 1.8-2 package --> <!-- Sun Sep 09 01:12:03 2018 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Variable
+</th>
+<th>
+Units
+</th>
+</tr>
+<tr>
+<td align="right">
+1
+</td>
+<td>
+Fuel stratum gap
+</td>
+<td>
+m
+</td>
+</tr>
+<tr>
+<td align="right">
+2
+</td>
+<td>
+10-m Open wind speed
+</td>
+<td>
+km/hr
+</td>
+</tr>
+<tr>
+<td align="right">
+3
+</td>
+<td>
+Fuel moisture content
+</td>
+<td>
+%
+</td>
+</tr>
+<tr>
+<td align="right">
+4
+</td>
+<td>
+Canopy bulk density
+</td>
+<td>
+kg/m<sup>3</sup>
+</td>
+</tr>
+<tr>
+<td align="right">
+5
+</td>
+<td>
+Seperation distance
+</td>
+<td>
+m
+</td>
+</tr>
+<tr>
+<td align="right">
+6
+</td>
+<td>
+Basal area
+</td>
+<td>
+m<sup>2</sup>/ha
+</td>
+</tr>
+<tr>
+<td align="right">
+7
+</td>
+<td>
+Average stand tree heights
+</td>
+<td>
+m
+</td>
+</tr>
+<tr>
+<td align="right">
+8
+</td>
+<td>
+Trees per hectare
+</td>
+<td>
+trees/ha
+</td>
+</tr>
+<tr>
+<td align="right">
+9
+</td>
+<td>
+Relative humidity
+</td>
+<td>
+%
+</td>
+</tr>
+<tr>
+<td align="right">
+10
+</td>
+<td>
+Temperature
+</td>
+<td>
+degrees C
+</td>
+</tr>
+<tr>
+<td align="right">
+11
+</td>
+<td>
+Month
+</td>
+<td>
+Month of the year (1-12)
+</td>
+</tr>
+<tr>
+<td align="right">
+12
+</td>
+<td>
+Hour
+</td>
+<td>
+Hour of day (1-24)
+</td>
+</tr>
+<tr>
+<td align="right">
+13
+</td>
+<td>
+Topographic aspect
+</td>
+<td>
+N,S,W, or E
+</td>
+</tr>
+<tr>
+<td align="right">
+14
+</td>
+<td>
+Topographic slope
+</td>
+<td>
+%
+</td>
+</tr>
+<tr>
+<td align="right">
+15
+</td>
+<td>
+Heat per unit area
+</td>
+<td>
+kJ/m<sup>2</sup>
+</td>
+</tr>
+<tr>
+<td align="right">
+16
+</td>
+<td>
+Fire rate of spread
+</td>
+<td>
+m/min
+</td>
+</tr>
+<tr>
+<td align="right">
+17
+</td>
+<td>
+surface fuel load
+</td>
+<td>
+Mg/ha
+</td>
+</tr>
+<tr>
+<td align="right">
+18
+</td>
+<td>
+Surface area to volume
+</td>
+<td>
+m<sup>2/</sup>m<sup>3</sup>
+</td>
+</tr>
+<tr>
+<td align="right">
+19
+</td>
+<td>
+Fuelbed depth
+</td>
+<td>
+cm
+</td>
+</tr>
+<tr>
+<td align="right">
+20
+</td>
+<td>
+Moisture of extinction
+</td>
+<td>
+%
+</td>
+</tr>
+<tr>
+<td align="right">
+21
+</td>
+<td>
+Heat content
+</td>
+<td>
+J/g
+</td>
+</tr>
+<tr>
+<td align="right">
+22
+</td>
+<td>
+Canopy fuel load
+</td>
+<td>
+kg/m<sup>2</sup>
+</td>
+</tr>
+<tr>
+<td align="right">
+23
+</td>
+<td>
+Wind direction
+</td>
+<td>
+0-360
+</td>
+</tr>
+<tr>
+<td align="right">
+24
+</td>
+<td>
+Wind adjustment factor
+</td>
+<td>
+Ratio of 20-ft open wind speed to midflame wind speed
+</td>
+</tr>
+<tr>
+<td align="right">
+25
+</td>
+<td>
+Crown ratio
+</td>
+<td>
+%
+</td>
+</tr>
+<tr>
+<td align="right">
+26
+</td>
+<td>
+Canopy cover
+</td>
+<td>
+%
+</td>
+</tr>
+</table>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
