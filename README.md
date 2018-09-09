@@ -1,4 +1,4 @@
-firebehavioR
+firebehavioR [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1412014.svg)](https://doi.org/10.5281/zenodo.1412014)
 ================
 
 An R package for predicting fire behavior using the Rothermel modelling system or the Crown Fire Initiation & Spread modelling system.
