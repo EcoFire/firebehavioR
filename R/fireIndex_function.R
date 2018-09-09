@@ -23,24 +23,26 @@
 #' @export
 
 fireIndex <- function(temp, u, rh, fuel = 4.5, cure = 100) {
-    output = data.frame(angstrom = 0, Chandler = 0, hotDryWindy = 0, fuelMoisture = 0, fosberg = 0, grasslandMk4 = 0,
-        grasslandMk5 = 0)
-    output = output[rep(seq_len(nrow(output)), length(temp)), ]
+  output <- data.frame(
+    angstrom = 0, Chandler = 0, hotDryWindy = 0, fuelMoisture = 0, fosberg = 0, grasslandMk4 = 0,
+    grasslandMk5 = 0
+  )
+  output <- output[rep(seq_len(nrow(output)), length(temp)), ]
 
-    svp = (6.107 * 10^(7.5 * temp/(237.3 + temp)))/10
-    vpd = ((100 - rh)/100) * svp
-    output$hotDryWindy = u * vpd * 0.278
-    output$fuelMoisture = max(1, u)/(10 - 0.25 * (temp - rh))
-    m = ffm(method = "simard", rh, temp)$fm1hr
-    output$fosberg = (1 - 2 * (m/30) + 1.5 * (m/30)^2 - 0.5 * (m/30)^3) * sqrt(1 +
-        (0.621371 * u)^2)/0.3002
-    output$grasslandMk4 = exp(-1.523 + 1.027 * log(fuel) - (0.009432 * (100 - cure)^1.536) +
-        0.0276 * temp - 0.2205 * sqrt(rh) + 0.6422 * sqrt(u))
-    m2 = (97.7 + 4.06 * rh)/temp + 6 - 0.00854 * rh + 3000/cure - 30
-    m2[!is.finite(m2) | m2 < 0] = 100
-    output$grasslandMk5 = ifelse(m2 > 30, 0, ifelse(m2 < 18.8, 3.35 * fuel * exp(-0.0897 *
-        m2 + 0.0403 * u), 0.299 * fuel * exp(-1.686 + 0.0403 * u) * (30 - m2)))
-    output$chandler = (((110 - 1.373*rh) - 0.54 * (10.20 - temp)) * (124 * 10**(-0.0142*rh)))/60
-    output$angstrom = rh/20 + (27-temp)/10
-    return(output)
+  svp <- (6.107 * 10^(7.5 * temp / (237.3 + temp))) / 10
+  vpd <- ((100 - rh) / 100) * svp
+  output$hotDryWindy <- u * vpd * 0.278
+  output$fuelMoisture <- max(1, u) / (10 - 0.25 * (temp - rh))
+  m <- ffm(method = "simard", rh, temp)$fm1hr
+  output$fosberg <- (1 - 2 * (m / 30) + 1.5 * (m / 30)^2 - 0.5 * (m / 30)^3) * sqrt(1 +
+    (0.621371 * u)^2) / 0.3002
+  output$grasslandMk4 <- exp(-1.523 + 1.027 * log(fuel) - (0.009432 * (100 - cure)^1.536) +
+    0.0276 * temp - 0.2205 * sqrt(rh) + 0.6422 * sqrt(u))
+  m2 <- (97.7 + 4.06 * rh) / temp + 6 - 0.00854 * rh + 3000 / cure - 30
+  m2[!is.finite(m2) | m2 < 0] <- 100
+  output$grasslandMk5 <- ifelse(m2 > 30, 0, ifelse(m2 < 18.8, 3.35 * fuel * exp(-0.0897 *
+    m2 + 0.0403 * u), 0.299 * fuel * exp(-1.686 + 0.0403 * u) * (30 - m2)))
+  output$chandler <- (((110 - 1.373 * rh) - 0.54 * (10.20 - temp)) * (124 * 10**(-0.0142 * rh))) / 60
+  output$angstrom <- rh / 20 + (27 - temp) / 10
+  return(output)
 }

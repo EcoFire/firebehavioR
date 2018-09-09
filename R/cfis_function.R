@@ -38,26 +38,29 @@
 #' table(u10 = coForest$u10, coForest$type,
 #'     coForest$status)
 #' @export
-cfis = function(fsg, u10, effm, sfc, cbd, id) {
- if( any(fsg > 12) ) warning ('Canopy base height should not exceed 12 m')
- if( any(u10 > 80) ) warning ('Open wind speed should not exceed 80 km/hr')
- if( any(effm > 20) ) warning ('Fuel moisture should not exceed 20 percent')
- if( any(cbd > 1) ) warning ('Canopy bulk density should not exceed 1 kg/m3')
+cfis <- function(fsg, u10, effm, sfc, cbd, id) {
+  if (any(fsg > 12)) warning("Canopy base height should not exceed 12 m")
+  if (any(u10 > 80)) warning("Open wind speed should not exceed 80 km/hr")
+  if (any(effm > 20)) warning("Fuel moisture should not exceed 20 percent")
+  if (any(cbd > 1)) warning("Canopy bulk density should not exceed 1 kg/m3")
 
-    sfc = sfc / 10
-    g_x = 4.236 + 0.357 * u10 - 0.71 * fsg - 0.331 * effm + ifelse(sfc <
-        1, -4.613, ifelse(sfc > 2, 0, -1.856))
-    p_x = exp(g_x)/(1 + exp(g_x))
+  sfc <- sfc / 10
+  g_x <- 4.236 + 0.357 * u10 - 0.71 * fsg - 0.331 * effm + ifelse(sfc <
+    1, -4.613, ifelse(sfc > 2, 0, -1.856))
+  p_x <- exp(g_x) / (1 + exp(g_x))
 
-    crosa = (11.02 * u10^0.9) * (cbd^0.19) * exp(-0.17 * effm)
-    crosp = crosa * exp(-0.3333 * crosa * cbd)
-    cac = crosa * cbd/3
+  crosa <- (11.02 * u10^0.9) * (cbd^0.19) * exp(-0.17 * effm)
+  crosp <- crosa * exp(-0.3333 * crosa * cbd)
+  cac <- crosa * cbd / 3
 
-    cros = ifelse(p_x > 0.5, ifelse(cac < 1, crosp, crosa), NA)
-    sd = cros * (30 + id) - cros * (30 + (exp(-0.115 * 30)/0.115) -
-        1/(0.115))
-    type = ifelse(p_x < 0.5, "surface", ifelse(cac < 1, "passive",
-        "active"))
-    return(data.frame(type = type, pCrown = round(p_x * 100,
-        2), cROS = round(cros, 2), sepDist = round(sd, 2)))
+  cros <- ifelse(p_x > 0.5, ifelse(cac < 1, crosp, crosa), NA)
+  sd <- cros * (30 + id) - cros * (30 + (exp(-0.115 * 30) / 0.115) -
+    1 / (0.115))
+  type <- ifelse(p_x < 0.5, "surface", ifelse(cac < 1, "passive",
+    "active"
+  ))
+  return(data.frame(type = type, pCrown = round(
+    p_x * 100,
+    2
+  ), cROS = round(cros, 2), sepDist = round(sd, 2)))
 }

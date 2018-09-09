@@ -1,7 +1,7 @@
 #' Modified Scott & Burgan (2005) moisture scenarios.
 #'
 #' Moisture scenarios are a set of fuel moistures of surface fuels, on a dry-weight basis, for each of the surface fuel classes. Adapted from Scott & Burgan (2005), this dataset includes fuel moistures of litter.
-#'@usage data("fuelMoisture")
+#' @usage data("fuelMoisture")
 #' @format A data frame with 16 observations of 7 variables:
 #' \describe{
 #'   \item{fmLitter}{moisture of litter (\%)}
@@ -19,7 +19,7 @@
 #' Surface fuel models.
 #'
 #' Fuel models developed by Anderson (1982), Scott (1999), and Scott & Burgan (2005) for prediction of surface fire behavior.
-#'@usage data("fuelModels")
+#' @usage data("fuelModels")
 #' @format A data frame with 60 observations of 18 variables:
 #' \describe{
 #'   \item{fuelModelType}{"S"tatic or "D"ynamic fuel load transfer}
@@ -74,7 +74,7 @@
 #' Colorado dry forest inventory summary.
 #'
 #' Fuels inventory summary of seven sampled forests in the southern Rocky Mountains and Colorado Plateau. Each forest was sapled before and after tree thinnings.
-#'@usage data("coForest")
+#' @usage data("coForest")
 #' @format A data frame with 14 observations of 10 variables:
 #' \describe{
 #'   \item{site}{name of forest location}
@@ -96,7 +96,7 @@
 #' Rampart Range RAWS meteorological data
 #'
 #' Hourly meteorological data from April through September 2017 from the Rampart Range Remote Automated Weather Station (RAWS; Station ID: RRAC2), maintained by the United States Forest Service
-#'@usage data("rrRAWS")
+#' @usage data("rrRAWS")
 #' @format A data frame with 4392 observations of 4 variables:
 #' \describe{
 #'   \item{dateTime}{date and time of individual observation formatted as \code{"\%m/\%d/\%Y \%H:\%M"} }
@@ -111,7 +111,7 @@
 #' Fire Behavior Officer's table
 #'
 #' Look up charts in tabular form to determine fine fuel moisture
-#'@usage data("fboTable")
+#' @usage data("fboTable")
 #' @format A list with two data frames:
 #' \describe{
 #'   \item{1}{a list of reference fine fuel moistures (\%) by temperature (deg. C) and relative humidity (\%)}
@@ -127,7 +127,7 @@
 #' Template data for fire characteristics chart
 #'
 #' Data of heat per unit area (kJ/m2), rate of spread (m/min), and flame length (m) for creating the template of the fire characteristics chart
-#'@usage data("fireChartData")
+#' @usage data("fireChartData")
 #' @source Andrews, P.L., & Rothermel, R.C. 1982. Charts for interpreting wildland fire behavior characteristics.
 #'  \emph{INT-GTR-131}. US Department of Agriculture, Forest Service, Intermountain Forest and Range Experimental Station.
 #' @keywords internal
@@ -136,7 +136,7 @@
 #' KBDI Lookup table
 #'
 #' Data of drought factor by drought index, temperature and mean annual precipitation.
-#'@usage data("fireChartData")
+#' @usage data("fireChartData")
 #' @source
 #'  \emph{INT-GTR-131}. US Department of Agriculture, Forest Service, Intermountain Forest and Range Experimental Station.
 #' @keywords internal

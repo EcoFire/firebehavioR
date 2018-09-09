@@ -42,62 +42,59 @@
 #' @export
 
 ffm <- function(method, rh, temp, month, hour, asp, slp, bla, shade) {
-    if (method == "pech") {
-        fm1hr = ifelse(rh <= 40, 0.136 * rh^1.07 + 0.00059 * exp(0.3 * rh), ifelse(rh <
-            75, 0.2772 * rh - 4.013 + 0.18 * (21.1 - temp) * (1 - 54.6 * exp(-0.1 *
-            rh)), 0.618 * rh^0.753 + 0.18 * (21.1 - temp) * abs(1 - 54.6^-0.1 * rh) +
-            0.000454 * exp(0.1 * rh)))
+  if (method == "pech") {
+    fm1hr <- ifelse(rh <= 40, 0.136 * rh^1.07 + 0.00059 * exp(0.3 * rh), ifelse(rh <
+      75, 0.2772 * rh - 4.013 + 0.18 * (21.1 - temp) * (1 - 54.6 * exp(-0.1 *
+      rh)), 0.618 * rh^0.753 + 0.18 * (21.1 - temp) * abs(1 - 54.6^-0.1 * rh) +
+      0.000454 * exp(0.1 * rh)))
+  }
+  if (method == "simard") {
+    fm1hr <- ifelse(round(rh, 0) > 49, 21.06 - 0.4944 * rh + 0.005565 * rh^2 -
+      0.00063 * rh * temp, ifelse(round(rh, 0) >= 10, 1.76 + 0.1601 * rh -
+      0.0266 * temp, 0.03 + 0.2626 * rh - 0.00104 * rh * temp))
+  }
+  if (method == "wagner") {
+    fm1hr <- 0.942 * rh^0.679 + 0.000499 * exp(0.1 * rh) + 0.18 * (21.1 - temp) *
+      (1 - exp(-0.115 * rh))
+  }
+  if (method == "anderson") {
+    fm1hr <- 1.651 * rh^0.493 + 0.001972 * exp(0.092 * rh) + 0.101 * (23.9 - temp)
+  }
+  if (method == "mcarthur") {
+    fm1hr <- 5.658 + 0.04651 * rh + (0.0003151 * rh^3) / temp - 0.1854 * temp^0.77
+  }
+  if (method == "fbo") {
+    if (length(slp) == 1) {
+      slp <- rep(slp, length(rh))
     }
-    if (method == "simard") {
-        fm1hr = ifelse(round(rh, 0) > 49, 21.06 - 0.4944 * rh + 0.005565 * rh^2 -
-            0.00063 * rh * temp, ifelse(round(rh, 0) >= 10, 1.76 + 0.1601 * rh -
-            0.0266 * temp, 0.03 + 0.2626 * rh - 0.00104 * rh * temp))
+    if (length(bla) == 1) {
+      bla <- rep(bla, length(rh))
     }
-    if (method == "wagner") {
-        fm1hr = 0.942 * rh^0.679 + 0.000499 * exp(0.1 * rh) + 0.18 * (21.1 - temp) *
-            (1 - exp(-0.115 * rh))
+    if (length(asp) == 1) {
+      asp <- rep(asp, length(rh))
     }
-    if (method == "anderson") {
-        fm1hr = 1.651 * rh^0.493 + 0.001972 * exp(0.092 * rh) + 0.101 * (23.9 - temp)
+    if (length(shade) == 1) {
+      shade <- rep(shade, length(rh))
     }
-    if (method == "mcarthur") {
-        fm1hr = 5.658 + 0.04651 * rh + (0.0003151 * rh^3)/temp - 0.1854 * temp^0.77
-    }
-    if (method == "fbo") {
-        if (length(slp) == 1) {
-            slp = rep(slp, length(rh))
-        }
-        if (length(bla) == 1) {
-            bla = rep(bla, length(rh))
-        }
-        if (length(asp) == 1) {
-            asp = rep(asp, length(rh))
-        }
-        if (length(shade) == 1) {
-            shade = rep(shade, length(rh))
-        }
 
-        slp = ifelse(slp < 31, "lo", "hi")
-        shade[hour < 8 | hour > 19] = "y"
-        hour[hour <= 8 | hour > 19] = 9
-        refM = rep(99, length(temp))
-        corM = rep(99, length(temp))
+    slp <- ifelse(slp < 31, "lo", "hi")
+    shade[hour < 8 | hour > 19] <- "y"
+    hour[hour <= 8 | hour > 19] <- 9
+    refM <- rep(99, length(temp))
+    corM <- rep(99, length(temp))
 
-        for (i in 1:length(temp)) {
-            refM[i] = fboTable[[1]][fboTable[[1]]$templo <= temp[i] & fboTable[[1]]$temphi >
-                temp[i] & fboTable[[1]]$rhlo <= rh[i] & fboTable[[1]]$rhhi > rh[i],
-                ]$refMoist
-            corM[i] = fboTable[[2]][fboTable[[2]]$monthlo <= month[i] & fboTable[[2]]$monthhi >=
-                month[i] & fboTable[[2]]$timelo <= hour[i] & fboTable[[2]]$timehi >=
-                hour[i] & fboTable[[2]]$shaded == tolower(shade[i]) & fboTable[[2]]$aspect ==
-                toupper(asp[i]) & fboTable[[2]]$slope == slp[i] & fboTable[[2]]$level ==
-                bla[i], ]$correction
-        }
-        fm1hr = refM + corM
+    for (i in 1:length(temp)) {
+      refM[i] <- fboTable[[1]][fboTable[[1]]$templo <= temp[i] & fboTable[[1]]$temphi >
+        temp[i] & fboTable[[1]]$rhlo <= rh[i] & fboTable[[1]]$rhhi > rh[i], ]$refMoist
+      corM[i] <- fboTable[[2]][fboTable[[2]]$monthlo <= month[i] & fboTable[[2]]$monthhi >=
+        month[i] & fboTable[[2]]$timelo <= hour[i] & fboTable[[2]]$timehi >=
+        hour[i] & fboTable[[2]]$shaded == tolower(shade[i]) & fboTable[[2]]$aspect ==
+        toupper(asp[i]) & fboTable[[2]]$slope == slp[i] & fboTable[[2]]$level ==
+        bla[i], ]$correction
     }
-    output = data.frame(fmLitter = fm1hr, fm1hr = fm1hr, fm10hr = fm1hr + 1, fm100hr = fm1hr +
-        3)
-    return(output)
+    fm1hr <- refM + corM
+  }
+  output <- data.frame(fmLitter = fm1hr, fm1hr = fm1hr, fm10hr = fm1hr + 1, fm100hr = fm1hr +
+    3)
+  return(output)
 }
-
-

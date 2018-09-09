@@ -48,84 +48,85 @@
 #' hist(ff$ffm[ff$method=="anderson"])
 #' @export
 fireIndexKBDI <- function(temp = NA, precip = NA, map = NA, rh = NA, u = NA) {
-    output = data.frame(kbdi = 0, droughtFactor = 0, forestMark5 = 0, fosbergKBDI = 0,
-        fuelMoistureKBDI = 0, nesterov = 0, nesterovMod = 0, zdenko = 0)
-    output = output[rep(seq_len(nrow(output)), length(temp)), ]
+  output <- data.frame(
+    kbdi = 0, droughtFactor = 0, forestMark5 = 0, fosbergKBDI = 0,
+    fuelMoistureKBDI = 0, nesterov = 0, nesterovMod = 0, zdenko = 0
+  )
+  output <- output[rep(seq_len(nrow(output)), length(temp)), ]
 
-    if (!is.na(temp[1]) & !is.na(precip[1]) & !is.na(map[1])) {
-        kbdi <- c(400, rep(NA, length(temp) - 1))
-        droughtFactor = rep(0, length(temp))
-        for (i in 2:length(temp)) {
-            if (precip[i - 1] == 0) {
-                raineffect = max(precip[i], 0) - 0.2
-            } else {
-                raineffect = max(precip[i], 0)
-            }
+  if (!is.na(temp[1]) & !is.na(precip[1]) & !is.na(map[1])) {
+    kbdi <- c(400, rep(NA, length(temp) - 1))
+    droughtFactor <- rep(0, length(temp))
+    for (i in 2:length(temp)) {
+      if (precip[i - 1] == 0) {
+        raineffect <- max(precip[i], 0) - 0.2
+      } else {
+        raineffect <- max(precip[i], 0)
+      }
 
-            kbdi[i] <- max(kbdi[i - 1] - (raineffect * 100), 0)
-            droughtFactor[i] <- kbdiTable$DF[temp[i] >= kbdiTable$MinTemp & temp[i] <
-                kbdiTable$MaxTemp & kbdi[i] >= kbdiTable$MinDI & kbdi[i] <= kbdiTable$MaxDI &
-                map >= kbdiTable$MinMAP & map <= kbdiTable$MaxMAP]
-            kbdi[i] <- kbdi[i] + droughtFactor[i]
-        }
-        output$kbdi = kbdi
-        output$droughtFactor = droughtFactor
-    } else {
-        output$kbdi = rep(NA, length(temp))
-        output$droughtFactor = rep(NA, length(temp))
+      kbdi[i] <- max(kbdi[i - 1] - (raineffect * 100), 0)
+      droughtFactor[i] <- kbdiTable$DF[temp[i] >= kbdiTable$MinTemp & temp[i] <
+        kbdiTable$MaxTemp & kbdi[i] >= kbdiTable$MinDI & kbdi[i] <= kbdiTable$MaxDI &
+        map >= kbdiTable$MinMAP & map <= kbdiTable$MaxMAP]
+      kbdi[i] <- kbdi[i] + droughtFactor[i]
     }
+    output$kbdi <- kbdi
+    output$droughtFactor <- droughtFactor
+  } else {
+    output$kbdi <- rep(NA, length(temp))
+    output$droughtFactor <- rep(NA, length(temp))
+  }
 
-    if (!is.na(temp[1]) & !is.na(precip[1]) & !is.na(map[1]) & !is.na(u[1] & !is.na(rh[1]))) {
-        rainLag = 0
-        forestMark5 = rep(0, length(temp))
-        fm = fireIndex(temp = temp, rh = rh, u = u)$fuelMoisture
-        fuelMoistureKBDI = fm * output$kbdi
-        faf = 0.72 + 0.000002 * output$kbdi^2
-        ffwi = fireIndex(temp = temp, u = u, rh = rh)$fosberg
-        fosbergKBDI = faf * ffwi
-        for (i in 2:length(temp)) {
-            rainLag = ifelse(precip[i - 1] > 0, 0, rainLag + 1)
-            df <- min((0.191 * (output$kbdi[i] + 104) * (rainLag + 1)^1.5)/((3.52 * (rainLag +
-                1)^1.5) + precip[i - 1] - 1), 10)
-            forestMark5[i] <- 2 * exp(-0.45 + 0.987 * log(df + 0.001) - 0.0345 * rh[i] +
-                0.0338 * temp[i] + 0.0234 * u[i])
-        }
-        output$forestMark5 = forestMark5
-        output$fuelMoistureKBDI = fuelMoistureKBDI
-        output$fosbergKBDI = fosbergKBDI
-
-    } else {
-        output$forestMark5 = rep(NA, length(temp))
-        output$fuelMoistureKBDI = rep(NA, length(temp))
-        output$fosbergKBDI = rep(NA, length(temp))
+  if (!is.na(temp[1]) & !is.na(precip[1]) & !is.na(map[1]) & !is.na(u[1] & !is.na(rh[1]))) {
+    rainLag <- 0
+    forestMark5 <- rep(0, length(temp))
+    fm <- fireIndex(temp = temp, rh = rh, u = u)$fuelMoisture
+    fuelMoistureKBDI <- fm * output$kbdi
+    faf <- 0.72 + 0.000002 * output$kbdi^2
+    ffwi <- fireIndex(temp = temp, u = u, rh = rh)$fosberg
+    fosbergKBDI <- faf * ffwi
+    for (i in 2:length(temp)) {
+      rainLag <- ifelse(precip[i - 1] > 0, 0, rainLag + 1)
+      df <- min((0.191 * (output$kbdi[i] + 104) * (rainLag + 1)^1.5) / ((3.52 * (rainLag +
+        1)^1.5) + precip[i - 1] - 1), 10)
+      forestMark5[i] <- 2 * exp(-0.45 + 0.987 * log(df + 0.001) - 0.0345 * rh[i] +
+        0.0338 * temp[i] + 0.0234 * u[i])
     }
+    output$forestMark5 <- forestMark5
+    output$fuelMoistureKBDI <- fuelMoistureKBDI
+    output$fosbergKBDI <- fosbergKBDI
+  } else {
+    output$forestMark5 <- rep(NA, length(temp))
+    output$fuelMoistureKBDI <- rep(NA, length(temp))
+    output$fosbergKBDI <- rep(NA, length(temp))
+  }
 
-    if (!is.na(temp[1]) & !is.na(precip[1]) & !is.na(rh[1])) {
-        dp = 243.04 * (log(rh/100) + ((17.625 * temp)/(243.04 + temp)))/(17.625 -
-            log(rh/100) - ((17.625 * temp)/(243.04 + temp)))
-        mod = c(0, rep(NA, length(dp)))
-        nesterov = rep(0, length(temp))
-        nesterovMod = rep(0, length(temp))
-        zdenko = rep(0, length(temp))
+  if (!is.na(temp[1]) & !is.na(precip[1]) & !is.na(rh[1])) {
+    dp <- 243.04 * (log(rh / 100) + ((17.625 * temp) / (243.04 + temp))) / (17.625 -
+      log(rh / 100) - ((17.625 * temp) / (243.04 + temp)))
+    mod <- c(0, rep(NA, length(dp)))
+    nesterov <- rep(0, length(temp))
+    nesterovMod <- rep(0, length(temp))
+    zdenko <- rep(0, length(temp))
 
-        for (i in 2:length(dp)) {
-            nesterov[i] = ifelse(precip[i] > 3, 0, ifelse(temp[i] < 0, 0, nesterov[i -
-                1] + (temp[i] * (temp[i] - dp[i]))))
-            mod = ifelse(precip[i] < 0.1, 1, ifelse(precip[i] < 1, 0.8, ifelse(precip[i] <
-                3, 0.6, ifelse(precip[i] < 6, 0.4, ifelse(precip[i] < 15, 0.2, ifelse(precip[i] <
-                19, 0.1, 0))))))
-            nesterovMod[i] = ifelse(precip[i] > 3, 0, ifelse(temp[i] < 0, 0, nesterovMod[i -
-                1] + (temp[i] * temp[i] - dp[i] * mod)))
-            zdenko[i] <- (zdenko[i - 1] + temp[i] - dp[i]) * mod
-        }
-        output$nesterov = nesterov
-        output$nesterovMod = nesterovMod
-        output$zdenko = zdenko
-    } else {
-        output$nesterov = rep(NA, length(temp))
-        output$nesterovMod = rep(NA, length(temp))
-        output$zdenko = rep(NA, length(temp))
+    for (i in 2:length(dp)) {
+      nesterov[i] <- ifelse(precip[i] > 3, 0, ifelse(temp[i] < 0, 0, nesterov[i -
+        1] + (temp[i] * (temp[i] - dp[i]))))
+      mod <- ifelse(precip[i] < 0.1, 1, ifelse(precip[i] < 1, 0.8, ifelse(precip[i] <
+        3, 0.6, ifelse(precip[i] < 6, 0.4, ifelse(precip[i] < 15, 0.2, ifelse(precip[i] <
+        19, 0.1, 0))))))
+      nesterovMod[i] <- ifelse(precip[i] > 3, 0, ifelse(temp[i] < 0, 0, nesterovMod[i -
+        1] + (temp[i] * temp[i] - dp[i] * mod)))
+      zdenko[i] <- (zdenko[i - 1] + temp[i] - dp[i]) * mod
     }
-    output = output[, colSums(is.na(output)) != nrow(output)]
-    return(output)
+    output$nesterov <- nesterov
+    output$nesterovMod <- nesterovMod
+    output$zdenko <- zdenko
+  } else {
+    output$nesterov <- rep(NA, length(temp))
+    output$nesterovMod <- rep(NA, length(temp))
+    output$zdenko <- rep(NA, length(temp))
+  }
+  output <- output[, colSums(is.na(output)) != nrow(output)]
+  return(output)
 }

@@ -27,16 +27,18 @@
 #' #Because cr and cc are low, the previous solution is equivalent to an unsheletered fuelbed
 #' waf(fuelDepth = 1)
 #' @export
-  waf = function(fuelDepth=0, forestHt=0, cr=0, cc=0, sheltered='n') {
-  cr = cr/100
-  waf=data.frame(fuelDepth=fuelDepth,forestHt=forestHt,cr=cr,cc=cc,sheltered=sheltered)
-  waf$f = ifelse(waf$cr>0 & waf$cc>0,waf$cc/300*waf$cr,ifelse(waf$sheltered=='y',.1,0))
+waf <- function(fuelDepth = 0, forestHt = 0, cr = 0, cc = 0, sheltered = "n") {
+  cr <- cr / 100
+  waf <- data.frame(fuelDepth = fuelDepth, forestHt = forestHt, cr = cr, cc = cc, sheltered = sheltered)
+  waf$f <- ifelse(waf$cr > 0 & waf$cc > 0, waf$cc / 300 * waf$cr, ifelse(waf$sheltered == "y", .1, 0))
 
-waf$waf=
-   ifelse(waf$f < 0.05,
-   1.83/log((20.0 + 1.18*waf$fuelDepth/100)/(0.43*waf$fuelDepth/100)),
-   ifelse(waf$f > 0.05,
-   0.555/(sqrt(waf$f*3.28*waf$forestHt)* log((20.0 + 1.18*waf$forestHt)/(0.43*waf$forestHt))),
-   1))
+  waf$waf <-
+    ifelse(waf$f < 0.05,
+      1.83 / log((20.0 + 1.18 * waf$fuelDepth / 100) / (0.43 * waf$fuelDepth / 100)),
+      ifelse(waf$f > 0.05,
+        0.555 / (sqrt(waf$f * 3.28 * waf$forestHt) * log((20.0 + 1.18 * waf$forestHt) / (0.43 * waf$forestHt))),
+        1
+      )
+    )
   return(waf$waf)
-  }
+}
