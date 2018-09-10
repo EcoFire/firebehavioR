@@ -20,6 +20,8 @@ Fire weather indices of two types:
 Helper functions which can:
 * Calculate the wind adjustment factor, using a little or a lot of site-specific forest canopy information
 * Predict canopy fuels characteristics such as canopy bulk density and canopy fuel load
+* Determine fine fuel moisture from meteorological observations
+* Plot fie behavior outputs onto the Fire Characteristics Chart
 
 Helper data:
 * Stylized surface fuel models
@@ -43,9 +45,9 @@ Future Development
 -----
 
 This package is a continual work in progress. Suggestions for improvements are welcomed. Currently, additional helper functions are planned: 
-* Incorporation of models to estimate dead and live fuel moistures using RAWS weather observations 
+* Incorporation of models to estimate ~~dead and~~ live fuel moistures using RAWS weather observations 
 * Additional methods to estimate canopy fuels characteristics
-* Visual interpretation of fire behavior results via the Fire Characteristics Chart
+* ~~Visual interpretation of fire behavior results via the Fire Characteristics Chart~~
 
 Authors
 -------
