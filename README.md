@@ -21,7 +21,7 @@ Helper functions which can:
 * Calculate the wind adjustment factor, using a little or a lot of site-specific forest canopy information
 * Predict canopy fuels characteristics such as canopy bulk density and canopy fuel load
 * Determine fine fuel moisture from meteorological observations
-* Plot fie behavior outputs onto the Fire Characteristics Chart
+* Plot fire behavior outputs onto the Fire Characteristics Chart
 
 Helper data:
 * Stylized surface fuel models
