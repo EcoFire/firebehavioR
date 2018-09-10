@@ -3,3 +3,4 @@
 ^inst\$       		# An Rmarkdown file used to generate README.md
 ^firebehavioR\.Rproj$
 ^firebehavioR\.pdf$
+^firebehavioR\ignore$
