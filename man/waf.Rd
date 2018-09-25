@@ -26,7 +26,7 @@ Prediction of wind adjustment factor for sheltered and unsheltered fuels.
 \details{
 This calculates the wind adjustment factor (ratio of 20-ft open wind speed to wind speed at mid-surface flame height).
 One of two equations are used, depending on user input: by default, this function assumes the surface fuel bed is unsheltered.
-\code{fuelDepth} must be a positive value if the unsheletered variant is invoked.
+\code{fuelDepth} must be a positive value if the unsheltered variant is invoked.
 \code{forestHt} must be a positive value if the sheletered variant is invoked.
 There are two conditions to enable calculation for a sheltered fuelbed. First, if \code{cr} and
 \code{cc} are entered and lead lead to a crown fill portion (CF) above 5\%, where , or the user could enter \code{"y"} for sheltered fuels. In the latter

@@ -1,13 +1,13 @@
 #' Canopy Fire Initiation & Spread model
 #'
-#' Prediction of crown fire probability, crown fire rate of spread and seperation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, seperate of a main fire.
+#' Prediction of crown fire probability, crown fire rate of spread and separation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, separate of a main fire.
 #' @param fsg a numeric vector of fuel stratum gaps (m)
 #' @param u10 a numeric vector of 10-m open wind speeds (km/hr)
 #' @param effm a numeric vector of effective fine fuel moistures (\%)
 #' @param sfc a numeric vector of surface fuel consumed (Mg/ha)
 #' @param cbd a numeric vector of canopy bulk densities (kg/m3)
 #' @param id a numeric vector of spot ignition delays, the time during which a given firebrand generates, is transported aloft, and ignites a receptive fuelbed (min)
-#' @return a data frame with type of fire, probability of crown fire occurences (\%), crown fire rate of spread (m/min), and critical spotting distance (m)
+#' @return a data frame with type of fire, probability of crown fire occurrences (\%), crown fire rate of spread (m/min), and critical spotting distance (m)
 #' @author Justin P Ziegler, \email{justin.ziegler@@colostate.edu}
 #' @references  Alexander M.E., Cruz M.G. 2006. Evaluating a model for predicting active crown fire rate of spread using wildfire observations. \emph{Canadian Journal of Forest Research}. \strong{36}:2015-3028.
 #' @examples

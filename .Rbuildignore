@@ -11,3 +11,5 @@
 ^firebehavioR.pdf$
 ^firebehavioR.Rproj$
 ^\.travis\.yml$
+^cran_comments.md$
+^cran_comments.Rmd$

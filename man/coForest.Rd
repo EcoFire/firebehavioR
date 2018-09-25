@@ -10,7 +10,7 @@
   \item{status}{either before (pre) or after (post) forest thinning}
   \item{trees_perha}{tree density (trees/ha)}
   \item{basalArea_m2ha}{basal area (m2/ha)}
-  \item{qmd_cm}{quandratic mean diameter (cm)}
+  \item{qmd_cm}{quadratic mean diameter (cm)}
   \item{height_m}{mean tree height (m)}
   \item{sfl_kgm2}{surface fuel load (kg/m2)}
   \item{cbd_kgm3}{canopy bulk density (kg/m3)}

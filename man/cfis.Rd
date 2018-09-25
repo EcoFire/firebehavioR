@@ -20,10 +20,10 @@ cfis(fsg, u10, effm, sfc, cbd, id)
 \item{id}{a numeric vector of spot ignition delays, the time during which a given firebrand generates, is transported aloft, and ignites a receptive fuelbed (min)}
 }
 \value{
-a data frame with type of fire, probability of crown fire occurences (\%), crown fire rate of spread (m/min), and critical spotting distance (m)
+a data frame with type of fire, probability of crown fire occurrences (\%), crown fire rate of spread (m/min), and critical spotting distance (m)
 }
 \description{
-Prediction of crown fire probability, crown fire rate of spread and seperation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, seperate of a main fire.
+Prediction of crown fire probability, crown fire rate of spread and separation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, separate of a main fire.
 }
 \examples{
 data("coForest")

@@ -25,7 +25,7 @@
 #' @param moisture a numeric-only data frame of surface fuel moistures on a dry-weight basis
 #' (\%). Variable names are not important but the following order of surface fuel
 #' components is important: litter, 1-hr woody fuels, 10-hr woody fuels, 100-hr woody fuels,
-#' live herbaceous, and live wody vegetation (6 values or columns)
+#' live herbaceous, and live woody vegetation (6 values or columns)
 #' @param crownFuel a vector or data frame with canopy fuel attributes, in order:
 #' \enumerate{
 #'   \item canopy bulk density (kg/m3)

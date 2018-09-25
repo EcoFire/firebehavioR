@@ -5,3 +5,5 @@
 inst/
 ignore/
 history.Rhistory
+cran_comments.md
+cran_comments.Rmd

@@ -20,7 +20,7 @@
   \item{savLiveHerb}{ surface area to volume ratio of herbaceous fuel (m2/m3)}
   \item{savLiveWoody}{ surface area to volume ratio of woody fuel (m2/m3)}
   \item{fuelBedDepth}{ depth of woody fuel (cm)}
-  \item{mxDead}{dead fuel moisture of extincton (\%)}
+  \item{mxDead}{dead fuel moisture of extinction (\%)}
   \item{heat}{heat content (J/g)}
   \item{description}{fuel model description}
   \item{source}{scientific source}

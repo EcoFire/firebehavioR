@@ -36,7 +36,7 @@
 #'   \item{savLiveHerb}{ surface area to volume ratio of herbaceous fuel (m2/m3)}
 #'   \item{savLiveWoody}{ surface area to volume ratio of woody fuel (m2/m3)}
 #'   \item{fuelBedDepth}{ depth of woody fuel (cm)}
-#'   \item{mxDead}{dead fuel moisture of extincton (\%)}
+#'   \item{mxDead}{dead fuel moisture of extinction (\%)}
 #'   \item{heat}{heat content (J/g)}
 #'   \item{description}{fuel model description}
 #'   \item{source}{scientific source}
@@ -81,7 +81,7 @@
 #'   \item{status}{either before (pre) or after (post) forest thinning}
 #'   \item{trees_perha}{tree density (trees/ha)}
 #'   \item{basalArea_m2ha}{basal area (m2/ha)}
-#'   \item{qmd_cm}{quandratic mean diameter (cm)}
+#'   \item{qmd_cm}{quadratic mean diameter (cm)}
 #'   \item{height_m}{mean tree height (m)}
 #'   \item{sfl_kgm2}{surface fuel load (kg/m2)}
 #'   \item{cbd_kgm3}{canopy bulk density (kg/m3)}
