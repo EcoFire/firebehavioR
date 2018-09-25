@@ -73,7 +73,7 @@
 
 #' Colorado dry forest inventory summary.
 #'
-#' Fuels inventory summary of seven sampled forests in the southern Rocky Mountains and Colorado Plateau. Each forest was sapled before and after tree thinnings.
+#' Fuels inventory summary of seven sampled forests in the southern Rocky Mountains and Colorado Plateau. Each forest was sampled before and after tree thinnings.
 #' @usage data("coForest")
 #' @format A data frame with 14 observations of 10 variables:
 #' \describe{

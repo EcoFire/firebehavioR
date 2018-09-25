@@ -91,17 +91,17 @@
 #' crown fire behavior. \emph{RMRS-RP-29}. USDA Forest Service Rocky Mountain Research Station.\cr
 #' @examples
 #' data(fuelModels, fuelMoisture)
-#' fuelModels['A10',]
+#' #fuelModels['A10',]
 #' exampSurfFuel = fuelModels['A10',]
 #'
-#' fuelMoisture['D1L1',]
+#' #fuelMoisture['D1L1',]
 #' exampFuelMoisture = fuelMoisture['D1L1',]
 #'
 #' exampCrownFuel = data.frame(
-#'  CBD = coForest$cbd_kgm3,
+#'  CBD = coForest$cbd_kgm3[1],
 #'  FMC = 100,
-#'  CBH = coForest$cbh_m,
-#'  CFL = coForest$cfl_kgm2
+#'  CBH = coForest$cbh_m[1],
+#'  CFL = coForest$cfl_kgm2[1]
 #' )
 #'
 #' exampEnviro = data.frame(
@@ -110,7 +110,7 @@
 #'  direction = 0,
 #'  waf = 0.2
 #' )
-#' rothermel(sapply(exampSurfFuel, rep, 14), sapply(exampFuelMoisture, rep, 14), exampCrownFuel, sapply(exampEnviro,rep,14))
+#' rothermel(exampSurfFuel, exampFuelMoisture, exampCrownFuel, exampEnviro)
 #' @export
 
 rothermel <- function(surfFuel, moisture, crownFuel, enviro, rosMult = 1, cfbForm = "f", folMoist = "y") {

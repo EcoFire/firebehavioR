@@ -166,7 +166,8 @@ exampEnviro = data.frame(
   waf = 0.2
 )
 
-ex5 = rothermel(sapply(exampSurfFuel, rep, 14), sapply(exampFuelMoisture, rep, 14), exampCrownFuel, sapply(exampEnviro,rep,14))
+ex5 = rothermel(sapply(exampSurfFuel, rep, 14), sapply(exampFuelMoisture, rep, 14),
+                exampCrownFuel, sapply(exampEnviro,rep,14))
 ```
   
 `rothermel()` outputs a list of data frames. The first describes the finalized outputs.

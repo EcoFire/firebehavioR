@@ -1,6 +1,10 @@
 ^.*\.Rproj$         # Automatically added by RStudio,
 ^\.Rproj\.user$     # used for temporary files.
 ^inst\$       		# An Rmarkdown file used to generate README.md
-^firebehavioR\.Rproj$
-^firebehavioR\.pdf$
-^firebehavioR\ignore$
+^.Rproj$
+^.pdf$
+^.git$
+^.gitignore$
+^.Rhistory$
+^.Rdata$
+^history.Rhistory$
