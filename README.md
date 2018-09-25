@@ -1,5 +1,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1412014.svg)](https://doi.org/10.5281/zenodo.1412014) [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) 
 ![GitHub release](https://img.shields.io/badge/devel%20version-v0.9.0-blue.svg)
+[![Travis-CI Build Status](https://travis-ci.org/EcoFire/firebehavioR.svg?branch=master)](https://travis-ci.org/EcoFire/firebehavioR)
 
 firebehavioR
 ================
