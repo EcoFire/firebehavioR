@@ -210,17 +210,17 @@ exampCrownFuel = data.frame(
 
 ex6 = rep(NA,200)
 for (i in 1:200){
-  ex6[i] = rothermel(exampSurfFuel, exampFuelMoisture, exampCrownFuel[i,], exampEnviro, cfbForm = "sr")$fireBehavior[,3]  
+  ex6[i] = rothermel(exampSurfFuel[1,], exampFuelMoisture[1,], exampCrownFuel[i,], exampEnviro, cfbForm = "sr")$fireBehavior[,3]  
 }
 ```
 
-```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Distribution of hourly fuel moistures predicted by three methods using `ffm()`."}
+```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Effect of uncetain canopy fuels on predicted rate of spread."}
 ggplot(data.frame(ex6), aes(ex6)) + geom_density(fill='blue',alpha = 0.5,adjust = 1/5) + 
     xlab("Rate of spread (m/s)") + theme_classic() + coord_cartesian(expand=FALSE)
 ```
   
 In another example, we explore how rate of spread for a grass fire varies with wind direction and topographic slope.  
-```{r, warning=FALSE}
+```{r}
 fuelModels['A5',]
 exampSurfFuel = fuelModels['A5',]
 
@@ -306,6 +306,7 @@ ff = rbind(data.frame(ffm = ffm("simard", rrRAWS$rh, rrRAWS$temp_c)$fm1hr, metho
 ff$dateTime = rep(rrRAWS$dateTime, 3)
 ff = rbind(ff, ff.ma)
 ff$dateTime <- strptime(ff$dateTime, "%m/%d/%Y %H:%M")
+ff$dateTime <- as.POSIXct(ff$dateTime)
 ```
 
 ```{r fig.height = 3, fig.width = 7, fig.align = "center", fig.cap = "Hourly fuel moistures predicted by four methods using `ffm()`"}

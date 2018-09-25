@@ -206,10 +206,10 @@ rothermel <- function(surfFuel, moisture, crownFuel, enviro, rosMult = 1, cfbFor
   sin.f <- sin(enviro[, 3] / givens$deg2pi)
   nwns.CI <- ((r.active * 3.281 * givens$rho * e.qig.fm10) / (ir.fm10 * xi.FM10 *
     3.34 * fme * rosMult)) - 1
-  cos.CI <- (-2 * cos.f * sf.fm10 + sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 +
-    cos.f^2) * (sf.fm10^2 - nwns.CI^2)))) / (2 * (sin.f^2 + cos.f^2))
-  sin.CI <- (-2 * cos.f * sf.fm10 - sqrt((4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 +
-    cos.f^2) * (sf.fm10^2 - nwns.CI^2)))) / (2 * (cos.f^2 + cos.f^2))
+  cos.CI <- (-2 * cos.f * sf.fm10 + sqrt(max(0,(4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 +
+    cos.f^2) * (sf.fm10^2 - nwns.CI^2))))) / (2 * (sin.f^2 + cos.f^2))
+  sin.CI <- (-2 * cos.f * sf.fm10 - sqrt(max(0,(4 * cos.f^2 * sf.fm10^2) - (4 * (sin.f^2 +
+    cos.f^2) * (sf.fm10^2 - nwns.CI^2))))) / (2 * (cos.f^2 + cos.f^2))
   CI <- ((apply(cbind(cos.CI, sin.CI, 0), 1, max) / (givens$C * (givens$beta.pr / givens$bopt)^-givens$E))^(1 / givens$B)) *
     1.61 / (0.4 * 88)
   a <- w * s
