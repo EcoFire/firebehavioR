@@ -42,12 +42,16 @@
 #' data.frame(ffm = ffm('anderson',rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method='anderson')
 #' )
 #' ff$dateTime = rep(rrRAWS$dateTime,3)
-#' par(mfrow=c(3,1))
-#' hist(ff$ffm[ff$method=="simard"])
-#' hist(ff$ffm[ff$method=="wagner"])
-#' hist(ff$ffm[ff$method=="anderson"])
+#' 
+#' #NOT RUN
+#' 
+#' #par(mfrow=c(3,1))
+#' #hist(ff$ffm[ff$method=="simard"])
+#' #hist(ff$ffm[ff$method=="wagner"])
+#' #hist(ff$ffm[ff$method=="anderson"])
 #' @export
 fireIndexKBDI <- function(temp = NA, precip = NA, map = NA, rh = NA, u = NA) {
+  kbdiTable = kbdiTable
   output <- data.frame(
     kbdi = 0, droughtFactor = 0, forestMark5 = 0, fosbergKBDI = 0,
     fuelMoistureKBDI = 0, nesterov = 0, nesterovMod = 0, zdenko = 0

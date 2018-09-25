@@ -10,6 +10,8 @@ vignette: >
   %\VignetteIndexEntry{An introduction to firebehavioR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{truncnorm}
+  %\VignetteDepends{xtable}
   
 ---
 
@@ -165,9 +167,10 @@ exampEnviro = data.frame(
   direction = 0,
   waf = 0.2
 )
-
-ex5 = rothermel(sapply(exampSurfFuel, rep, 14), sapply(exampFuelMoisture, rep, 14),
-                exampCrownFuel, sapply(exampEnviro,rep,14))
+exampSurfFuel = sapply(exampSurfFuel, rep, 14)
+exampFuelMoisture = sapply(exampFuelMoisture, rep, 14)
+exampEnviro = sapply(exampEnviro,rep,14)
+ex5 = rothermel(exampSurfFuel, exampFuelMoisture, exampCrownFuel, exampEnviro)
 ```
   
 `rothermel()` outputs a list of data frames. The first describes the finalized outputs.

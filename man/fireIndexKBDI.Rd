@@ -49,19 +49,22 @@ data.frame(ffm = ffm('wagner',rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method='wagner'),
 data.frame(ffm = ffm('anderson',rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method='anderson')
 )
 ff$dateTime = rep(rrRAWS$dateTime,3)
-par(mfrow=c(3,1))
-hist(ff$ffm[ff$method=="simard"])
-hist(ff$ffm[ff$method=="wagner"])
-hist(ff$ffm[ff$method=="anderson"])
+
+#NOT RUN
+
+#par(mfrow=c(3,1))
+#hist(ff$ffm[ff$method=="simard"])
+#hist(ff$ffm[ff$method=="wagner"])
+#hist(ff$ffm[ff$method=="anderson"])
 }
 \references{
 Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009. A simple index for assessing fuel moisture content.
-\emph{Environmental Modelling & Software}, \strong{24}(5):637-646.
-Goodrick, S.L., 2002. Modification of the Fosberg fire weather index to include drought. I\emph{International Journal of Wildland Fire}, \strong{11}(4), pp.205-211.
+\emph{Environmental Modelling & Software}, \strong{24}(5):637-646.  
+Goodrick, S.L., 2002. Modification of the Fosberg fire weather index to include drought. I\emph{International Journal of Wildland Fire}, \strong{11}(4), pp.205-211.  
 Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M.. 2009. A simple index for assessing fire danger rating.
-\emph{Environmental Modelling & Software}. \strong{24}(6):764-774.
-Keetch, J.J., Byram, G.M. 1968. A drought index for forest fire control. \emph{RP-SE-68}, US Department of Agriculture, Forest Service, Southeastern Forest Experiment Station.
-Groisman, P.Y., Sherstyukov, B.G., Razuvaev, V.N., Knight, R.W., Enloe, J.G., Stroumentova, N.S., Whitfield, P.H., Førland, E., Hannsen-Bauer, I., Tuomenvirta, H. and Aleksandersson, H., 2007. Potential forest fire danger over Northern Eurasia: changes during the 20th century. \emph{Global and Planetary Change}, \strong{56}(3-4):371-386.
+\emph{Environmental Modelling & Software}. \strong{24}(6):764-774.  
+Keetch, J.J., Byram, G.M. 1968. A drought index for forest fire control. \emph{RP-SE-68}, US Department of Agriculture, Forest Service, Southeastern Forest Experiment Station.  
+Groisman, P.Y., Sherstyukov, B.G., Razuvaev, V.N., Knight, R.W., Enloe, J.G., Stroumentova, N.S., Whitfield, P.H., Førland, E., Hannsen-Bauer, I., Tuomenvirta, H. and Aleksandersson, H., 2007. Potential forest fire danger over Northern Eurasia: changes during the 20th century. \emph{Global and Planetary Change}, \strong{56}(3-4):371-386.  
 Skvarenina, J., Mindas, J., Holecy, J. and Tucek, J., 2003, May. Analysis of the natural and meteorological conditions during two largest forest fire events in the Slovak Paradise National Park. \emph{In Proceedings of the International Scientific Workshop on Forest Fires in the Wildland–Urban Interface and Rural Areas in Europe: an integral planning and management challenge}.
 }
 \author{

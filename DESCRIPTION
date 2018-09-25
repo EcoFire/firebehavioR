@@ -3,12 +3,11 @@ Title: Prediction of Wildland Fire Behavior
 Version: 0.1.0
 Authors@R: person("Justin", "Ziegler", role = c("aut", "cre"), email = "Justin.Ziegler@colostate.edu")
 Description: Functions for estimating wildland fire hazard using common models in the US.
-Depends: R (>= 3.4.1), ggplot2
+Depends: R (>= 3.4.1)
 Imports: ggplot2, utils
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1.9000
-Suggests: knitr,
-    rmarkdown
+Suggests: knitr, rmarkdown, reshape2, truncnorm, xtable
 VignetteBuilder: knitr

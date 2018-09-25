@@ -25,6 +25,6 @@ and fire behavior following restoration treatments in dry forests. \emph{Forest 
 data("coForest")
 }
 \description{
-Fuels inventory summary of seven sampled forests in the southern Rocky Mountains and Colorado Plateau. Each forest was sapled before and after tree thinnings.
+Fuels inventory summary of seven sampled forests in the southern Rocky Mountains and Colorado Plateau. Each forest was sampled before and after tree thinnings.
 }
 \keyword{datasets}
