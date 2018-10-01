@@ -1,6 +1,6 @@
 #' Canopy Fire Initiation & Spread model
 #'
-#' Prediction of crown fire probability, crown fire rate of spread and separation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, separate of a main fire.
+#' Prediction of crown fire probability, crown fire rate of spread and separation distance (Alexander and Cruz 2006). Separation distance is distance ahead of main fire front required for a spot fire to form, separate of a main fire.
 #' @param fsg a numeric vector of fuel stratum gaps (m)
 #' @param u10 a numeric vector of 10-m open wind speeds (km/hr)
 #' @param effm a numeric vector of effective fine fuel moistures (\%)

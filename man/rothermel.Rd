@@ -85,7 +85,7 @@ height (m), O'cessation (km/hr)}
 Potential surface and crown fire behavior predicted by Scott and Reinhardt (2001).
 }
 \details{
-This in an R build of the Nexus fire behavior modeling system (Scott & Reinhardt 2001)
+This in an R build of the Rothermel fire behavior modelling system (Scott & Reinhardt 2001)
 which links sub-models of surface fire rate of spread (Rothermel 1972), crown fire initiation
 (Van Wagner 1977), and Rothermel's (1991) crown fire rate of spread. \cr
 \code{rosMult} multiples the rate of spread for active or passive crown fires and is recommended

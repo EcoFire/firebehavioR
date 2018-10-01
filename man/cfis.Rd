@@ -23,7 +23,7 @@ cfis(fsg, u10, effm, sfc, cbd, id)
 a data frame with type of fire, probability of crown fire occurrences (\%), crown fire rate of spread (m/min), and critical spotting distance (m)
 }
 \description{
-Prediction of crown fire probability, crown fire rate of spread and separation distance (Alexander and Cruz 2006). Seperation distance is distance ahead of main fire front required for a spot fire to form, separate of a main fire.
+Prediction of crown fire probability, crown fire rate of spread and separation distance (Alexander and Cruz 2006). Separation distance is distance ahead of main fire front required for a spot fire to form, separate of a main fire.
 }
 \examples{
 data("coForest")

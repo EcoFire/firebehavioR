@@ -2,7 +2,7 @@
 #'
 #' Methods to estimate fine fuel moisture based on meteorological data.
 #' @param method a character vector of specifying the method
-#' \code{("pech"},\code{("simard"}, \code{"wagner"}, \code{"anderson"}, \code{"mcarthur"}, \code{"fbo"})
+#' \code{("pech"}, \code{"simard"}, \code{"wagner"}, \code{"anderson"}, \code{"mcarthur"}, \code{"fbo"})
 #' @param rh a numeric vector of relative humidities (\%)
 #' @param temp a numeric vector of dry bulb temperatures (deg. C)
 #' @param month a numeric vector of Gregorian month numbers (1-12)
@@ -12,8 +12,8 @@
 #' @param bla a character vector specifying the difference in elevation between the fine fuel's location and that of the meteorological data;
 #' either within 305 m ('l', the default), or the meteorological data are > 305m below (\code{"b"}), or above (\code{"a"}) the fine fuel's location
 #' @param shade a character vector specifying whether fine fuels are shaded, \code{"y"} or \code{"n"}
-#' @details This function has four methods to estimate fine fuel moisture. If \code{method = "fbo"}, all arguments must be specified,
-#' otherwise, only \code{method}, \code{rh} and \code{temp} are needed.
+#' @details This function has six methods to estimate fine fuel moisture. If \code{method = "fbo"}, all arguments must be specified,
+#' otherwise, only \code{method}, \code{rh} and \code{temp} are required.  
 #' @return a data frame of litter, 1-hr, 10-hr, and 100-hr fuel moistures
 #' @author Justin P Ziegler, \email{justin.ziegler@@colostate.edu}
 #' @references

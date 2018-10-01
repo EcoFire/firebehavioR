@@ -17,7 +17,7 @@ fireChart(name, hpua, ros)
 an object of class ggplot
 }
 \description{
-Visualization of predicted fire behavior
+Visualization of predicted fire behavior using the Fire Characteristics Chart.
 }
 \examples{
 fc = fireChart('fire',hpua = 15000, ros = 50)

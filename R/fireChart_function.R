@@ -1,6 +1,6 @@
 #' Fire Characteristics Chart
 #'
-#' Visualization of predicted fire behavior
+#' Visualization of predicted fire behavior using the Fire Characteristics Chart.
 #' @param name a character vector identifying names of predictions
 #' @param hpua a numeric vector of heat per unit area (kJ/m2)
 #' @param ros a numeric vector of rate of spread (m/min)

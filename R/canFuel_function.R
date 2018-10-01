@@ -1,6 +1,6 @@
 #' Canopy Fuel Stratum Characteristics Calculator
 #'
-#' Canopy parameters estimated by Cruz, Alexander & Wakimoto (2003)
+#' Canopy parameters estimated by Cruz, Alexander & Wakimoto (2003).
 #' @param ba a numeric vector of stand basal areas (m2/ha)
 #' @param ht a numeric vector of average stand tree heights (m)
 #' @param tph a numeric vector of stand densities (trees/ha)

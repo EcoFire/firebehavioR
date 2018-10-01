@@ -20,7 +20,7 @@ canFuel(ba, ht, tph, type)
 a data frame with canopy base height (m), canopy fuel load (kg/m2), and canopy bulk density (kg/m3)
 }
 \description{
-Canopy parameters estimated by Cruz, Alexander & Wakimoto (2003)
+Canopy parameters estimated by Cruz, Alexander & Wakimoto (2003).
 }
 \examples{
 #Two hypothetical forest stands

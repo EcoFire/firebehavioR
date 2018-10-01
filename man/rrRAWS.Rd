@@ -19,6 +19,6 @@ RAWS USA Climate Archive \url{https://raws.dri.edu/}
 data("rrRAWS")
 }
 \description{
-Hourly meteorological data from April through September 2017 from the Rampart Range Remote Automated Weather Station (RAWS; Station ID: RRAC2), maintained by the United States Forest Service
+Hourly meteorological data from April 2017 through September 2017 from the Rampart Range Remote Automated Weather Station (RAWS; Station ID: RRAC2), maintained by the United States Forest Service.
 }
 \keyword{datasets}

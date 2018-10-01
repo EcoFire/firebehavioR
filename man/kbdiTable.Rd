@@ -5,11 +5,8 @@
 \alias{kbdiTable}
 \title{KBDI Lookup table}
 \format{An object of class \code{data.frame} with 1680 rows and 7 columns.}
-\source{
-\emph{INT-GTR-131}. US Department of Agriculture, Forest Service, Intermountain Forest and Range Experimental Station.
-}
 \usage{
-data("fireChartData")
+data("kbdiTable")
 }
 \description{
 Data of drought factor by drought index, temperature and mean annual precipitation.

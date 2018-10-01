@@ -8,7 +8,7 @@ ffm(method, rh, temp, month, hour, asp, slp, bla, shade)
 }
 \arguments{
 \item{method}{a character vector of specifying the method
-\code{("pech"},\code{("simard"}, \code{"wagner"}, \code{"anderson"}, \code{"mcarthur"}, \code{"fbo"})}
+\code{("pech"}, \code{"simard"}, \code{"wagner"}, \code{"anderson"}, \code{"mcarthur"}, \code{"fbo"})}
 
 \item{rh}{a numeric vector of relative humidities (\%)}
 
@@ -34,8 +34,8 @@ a data frame of litter, 1-hr, 10-hr, and 100-hr fuel moistures
 Methods to estimate fine fuel moisture based on meteorological data.
 }
 \details{
-This function has four methods to estimate fine fuel moisture. If \code{method = "fbo"}, all arguments must be specified,
-otherwise, only \code{method}, \code{rh} and \code{temp} are needed.
+This function has six methods to estimate fine fuel moisture. If \code{method = "fbo"}, all arguments must be specified,
+otherwise, only \code{method}, \code{rh} and \code{temp} are required.
 }
 \examples{
 #Example using RAWS meteorological station data

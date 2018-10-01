@@ -6,15 +6,17 @@
 #' @param u a numeric vector of wind speeds (km/hr)
 #' @param fuel a numeric vector of available fuel load (Mg/ha), defaults to 4.5
 #' @param cure a numeric vector for proportion of cured grass (\%), defaults to 100
-#' @details This function computes 5 methods to estimate fire weather indices: the Angstrom Index, the Chandler Burning Index, the Hot Dry Windy Index, the Fuel Moisture Index, the Fosberg Fire Weather Index,
-#' the MacArthur Grassland Mark 4 Index, and the MacArthur Grassland Mark 5 Index. \code{temp}, \code{rh} and \code{u} are mandatory. The latter
-#' two indices also use \code{fuel}, and the Grassland Mark 4 Index uses \code{cure}. Defaults for \code{fuel} and \code{cure} are provided, but can be
-#' specified by the user.
+#' @details This function computes seven methods to estimate static fire weather indices: the Angstrom Index, the Chandler Burning Index, the Hot Dry Windy Index, the Fuel Moisture Index, the Fosberg Fire Weather Index,
+#' the MacArthur Grassland Mark 4 Index, and the MacArthur Grassland Mark 5 Index. Each of these are static in that values are derived using a
+#' daily weather summary and do ot consider weather during prior days.
+#' \code{temp}, \code{rh} and \code{u} are required for all methods.
+#' The latter two indices also use \code{fuel}, and the Grassland Mark 4 Index uses \code{cure}. Defaults for \code{fuel} and \code{cure}
+#' are provided, but can be specified by the user. Sharples (2009a, b) review all of the methods.
 #' @return a data frame of static fire weather index values
 #' @author Justin P Ziegler, \email{justin.ziegler@@colostate.edu}
 #' @references
-#' Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009. A simple index for assessing fuel moisture content. \emph{Environmental Modelling & Software}, \strong{24}(5):637-646.
-#' Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M.. 2009. A simple index for assessing fire danger rating. \emph{Environmental Modelling & Software}. \strong{24}(6):764-774.
+#' Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009a. A simple index for assessing fuel moisture content. \emph{Environmental Modelling & Software}, \strong{24}(5):637-646.\cr
+#' Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009b. A simple index for assessing fire danger rating. \emph{Environmental Modelling & Software}. \strong{24}(6):764-774.
 #' @examples
 #' #Example using RAWS meteorological station data
 #' data(rrRAWS)

@@ -95,7 +95,7 @@
 
 #' Rampart Range RAWS meteorological data
 #'
-#' Hourly meteorological data from April through September 2017 from the Rampart Range Remote Automated Weather Station (RAWS; Station ID: RRAC2), maintained by the United States Forest Service
+#' Hourly meteorological data from April 2017 through September 2017 from the Rampart Range Remote Automated Weather Station (RAWS; Station ID: RRAC2), maintained by the United States Forest Service.
 #' @usage data("rrRAWS")
 #' @format A data frame with 4392 observations of 4 variables:
 #' \describe{
@@ -126,9 +126,7 @@
 #' KBDI Lookup table
 #'
 #' Data of drought factor by drought index, temperature and mean annual precipitation.
-#' @usage data("fireChartData")
-#' @source
-#'  \emph{INT-GTR-131}. US Department of Agriculture, Forest Service, Intermountain Forest and Range Experimental Station.
+#' @usage data("kbdiTable")
 #' @keywords internal
 "kbdiTable"
 

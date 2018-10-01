@@ -1,16 +1,18 @@
 #' Fire weather indices based on cumulative weather observations
 #'
-#' Methods to estimate daily fire weather indices using cumulative weather observations.
+#' Methods to estimate daily fire weather indices using dynamic weather observations.
 #' @usage fireIndexKBDI(temp, precip, map, rh, u)
-#' @param temp a numeric vector of daily air temperature (C)
-#' @param precip a numeric vector of daily precipitation (mm)
+#' @param temp a numeric vector of daily air temperatures (C)
+#' @param precip a numeric vector of daily precipitations (mm)
 #' @param map a single numeric value of mean annual precipitation (mm)
 #' @param rh a numeric vector of relative humidities (\%)
-#' @param u a numeric vector of wind speeds (km/hr)
-#' @details This function computes up to 8 methods to estimate fire weather indices.
-#' The number of computed indices depends on the supplied arguments.
+#' @param u a numeric vector of daily wind speeds (km/hr)
+#' @details This function computes up to 8 methods to estimate dynamic fire weather indices. These methods are dynamic in that they take prior days'
+#' weather into consideration. Therefore the inputs must be ordered by day
+#' (i.e., weather observations for a given day are followed by weather observations for the next day.)  
+#' The number of computed methods depends on the supplied arguments.
 #' If requisite arguments for specific methods are not supplied, \code{'fireIndexKBDI'}
-#' will not output results for those methods (i.e., there will be fewer than 8 columns).
+#' will not output results for those specific methods (i.e., there will be fewer than 8 columns).
 #' The requisite arguments for each method:
 #'  \describe{
 #'   \item{kbdi}{\code{'temp'}, \code{'precip'}, \code{'map'}}
@@ -22,26 +24,26 @@
 #'   \item{nesterovMod}{\code{'temp'}, \code{'precip'}, \code{'rh'}}
 #'   \item{zdenko}{\code{'temp'}, \code{'precip'}, \code{'rh'}}
 #' }
-#' @return a data frame of fire weather index values with a column for each valid method.
+#' @return a data frame of fire weather index values with a column for each valid method
 #' @author Justin P Ziegler, \email{justin.ziegler@@colostate.edu}
 #' @references
 #' Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009. A simple index for assessing fuel moisture content.
-#' \emph{Environmental Modelling & Software}, \strong{24}(5):637-646.  
-#' Goodrick, S.L., 2002. Modification of the Fosberg fire weather index to include drought. I\emph{International Journal of Wildland Fire}, \strong{11}(4), pp.205-211.  
-#' Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M.. 2009. A simple index for assessing fire danger rating.
-#' \emph{Environmental Modelling & Software}. \strong{24}(6):764-774.  
-#' Keetch, J.J., Byram, G.M. 1968. A drought index for forest fire control. \emph{RP-SE-68}, US Department of Agriculture, Forest Service, Southeastern Forest Experiment Station.  
-#' Groisman, P.Y., Sherstyukov, B.G., Razuvaev, V.N., Knight, R.W., Enloe, J.G., Stroumentova, N.S., Whitfield, P.H., Førland, E., Hannsen-Bauer, I., Tuomenvirta, H. and Aleksandersson, H., 2007. Potential forest fire danger over Northern Eurasia: changes during the 20th century. \emph{Global and Planetary Change}, \strong{56}(3-4):371-386.  
+#' \emph{Environmental Modelling & Software}, \strong{24}(5):637-646.\cr
+#' Goodrick, S.L., 2002. Modification of the Fosberg fire weather index to include drought. \emph{International Journal of Wildland Fire}, \strong{11}(4), pp.205-211.\cr
+#' Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009. A simple index for assessing fire danger rating.
+#' \emph{Environmental Modelling & Software}. \strong{24}(6):764-774.\cr
+#' Keetch, J.J., Byram, G.M., 1968. A drought index for forest fire control. \emph{RP-SE-68}, US Department of Agriculture, Forest Service, Southeastern Forest Experiment Station.\cr
+#' Groisman, P.Y., Sherstyukov, B.G., Razuvaev, V.N., Knight, R.W., Enloe, J.G., Stroumentova, N.S., Whitfield, P.H., Førland, E., Hannsen-Bauer, I., Tuomenvirta, H. and Aleksandersson, H., 2007. Potential forest fire danger over Northern Eurasia: changes during the 20th century. \emph{Global and Planetary Change}, \strong{56}(3-4):371-386.\cr
 #' Skvarenina, J., Mindas, J., Holecy, J. and Tucek, J., 2003, May. Analysis of the natural and meteorological conditions during two largest forest fire events in the Slovak Paradise National Park. \emph{In Proceedings of the International Scientific Workshop on Forest Fires in the Wildland–Urban Interface and Rural Areas in Europe: an integral planning and management challenge}.  
 #' @examples
 #' #Example using RAWS meteorological station data
 #' data(rrRAWS)
 #' ff = rbind(
-#' data.frame(ffm = ffm('simard',rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method='simard'),
-#' data.frame(ffm = ffm('wagner',rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method='wagner'),
-#' data.frame(ffm = ffm('anderson',rrRAWS$rh, rrRAWS$temp_c)$fm1hr,method='anderson')
+#' data.frame(ffm = ffm('simard', rrRAWS$rh, rrRAWS$temp_c)$fm1hr, method = 'simard'),
+#' data.frame(ffm = ffm('wagner', rrRAWS$rh, rrRAWS$temp_c)$fm1hr, method = 'wagner'),
+#' data.frame(ffm = ffm('anderson', rrRAWS$rh, rrRAWS$temp_c)$fm1hr, method = 'anderson')
 #' )
-#' ff$dateTime = rep(rrRAWS$dateTime,3)
+#' ff$dateTime = rep(rrRAWS$dateTime, 3)
 #' 
 #' #NOT RUN
 #' 
@@ -51,7 +53,7 @@
 #' #hist(ff$ffm[ff$method=="anderson"])
 #' @export
 fireIndexKBDI <- function(temp = NA, precip = NA, map = NA, rh = NA, u = NA) {
-  kbdiTable = kbdiTable
+  kbdiTable <- kbdiTable
   output <- data.frame(
     kbdi = 0, droughtFactor = 0, forestMark5 = 0, fosbergKBDI = 0,
     fuelMoistureKBDI = 0, nesterov = 0, nesterovMod = 0, zdenko = 0

@@ -24,10 +24,12 @@ a data frame of static fire weather index values
 Methods to estimate fire weather indices using static weather observations.
 }
 \details{
-This function computes 5 methods to estimate fire weather indices: the Angstrom Index, the Chandler Burning Index, the Hot Dry Windy Index, the Fuel Moisture Index, the Fosberg Fire Weather Index,
-the MacArthur Grassland Mark 4 Index, and the MacArthur Grassland Mark 5 Index. \code{temp}, \code{rh} and \code{u} are mandatory. The latter
-two indices also use \code{fuel}, and the Grassland Mark 4 Index uses \code{cure}. Defaults for \code{fuel} and \code{cure} are provided, but can be
-specified by the user.
+This function computes seven methods to estimate static fire weather indices: the Angstrom Index, the Chandler Burning Index, the Hot Dry Windy Index, the Fuel Moisture Index, the Fosberg Fire Weather Index,
+the MacArthur Grassland Mark 4 Index, and the MacArthur Grassland Mark 5 Index. Each of these are static in that values are derived using a
+daily weather summary and do ot consider weather during prior days.
+\code{temp}, \code{rh} and \code{u} are required for all methods.
+The latter two indices also use \code{fuel}, and the Grassland Mark 4 Index uses \code{cure}. Defaults for \code{fuel} and \code{cure}
+are provided, but can be specified by the user. Sharples (2009a, b) review all of the methods.
 }
 \examples{
 #Example using RAWS meteorological station data
@@ -36,8 +38,8 @@ rrRAWS.daily =   rrRAWS[format(strptime(rrRAWS$dateTime, "\%m/\%d/\%Y \%H:\%M"),
 fireIndex(temp=rrRAWS.daily$temp_c, u= rrRAWS.daily$windSpeed_kmh, rh = rrRAWS.daily$rh)
 }
 \references{
-Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009. A simple index for assessing fuel moisture content. \emph{Environmental Modelling & Software}, \strong{24}(5):637-646.
-Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M.. 2009. A simple index for assessing fire danger rating. \emph{Environmental Modelling & Software}. \strong{24}(6):764-774.
+Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009a. A simple index for assessing fuel moisture content. \emph{Environmental Modelling & Software}, \strong{24}(5):637-646.\cr
+Sharples, J.J., McRae, R.H.D., Weber, R.O. and Gill, A.M., 2009b. A simple index for assessing fire danger rating. \emph{Environmental Modelling & Software}. \strong{24}(6):764-774.
 }
 \author{
 Justin P Ziegler, \email{justin.ziegler@colostate.edu}
