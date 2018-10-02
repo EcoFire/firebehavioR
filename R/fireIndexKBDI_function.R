@@ -11,7 +11,7 @@
 #' weather into consideration. Therefore the inputs must be ordered by day
 #' (i.e., weather observations for a given day are followed by weather observations for the next day.)  
 #' The number of computed methods depends on the supplied arguments.
-#' If requisite arguments for specific methods are not supplied, \code{'fireIndexKBDI'}
+#' If requisite arguments for specific methods are not supplied, \code{fireIndexKBDI}
 #' will not output results for those specific methods (i.e., there will be fewer than 8 columns).
 #' The requisite arguments for each method:
 #'  \describe{

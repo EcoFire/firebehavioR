@@ -7,12 +7,12 @@
 #' @param cr a numeric vector of crown ratios (\%)
 #' @param cc a numeric vector of canopy cover (\%)
 #' @param sheltered a character vector of either \code{"y"} or \code{"n"} (default) to use sheltered or not (unsheltered) equations
-#' @details This calculates the wind adjustment factor (ratio of 20-ft open wind speed to wind speed at mid-surface flame height).
+#' @details This calculates the wind adjustment factor (ratio of 20-ft open wind speed to wind speed at midflame height of a surface fire).
 #' One of two equations are used, depending on user input: by default, this function assumes the surface fuel bed is unsheltered.
-#' \code{fuelDepth} must be a positive value if the unsheltered variant is invoked.
+#' \code{fuelDepth} must be a positive value if the unsheltered variant is invoked. \cr
 #' There are two conditions to enable calculation for a sheltered fuelbed. One, the product of \code{cr} and
-#' \code{cc} must exceed 5%. Or, two, \code{cr} and \code{cc} are not supplied, but the user enters \code{"sheltered = y"}.
-#' The former method is recommended. In addition, either means of invoking the sheltered equation must also have \code{forestHt} provided. 
+#' \code{cc} must exceed 5\%. Alternatively, if \code{cr} and \code{cc} are not supplied, the user may enter \code{"sheltered = y"}.
+#' The former method is recommended when \code{cr} and \code{cc} are known. In addition, either means of invoking the sheltered equation must also have \code{forestHt} provided. 
 #' @return a vector of wind adjustment factors
 #' @author Justin P Ziegler, \email{justin.ziegler@@colostate.edu}
 #' @references  Andrews, P.L. 2012. Modeling wind adjustment factor and midflame wind speed for Rothermel’s surface fire spread model. \emph{RMRS-GTR-266}. USDA Forest Service Rocky Mountain Research Station.

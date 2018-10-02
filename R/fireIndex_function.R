@@ -8,7 +8,7 @@
 #' @param cure a numeric vector for proportion of cured grass (\%), defaults to 100
 #' @details This function computes seven methods to estimate static fire weather indices: the Angstrom Index, the Chandler Burning Index, the Hot Dry Windy Index, the Fuel Moisture Index, the Fosberg Fire Weather Index,
 #' the MacArthur Grassland Mark 4 Index, and the MacArthur Grassland Mark 5 Index. Each of these are static in that values are derived using a
-#' daily weather summary and do ot consider weather during prior days.
+#' daily weather summary and do not consider weather during prior days.
 #' \code{temp}, \code{rh} and \code{u} are required for all methods.
 #' The latter two indices also use \code{fuel}, and the Grassland Mark 4 Index uses \code{cure}. Defaults for \code{fuel} and \code{cure}
 #' are provided, but can be specified by the user. Sharples (2009a, b) review all of the methods.
