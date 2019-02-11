@@ -30,8 +30,8 @@ Helper data:
 
 Installation
 ------------
-
-You can install firebehavioR from GitHub for the development version.
+firebehavioR is available on the [Comprehensive R Archive Network (CRAN)](https://cran.r-project.org/package=firebehavioR).
+Alternatively, you can install firebehavioR from GitHub for the development version.
 
     devtools::install_github("EcoFire/firebehavioR")
 
