@@ -35,7 +35,7 @@ Alternatively, you can install firebehavioR from GitHub for the development vers
 
     devtools::install_github("EcoFire/firebehavioR")
 
-The fireplot() function requires ggplot2; otherwise there are no package dependencies. You should have R (&gt;= 3.4.1) installed.
+ fireChart() requires ggplot2; otherwise there are no package dependencies. You should have R (&gt;= 3.4.1) installed.
 
 Usage
 -----
